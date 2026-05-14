@@ -332,30 +332,20 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // CONFIGURAÇÃO DO FIREBASE
         const firebaseConfig = {
-          apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
-          authDomain: "diario-newcode.firebaseapp.com",
-          projectId: "diario-newcode",
-          storageBucket: "diario-newcode.firebasestorage.app",
-          messagingSenderId: "440225334729",
-          appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
-          measurementId: "G-1TQE6YPV6N"
+            apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
+            authDomain: "diario-newcode.firebaseapp.com",
+            projectId: "diario-newcode",
+            storageBucket: "diario-newcode.firebasestorage.app",
+            messagingSenderId: "440225334729",
+            appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
+            measurementId: "G-1TQE6YPV6N"
         };
-
-        // 2. Inicializa o serviço do Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const firestoreDb = getFirestore(app);
-
-        // 3. Deixa o banco da nuvem preparado para uso no app
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDb = firestoreDb;
-        console.log("Serviços em Nuvem (Firebase) preparados!");
 
         let app, auth, dbFirestore;
         try {

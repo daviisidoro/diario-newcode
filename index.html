@@ -303,18 +303,19 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // =========================================================================
+        // CREDENCIAIS DO FIREBASE
+        // =========================================================================
         const firebaseConfig = {
-          apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
-          authDomain: "diario-newcode.firebaseapp.com",
-          projectId: "diario-newcode",
-          storageBucket: "diario-newcode.firebasestorage.app",
-          messagingSenderId: "440225334729",
-          appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
-          measurementId: "G-1TQE6YPV6N"
+            apiKey: "AIzaSyDUYpc-GITaeunBFFvaz6ByaFnJ7yxYjiQ",
+            authDomain: "diario-newcode.firebaseapp.com",
+            projectId: "diario-newcode",
+            storageBucket: "diario-newcode.firebasestorage.app",
+            messagingSenderId: "440225334729",
+            appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
+            measurementId: "G-1TQE6YPV6N"
         };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        // =========================================================================
 
         let app, auth, dbFirestore;
         
@@ -456,7 +457,7 @@
         }
 
         // ==========================================
-        // LÓGICA DO DIÁRIO (IGUAL A ANTERIOR)
+        // LÓGICA DO DIÁRIO
         // ==========================================
         window.changeTab = function(tab) {
             document.getElementById('section-diario').classList.add('hidden');
@@ -641,7 +642,6 @@
             const chave = `${aulaId}_${alunoId}`;
             window.dbLocal.presencas[chave] = status;
             window.salvarDados(); 
-            // Não renderizamos manualmente aqui, o Firebase onSnapshot cuida disso!
         }
 
         window.adicionarAula = function() {

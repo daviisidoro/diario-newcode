@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEW CODE - Diário Escolar</title>
-    
-    <!-- Configurações Avançadas de Ícone e Ecrã de Início para Mobile -->
+
     <link rel="icon" type="image/png" href="icone.png">
     <link rel="shortcut icon" href="icone.png">
     
-    <!-- Específico para dispositivos Apple (iOS) -->
     <link rel="apple-touch-icon" href="icone.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icone.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icone.png">
@@ -18,14 +16,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Diário NC">
     
-    <!-- Específico para Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Diário NC">
     <meta name="theme-color" content="#1A2E4C">
     
-    <!-- Manifesto Embutido para instalação perfeita no Android -->
     <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"Diário New Code","short_name":"Diário NC","display":"standalone","start_url":"/","theme_color":"#1A2E4C","background_color":"#0B1320","icons":[{"src":"icone.png","sizes":"192x192","type":"image/png"},{"src":"icone.png","sizes":"512x512","type":"image/png"}]}'>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -153,7 +148,10 @@
                         <input type="email" id="login-email" class="modern-input" placeholder="professor@newcode.com">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Senha</label>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Senha</label>
+                            <button onclick="window.toggleRecuperarMode()" class="text-xs text-nc-accent hover:opacity-80 transition-opacity font-medium">Esqueceu?</button>
+                        </div>
                         <input type="password" id="login-senha" class="modern-input" placeholder="••••••••">
                     </div>
                     <button id="btn-login" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg h-12">
@@ -181,7 +179,23 @@
                         Registrar e Acessar
                     </button>
                     <div class="text-center mt-4">
-                        <button onclick="window.toggleAuthMode()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Já possui conta? Fazer login</button>
+                        <button onclick="window.voltarParaLogin()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Já possui conta? Fazer login</button>
+                    </div>
+                </div>
+
+                <div id="form-recuperar" class="space-y-5 hidden">
+                    <div class="text-center mb-2">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Digite seu e-mail para receber um link de redefinição de senha.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
+                        <input type="email" id="recuperar-email" class="modern-input" placeholder="professor@newcode.com">
+                    </div>
+                    <button id="btn-recuperar" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg h-12">
+                        Enviar Link
+                    </button>
+                    <div class="text-center mt-4">
+                        <button onclick="window.voltarParaLogin()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Voltar para o Login</button>
                     </div>
                 </div>
             </div>
@@ -337,9 +351,10 @@
         </div>
     </div>
 
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -385,6 +400,19 @@
         window.toggleAuthMode = function() {
             document.getElementById('form-login').classList.toggle('hidden');
             document.getElementById('form-cadastro').classList.toggle('hidden');
+            document.getElementById('form-recuperar').classList.add('hidden');
+        };
+
+        window.toggleRecuperarMode = function() {
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-cadastro').classList.add('hidden');
+            document.getElementById('form-recuperar').classList.remove('hidden');
+        };
+
+        window.voltarParaLogin = function() {
+            document.getElementById('form-recuperar').classList.add('hidden');
+            document.getElementById('form-cadastro').classList.add('hidden');
+            document.getElementById('form-login').classList.remove('hidden');
         };
 
         function setButtonLoading(btnId, isLoading, originalText) {
@@ -409,6 +437,7 @@
                 await signInWithEmailAndPassword(auth, email, senha);
                 document.getElementById('login-senha').value = '';
             } catch (error) {
+                console.error(error);
                 if (error.code === 'auth/invalid-credential') {
                     window.mostrarToast('E-mail ou senha incorretos.', 'erro');
                 } else {
@@ -438,9 +467,35 @@
                 document.getElementById('cad-email').value = '';
                 document.getElementById('cad-senha').value = '';
             } catch (error) {
+                console.error("Erro Firebase Detalhado: ", error);
                 window.mostrarToast('ERRO: ' + error.code, 'erro');
             }
             setButtonLoading('btn-cadastro', false, 'Registrar e Acessar');
+        });
+
+        document.getElementById('btn-recuperar').addEventListener('click', async () => {
+            const email = document.getElementById('recuperar-email').value.trim();
+
+            if (!email) return window.mostrarToast('Por favor, informe seu e-mail corporativo.', 'erro');
+
+            setButtonLoading('btn-recuperar', true, 'Enviar Link');
+            try {
+                await sendPasswordResetEmail(auth, email);
+                window.mostrarToast('E-mail de recuperação enviado! Verifique sua caixa de entrada.');
+                document.getElementById('recuperar-email').value = '';
+                window.voltarParaLogin();
+            } catch (error) {
+                console.error(error);
+
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    window.mostrarToast('Não há conta cadastrada com este e-mail.', 'erro');
+                } else if (error.code === 'auth/invalid-email') {
+                    window.mostrarToast('Formato de e-mail inválido.', 'erro');
+                } else {
+                    window.mostrarToast('ERRO: ' + error.code, 'erro');
+                }
+            }
+            setButtonLoading('btn-recuperar', false, 'Enviar Link');
         });
 
         document.getElementById('btn-logout').addEventListener('click', async () => {
@@ -508,6 +563,7 @@
                 window.renderCadastros();
                 window.renderPlanilha();
             }, (error) => {
+                console.error("Erro na sincronização:", error);
                 window.mostrarToast("Erro ao sincronizar com a nuvem.", "erro");
             });
         }
@@ -519,6 +575,7 @@
                 const docRef = doc(dbFirestore, "diarios", currentUser.uid);
                 await setDoc(docRef, window.dbLocal);
             } catch (error) {
+                console.error(error);
                 window.mostrarToast("Erro ao salvar dados na nuvem.", "erro");
             }
         };
@@ -816,7 +873,7 @@
                 document.getElementById('icon-sun').classList.add('hidden');
             }
         };
-
+        
         window.initTheme();
     </script>
 </body>

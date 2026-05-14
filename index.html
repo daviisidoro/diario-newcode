@@ -2,8 +2,17 @@
 <html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEW CODE - Diário Escolar</title>
+    
+    <!-- Configurações de Ícone e Tela de Início para Mobile -->
+    <link rel="icon" type="image/png" href="newcode_simbolo_azul.png">
+    <link rel="apple-touch-icon" href="icone.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Diário NC">
+    <meta name="theme-color" content="#1A2E4C">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -375,7 +384,7 @@
                 toast.style.transform = 'translateX(100%)';
                 toast.style.transition = 'all 0.3s ease';
                 setTimeout(() => toast.remove(), 300);
-            }, 5000); // 5 segundos para dar tempo de ler o erro exato
+            }, 5000); 
         };
 
         // UI: ALTERNAR LOGIN/CADASTRO
@@ -439,7 +448,6 @@
                 document.getElementById('cad-senha').value = '';
             } catch (error) {
                 console.error("Erro Firebase Detalhado: ", error);
-                // Exibe o código técnico real para podermos diagnosticar
                 window.mostrarToast('ERRO: ' + error.code, 'erro');
             }
             setButtonLoading('btn-cadastro', false, 'Registrar e Acessar');
@@ -585,7 +593,6 @@
         };
 
         window.renderCadastros = function() {
-            // Função universal para renderizar qualquer lista
             const renderLista = (tabela, elementoId, arrayDeDados, infoExtra = null) => {
                 const ul = document.getElementById(elementoId);
                 ul.innerHTML = '';
@@ -618,11 +625,9 @@
                 });
             };
 
-            // Escolas e Materias mostram tudo sempre
             renderLista('escolas', 'lista-escolas', window.dbLocal.escolas);
             renderLista('materias', 'lista-materias', window.dbLocal.materias);
 
-            // Filtro das Turmas
             const escolaFiltro = document.getElementById('escola-turma').value;
             let turmasFiltradas = window.dbLocal.turmas;
             if (escolaFiltro) {
@@ -630,7 +635,6 @@
             }
             renderLista('turmas', 'lista-turmas', turmasFiltradas, 'turma');
 
-            // Filtro dos Alunos
             const turmaFiltro = document.getElementById('turma-aluno').value;
             let alunosFiltrados = window.dbLocal.alunos;
             if (turmaFiltro) {
@@ -653,7 +657,6 @@
                     select.innerHTML += `<option value="${item.id}">${item.nome}${extra}</option>`;
                 });
                 if (dados.find(d => d.id == valorAtual)) select.value = valorAtual;
-                // No select do diario, se houver turma, puxa a primeira
                 else if (dados.length > 0 && selectId === 'select-turma-diario') select.value = dados[0].id;
             };
             
@@ -745,7 +748,6 @@
                          <td class="p-2 border-b border-gray-300 dark:border-slate-600 bg-nc-f-cell dark:bg-[#5c2b2b] text-center font-bold text-nc-text dark:text-red-300">${totalF}</td></tr>`;
             });
 
-            // Linhas preenchimento visual
             for(let i=0; i<3; i++) {
                 const bgClass = (alunosTurma.length + i) % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-nc-row-alt dark:bg-slate-700/50';
                 html += `<tr class="${bgClass} h-10"><td class="border-b border-r border-gray-200 dark:border-slate-600"></td>`;
@@ -835,3 +837,4 @@
     </script>
 </body>
 </html>
+

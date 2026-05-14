@@ -128,7 +128,7 @@
             </div>
             
             <div class="p-8">
-                <!-- Form Login (Sem tag form para evitar reload) -->
+                <!-- Form Login -->
                 <div id="form-login" class="space-y-5">
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
 
-                <!-- Form Cadastro (Sem tag form para evitar reload) -->
+                <!-- Form Cadastro -->
                 <div id="form-cadastro" class="space-y-5 hidden">
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Nome Completo</label>
@@ -244,6 +244,7 @@
         <div id="section-cadastros" class="hidden">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
+                <!-- Escolas -->
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
                     <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
                         <h3 class="font-bold text-lg text-nc-dark dark:text-white">Unidades / Escolas</h3>
@@ -255,6 +256,7 @@
                     <ul id="lista-escolas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
                 </div>
 
+                <!-- Matérias -->
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
                     <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
                         <h3 class="font-bold text-lg text-nc-dark dark:text-white">Matérias / Cursos</h3>
@@ -266,12 +268,13 @@
                     <ul id="lista-materias" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
                 </div>
 
+                <!-- Turmas -->
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
                     <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
                         <h3 class="font-bold text-lg text-nc-dark dark:text-white">Turmas</h3>
                     </div>
                     <div class="space-y-3 mb-4">
-                        <select id="escola-turma" class="modern-input"></select>
+                        <select id="escola-turma" class="modern-input" onchange="window.renderCadastros()"></select>
                         <div class="flex gap-2">
                             <input type="text" id="nome-turma" placeholder="Dia/Horário (Ex: Qua | 15:40)" class="modern-input">
                             <button onclick="window.adicionarTurma()" class="modern-btn btn-primary px-4">+</button>
@@ -280,12 +283,13 @@
                     <ul id="lista-turmas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
                 </div>
 
+                <!-- Alunos -->
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
                     <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
                         <h3 class="font-bold text-lg text-nc-dark dark:text-white">Alunos</h3>
                     </div>
                     <div class="space-y-3 mb-4">
-                        <select id="turma-aluno" class="modern-input"></select>
+                        <select id="turma-aluno" class="modern-input" onchange="window.renderCadastros()"></select>
                         <div class="flex gap-2">
                             <input type="text" id="nome-aluno" placeholder="Nome completo do aluno" class="modern-input">
                             <button onclick="window.adicionarAluno()" class="modern-btn btn-primary px-4">+</button>
@@ -371,7 +375,7 @@
                 toast.style.transform = 'translateX(100%)';
                 toast.style.transition = 'all 0.3s ease';
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 5000); // 5 segundos para dar tempo de ler o erro exato
         };
 
         // UI: ALTERNAR LOGIN/CADASTRO
@@ -392,7 +396,7 @@
             }
         }
 
-        // EVENTOS DE AUTENTICAÇÃO (BLINDADOS)
+        // EVENTOS DE AUTENTICAÇÃO
         document.getElementById('btn-login').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value.trim();
             const senha = document.getElementById('login-senha').value.trim();
@@ -408,7 +412,7 @@
                 if (error.code === 'auth/invalid-credential') {
                     window.mostrarToast('E-mail ou senha incorretos.', 'erro');
                 } else {
-                    window.mostrarToast('Erro ao iniciar sessão. Verifique os dados.', 'erro');
+                    window.mostrarToast('ERRO: ' + error.code, 'erro');
                 }
             }
             setButtonLoading('btn-login', false, 'Acessar Sistema');
@@ -427,7 +431,6 @@
                 const userCred = await createUserWithEmailAndPassword(auth, email, senha);
                 await updateProfile(userCred.user, { displayName: nome });
                 
-                // Inicializa o documento no Firestore para o novo usuário
                 await setDoc(doc(dbFirestore, "diarios", userCred.user.uid), window.dbLocal);
                 window.mostrarToast('Conta criada com sucesso!');
                 
@@ -435,14 +438,9 @@
                 document.getElementById('cad-email').value = '';
                 document.getElementById('cad-senha').value = '';
             } catch (error) {
-                console.error(error);
-                if (error.code === 'auth/email-already-in-use') {
-                    window.mostrarToast('Este e-mail já está em uso.', 'erro');
-                } else if (error.code === 'auth/invalid-email') {
-                    window.mostrarToast('E-mail inválido.', 'erro');
-                } else {
-                    window.mostrarToast('Erro ao criar conta. Verifique o Firebase.', 'erro');
-                }
+                console.error("Erro Firebase Detalhado: ", error);
+                // Exibe o código técnico real para podermos diagnosticar
+                window.mostrarToast('ERRO: ' + error.code, 'erro');
             }
             setButtonLoading('btn-cadastro', false, 'Registrar e Acessar');
         });
@@ -466,7 +464,6 @@
             telaLoading.classList.add('hidden');
 
             if (user) {
-                // Usuário logado
                 currentUser = user;
                 telaAuth.classList.add('hidden');
                 telaAppHeader.classList.remove('hidden');
@@ -474,16 +471,14 @@
                 
                 document.getElementById('user-display-name').textContent = user.displayName || 'Professor';
                 
-                // Define mês atual por padrão
                 const dataAtual = new Date();
                 const mesFormatado = dataAtual.getFullYear() + '-' + String(dataAtual.getMonth() + 1).padStart(2, '0');
                 document.getElementById('input-mes-diario').value = mesFormatado;
 
                 iniciarSincronizacao(user.uid);
             } else {
-                // Usuário deslogado
                 currentUser = null;
-                if(unsubscribeSnapshot) unsubscribeSnapshot(); // Para de escutar o banco
+                if(unsubscribeSnapshot) unsubscribeSnapshot(); 
                 
                 telaAppHeader.classList.add('hidden');
                 telaAppMain.classList.add('hidden');
@@ -497,7 +492,6 @@
             
             unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
-                    // Atualiza a variável local com os dados da nuvem
                     const dadosNuvem = docSnap.data();
                     window.dbLocal = {
                         escolas: dadosNuvem.escolas || [],
@@ -508,15 +502,12 @@
                         presencas: dadosNuvem.presencas || {}
                     };
                 } else {
-                    // Se não existe, cria estrutura vazia
                     window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
                     setDoc(docRef, window.dbLocal).catch(console.error);
                 }
                 
-                // Mostra bolinha verde
                 document.getElementById('status-nuvem').classList.remove('hidden');
                 
-                // Atualiza a tela
                 window.atualizarSelects();
                 window.renderCadastros();
                 window.renderPlanilha();
@@ -528,7 +519,7 @@
 
         window.salvarDados = async function() {
             if (!currentUser) return;
-            document.getElementById('status-nuvem').classList.add('hidden'); // Apaga bolinha temporariamente
+            document.getElementById('status-nuvem').classList.add('hidden'); 
             try {
                 const docRef = doc(dbFirestore, "diarios", currentUser.uid);
                 await setDoc(docRef, window.dbLocal);
@@ -594,22 +585,31 @@
         };
 
         window.renderCadastros = function() {
-            const renderLista = (tabela, elementoId, infoExtra = null) => {
+            // Função universal para renderizar qualquer lista
+            const renderLista = (tabela, elementoId, arrayDeDados, infoExtra = null) => {
                 const ul = document.getElementById(elementoId);
                 ul.innerHTML = '';
-                window.dbLocal[tabela].forEach(item => {
+                
+                if (arrayDeDados.length === 0) {
+                    ul.innerHTML = `<li class="p-3 text-center text-gray-400 italic text-sm">Nenhum registro encontrado para a seleção atual.</li>`;
+                    return;
+                }
+
+                arrayDeDados.forEach(item => {
                     let extra = '';
                     if (infoExtra === 'turma') {
                         const escola = window.dbLocal.escolas.find(e => e.id === item.escolaId);
-                        extra = `<span class="text-xs font-medium text-nc-accent bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded ml-2">${escola ? escola.nome : ''}</span>`;
+                        extra = `<span class="text-xs font-medium text-nc-accent bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded mt-1 inline-block">${escola ? escola.nome : ''}</span>`;
                     } else if (infoExtra === 'aluno') {
                         const turma = window.dbLocal.turmas.find(t => t.id === item.turmaId);
-                        extra = `<span class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded ml-2 mt-1 inline-block">${turma ? turma.nome : ''}</span>`;
+                        extra = `<span class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded mt-1 inline-block">${turma ? turma.nome : ''}</span>`;
                     }
+                    
                     ul.innerHTML += `
-                        <li class="p-3 bg-gray-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center border border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600 transition-colors">
-                            <div class="flex flex-col sm:flex-row sm:items-center">
-                                <span class="text-sm font-semibold text-nc-text dark:text-slate-200">${item.nome}</span>${extra}
+                        <li class="p-3 bg-gray-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center border border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600 transition-colors mb-2">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-semibold text-nc-text dark:text-slate-200">${item.nome}</span>
+                                <div>${extra}</div>
                             </div>
                             <button onclick="window.remover('${tabela}', ${item.id})" class="text-gray-400 hover:text-red-500 p-1 transition-colors" title="Remover">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -617,10 +617,26 @@
                         </li>`;
                 });
             };
-            renderLista('escolas', 'lista-escolas');
-            renderLista('materias', 'lista-materias');
-            renderLista('turmas', 'lista-turmas', 'turma');
-            renderLista('alunos', 'lista-alunos', 'aluno');
+
+            // Escolas e Materias mostram tudo sempre
+            renderLista('escolas', 'lista-escolas', window.dbLocal.escolas);
+            renderLista('materias', 'lista-materias', window.dbLocal.materias);
+
+            // Filtro das Turmas
+            const escolaFiltro = document.getElementById('escola-turma').value;
+            let turmasFiltradas = window.dbLocal.turmas;
+            if (escolaFiltro) {
+                turmasFiltradas = turmasFiltradas.filter(t => t.escolaId == escolaFiltro);
+            }
+            renderLista('turmas', 'lista-turmas', turmasFiltradas, 'turma');
+
+            // Filtro dos Alunos
+            const turmaFiltro = document.getElementById('turma-aluno').value;
+            let alunosFiltrados = window.dbLocal.alunos;
+            if (turmaFiltro) {
+                alunosFiltrados = alunosFiltrados.filter(a => a.turmaId == turmaFiltro);
+            }
+            renderLista('alunos', 'lista-alunos', alunosFiltrados, 'aluno');
         };
 
         window.atualizarSelects = function() {
@@ -637,10 +653,12 @@
                     select.innerHTML += `<option value="${item.id}">${item.nome}${extra}</option>`;
                 });
                 if (dados.find(d => d.id == valorAtual)) select.value = valorAtual;
+                // No select do diario, se houver turma, puxa a primeira
                 else if (dados.length > 0 && selectId === 'select-turma-diario') select.value = dados[0].id;
             };
-            preencher('escola-turma', window.dbLocal.escolas, 'Selecione a Escola...');
-            preencher('turma-aluno', window.dbLocal.turmas, 'Selecione a Turma...');
+            
+            preencher('escola-turma', window.dbLocal.escolas, 'Todas as Escolas (Filtro)...');
+            preencher('turma-aluno', window.dbLocal.turmas, 'Todas as Turmas (Filtro)...');
             preencher('select-turma-diario', window.dbLocal.turmas, 'Selecione uma turma para carregar...');
         };
 

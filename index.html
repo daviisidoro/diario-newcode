@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEW CODE - Diário Escolar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -15,25 +15,20 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        /* Cores exatas/baseadas na imagem fornecida */
-                        'nc-dark': '#0B1320',       // Fundo super escuro (opcional)
-                        'nc-primary': '#1A2E4C',    // Azul marinho principal da tabela
-                        'nc-primary-hover': '#254069',
-                        'nc-accent': '#5CB4CD',     // Azul claro/ciano das divisórias
-                        'nc-bg': '#F1F5F9',         // Fundo geral do app (Slate 100)
-                        'nc-surface': '#FFFFFF',    // Fundo dos cartões
-                        'nc-text': '#334155',       // Texto geral
-                        'nc-border': '#E2E8F0',     // Bordas sutis
-                        'nc-row-alt': '#F0F4F8',    // Linha alternada da tabela (azul super claro)
-                        
-                        /* Cores de Presença e Falta */
-                        'nc-p-header': '#528251',   // Verde do cabeçalho Total P
-                        'nc-p-cell': '#D9EAD8',     // Verde claro da célula Total P
-                        'nc-p-text': '#166534',     // Verde escuro para texto
-                        
-                        'nc-f-header': '#B9634C',   // Vermelho/Terra do cabeçalho Total F
-                        'nc-f-cell': '#F7D7D7',     // Vermelho/Rosa claro da célula Total F
-                        'nc-f-text': '#991B1B',     // Vermelho escuro para texto
+                        'nc-dark': '#0f172a',
+                        'nc-panel': '#1e293b',
+                        'nc-blue': '#152238',
+                        'nc-light-blue': '#6ba4c6',
+                        'nc-header': '#1A2E4C',
+                        'nc-accent': '#6ba4c6',
+                        'nc-row-alt': '#f8fafc',
+                        'nc-row-alt-dark': '#1e293b',
+                        'nc-green-header': '#4b7b4b',
+                        'nc-green-cell': '#d3ecd3',
+                        'nc-green-cell-dark': '#14532d',
+                        'nc-red-header': '#b05b45',
+                        'nc-red-cell': '#f5d5d5',
+                        'nc-red-cell-dark': '#7f1d1d',
                     }
                 }
             }
@@ -41,471 +36,508 @@
     </script>
     <style>
         body { 
-            @apply bg-nc-bg text-nc-text dark:bg-slate-900 dark:text-slate-200;
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #0f172a; 
+            color: #e2e8f0;
         }
+        .tab-active { 
+            border-bottom: 2px solid #6ba4c6; 
+            color: #6ba4c6; 
+            font-weight: 600; 
+        }
+        .tab-inactive {
+            color: #94a3b8;
+        }
+        .tab-inactive:hover {
+            color: #e2e8f0;
+        }
+        .select-status { 
+            appearance: none; 
+            background-color: transparent; 
+            border: none; 
+            width: 100%; 
+            height: 100%; 
+            text-align: center; 
+            font-weight: 700; 
+            cursor: pointer; 
+            outline: none; 
+        }
+        .status-p { color: #4ade80; } 
+        .status-f { color: #f87171; }
         
-        /* Custom Scrollbar elegante */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-600 rounded; }
-        ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400 dark:bg-slate-500; }
-
-        /* Estilos dos Inputs e Selects */
-        .modern-input {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            @apply bg-slate-50 border-slate-200 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .modern-input:focus {
-            outline: none;
-            @apply border-nc-accent dark:border-nc-accent ring-2 ring-nc-accent/20 dark:ring-nc-accent/20;
-            @apply bg-white dark:bg-slate-800;
+        .toast {
+            min-width: 250px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.3s forwards;
         }
-
-        .modern-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.625rem 1.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .btn-primary { background-color: #1A2E4C; color: white; }
-        .btn-primary:hover { background-color: #254069; transform: translateY(-1px); shadow: md; }
-        .btn-accent { background-color: #5CB4CD; color: #0B1320; }
-        .btn-accent:hover { background-color: #4AA0B9; transform: translateY(-1px); }
-
-        /* Status Select dentro da tabela */
-        .select-status {
-            appearance: none;
-            background-color: transparent;
-            border: none;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            font-weight: 700;
-            cursor: pointer;
-            outline: none;
-            font-size: 0.875rem;
-            padding: 0.5rem;
-        }
-        .status-p { @apply text-green-700 dark:text-green-400; }
-        .status-f { @apply text-red-700 dark:text-red-400; }
-
-        /* Animações */
+        .toast.erro { background-color: #b05b45; }
+        .toast.sucesso { background-color: #4b7b4b; }
+        .toast.aviso { background-color: #d97706; }
+        
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            to { opacity: 1; transform: translateX(0); }
         }
-        .toast-enter { animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-left-color: #6ba4c6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="antialiased">
 
-    <!-- Notificações Profissionais -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 w-80"></div>
+    <div id="toast-container"></div>
 
-    <!-- ================= TELA DE AUTENTICAÇÃO ================= -->
-    <div id="auth-container" class="flex-1 flex flex-col justify-center items-center p-6 w-full z-50 bg-nc-bg dark:bg-slate-900 transition-colors">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-nc-border dark:border-slate-700 transition-colors">
-            <div class="bg-nc-primary p-6 text-center border-b-[6px] border-nc-accent">
-                <div class="w-12 h-12 bg-nc-accent rounded flex items-center justify-center text-nc-primary font-bold text-2xl mx-auto mb-3 shadow-sm">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+    <!-- TELA DE LOADING INICIAL -->
+    <div id="tela-loading" class="min-h-screen flex items-center justify-center p-4">
+        <div class="loader w-12 h-12"></div>
+    </div>
+
+    <!-- TELA DE LOGIN / CADASTRO -->
+    <div id="tela-auth" class="min-h-screen flex items-center justify-center p-4 hidden">
+        <div class="bg-nc-header rounded-lg shadow-xl w-full max-w-md overflow-hidden border border-gray-700">
+            <div class="text-center py-8 bg-nc-dark border-b-4 border-nc-accent relative">
+                <div class="inline-block bg-nc-accent p-3 rounded-lg mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-white tracking-wider">NEW CODE</h2>
-                <p class="text-nc-accent text-sm font-medium mt-1">Portal do Professor</p>
+                <h1 class="text-2xl font-bold text-white tracking-wider">NEW CODE</h1>
+                <p class="text-nc-accent text-sm mt-1">Portal do Professor</p>
             </div>
-            
-            <div class="p-8">
-                <!-- Form Login -->
-                <form id="form-login" onsubmit="fazerLogin(event)" class="space-y-5">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
-                        <input type="email" id="login-email" required class="modern-input" placeholder="professor@newcode.com">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Senha</label>
-                        <input type="password" id="login-senha" required class="modern-input" placeholder="••••••••">
-                    </div>
-                    <button type="submit" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg">Acessar Sistema</button>
-                    <div class="text-center mt-4">
-                        <button type="button" onclick="toggleAuthMode()" class="text-sm text-nc-primary dark:text-nc-accent hover:opacity-80 transition-opacity font-medium">Não tem acesso? Criar conta</button>
-                    </div>
-                </form>
 
-                <!-- Form Cadastro -->
-                <form id="form-cadastro" onsubmit="criarConta(event)" class="space-y-5 hidden">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Nome Completo</label>
-                        <input type="text" id="cad-nome" required class="modern-input" placeholder="Ex: Prof. Silva">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
-                        <input type="email" id="cad-email" required class="modern-input" placeholder="professor@newcode.com">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Definir Senha</label>
-                        <input type="password" id="cad-senha" required minlength="6" class="modern-input" placeholder="Mín. 6 caracteres">
-                    </div>
-                    <button type="submit" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg">Registrar e Acessar</button>
-                    <div class="text-center mt-4">
-                        <button type="button" onclick="toggleAuthMode()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Já possui conta? Fazer login</button>
-                    </div>
-                </form>
+            <div id="form-login" class="p-8">
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">E-mail Corporativo</label>
+                    <input type="email" id="login-email" class="w-full bg-nc-panel border border-gray-600 text-white rounded px-4 py-3 focus:outline-none focus:border-nc-accent transition-colors">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Senha</label>
+                    <input type="password" id="login-senha" class="w-full bg-nc-panel border border-gray-600 text-white rounded px-4 py-3 focus:outline-none focus:border-nc-accent transition-colors">
+                </div>
+                <button id="btn-login" class="w-full bg-nc-accent hover:bg-opacity-90 text-nc-dark font-bold py-3 px-4 rounded transition-colors mb-4 flex justify-center items-center h-12">
+                    Acessar Sistema
+                </button>
+                <div class="text-center">
+                    <button onclick="alternarTelaAuth('cadastro')" class="text-sm text-gray-400 hover:text-nc-accent transition-colors">Não tem acesso? Criar conta</button>
+                </div>
+            </div>
+
+            <div id="form-cadastro" class="p-8 hidden">
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Nome Completo</label>
+                    <input type="text" id="cadastro-nome" class="w-full bg-nc-panel border border-gray-600 text-white rounded px-4 py-2 focus:outline-none focus:border-nc-accent transition-colors">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">E-mail</label>
+                    <input type="email" id="cadastro-email" class="w-full bg-nc-panel border border-gray-600 text-white rounded px-4 py-2 focus:outline-none focus:border-nc-accent transition-colors">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Crie uma Senha (mínimo 6 chars)</label>
+                    <input type="password" id="cadastro-senha" class="w-full bg-nc-panel border border-gray-600 text-white rounded px-4 py-2 focus:outline-none focus:border-nc-accent transition-colors">
+                </div>
+                <button id="btn-cadastro" class="w-full bg-nc-accent hover:bg-opacity-90 text-nc-dark font-bold py-3 px-4 rounded transition-colors mb-4 flex justify-center items-center h-12">
+                    Registrar Conta
+                </button>
+                <div class="text-center">
+                    <button onclick="alternarTelaAuth('login')" class="text-sm text-gray-400 hover:text-nc-accent transition-colors">Já possui conta? Fazer login</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Header Corporativo Elegante -->
-    <header id="app-header" class="hidden bg-nc-primary w-full shadow-md z-10 transition-colors">
-        <div class="h-1 bg-nc-accent w-full"></div>
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <!-- Símbolo placeholder para logo da New Code -->
-                <div class="w-8 h-8 bg-nc-accent rounded flex items-center justify-center text-nc-primary font-bold text-xl">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                </div>
-                <h1 class="text-xl font-bold text-white tracking-wider">NEW CODE <span class="font-light opacity-75 text-sm ml-2">| Gestão Escolar</span></h1>
-            </div>
-            
-            <!-- Navegação Superior -->
-            <nav class="flex space-x-2 bg-nc-primary-hover p-1 rounded-lg">
-                <button onclick="changeTab('diario')" id="tab-diario" class="px-4 py-1.5 text-sm font-medium rounded-md bg-white text-nc-primary shadow-sm transition-all">
-                    Diário de Presença
-                </button>
-                <button onclick="changeTab('cadastros')" id="tab-cadastros" class="px-4 py-1.5 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all">
-                    Cadastros
-                </button>
-            </nav>
-            
-            <!-- Controle de Usuário -->
-            <div class="ml-4 pl-4 border-l border-white/20 flex items-center gap-4">
-                <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all" title="Alternar Tema">
-                    <!-- Ícone do Sol (padrão escuro) -->
-                    <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <!-- Ícone da Lua (padrão claro) -->
-                    <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
-                <div class="hidden sm:block text-right">
-                    <p class="text-xs text-nc-accent font-medium uppercase tracking-wider">Professor</p>
-                    <p id="user-display-name" class="text-sm text-white font-bold truncate max-w-[120px]"></p>
-                </div>
-                <button onclick="fazerLogout()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/80 text-white flex items-center justify-center transition-all" title="Sair do Sistema">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main id="app-main" class="hidden max-w-7xl mx-auto px-6 py-8 w-full flex-1 transition-colors">
-
-        <!-- ================= SEÇÃO DIÁRIO ================= -->
-        <div id="section-diario" class="space-y-6">
-            
-            <!-- Barra de Controles -->
-            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 flex flex-wrap gap-4 items-end justify-between transition-colors">
-                <div class="flex flex-wrap gap-4 flex-1">
-                    <div class="min-w-[250px]">
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Turma</label>
-                        <select id="select-turma-diario" class="modern-input" onchange="renderPlanilha()"></select>
+    <!-- TELA PRINCIPAL DO APP -->
+    <div id="tela-app" class="hidden">
+        <div class="bg-nc-header border-b border-gray-700 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-nc-accent p-1.5 rounded">
+                        <svg class="w-5 h-5 text-nc-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     </div>
-                    <div class="min-w-[200px]">
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Mês de Referência</label>
-                        <input type="month" id="input-mes-diario" class="modern-input" onchange="renderPlanilha()">
-                    </div>
+                    <span class="text-white font-bold text-lg tracking-wide hidden sm:block">NEW CODE</span>
                 </div>
-                <div>
-                    <button onclick="adicionarAula()" class="modern-btn btn-primary flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Lançar Nova Aula
+                
+                <div class="text-gray-300 text-sm md:text-base font-medium flex items-center gap-2">
+                    Lista de Presença Escolar <span id="sync-status" class="w-2 h-2 rounded-full bg-green-500 hidden" title="Sincronizado"></span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="text-sm text-gray-300 hidden sm:block">
+                        Prof: <span id="nome-professor-header" class="text-white font-semibold">...</span>
+                    </div>
+                    <button id="btn-logout" class="text-sm bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded transition-colors">
+                        Sair
                     </button>
                 </div>
             </div>
-
-            <!-- Container da Tabela Fiel à Imagem (mas com layout moderno) -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-nc-border dark:border-slate-700 overflow-hidden transition-colors">
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse text-sm" id="tabela-diario">
-                        <!-- Gerado via JS. A estrutura CSS aqui simulará exatamente a imagem. -->
-                    </table>
-                </div>
-            </div>
+            <div class="h-1 bg-nc-accent w-full"></div>
         </div>
 
-        <!-- ================= SEÇÃO CADASTROS ================= -->
-        <div id="section-cadastros" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- Escolas -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <svg class="w-5 h-5 text-nc-primary dark:text-nc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Unidades / Escolas</h3>
+        <nav class="bg-nc-panel border-b border-gray-700 shadow-sm mb-6">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex space-x-6 h-12" id="nav-tabs">
+                    <button onclick="changeTab('diario')" class="tab-active px-1 py-2 text-sm focus:outline-none transition-colors" id="tab-diario">Diário de Classe</button>
+                    <button onclick="changeTab('cadastros')" class="tab-inactive px-1 py-2 text-sm focus:outline-none transition-colors" id="tab-cadastros">Cadastros Básicos</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-4 pb-10">
+            <!-- Seção de Diário -->
+            <div id="section-diario">
+                <div class="bg-nc-panel p-5 rounded-lg shadow-md border border-gray-700 mb-6 flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Turma</label>
+                        <select id="select-turma-diario" class="w-full bg-nc-dark border border-gray-600 text-white p-2.5 rounded focus:border-nc-accent focus:outline-none" onchange="renderPlanilha()"></select>
                     </div>
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="nome-escola" placeholder="Nome da instituição" class="modern-input">
-                        <button onclick="adicionar('escolas', 'nome-escola')" class="modern-btn btn-primary px-4">+</button>
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Mês/Ano</label>
+                        <input type="month" id="input-mes-diario" class="w-full bg-nc-dark border border-gray-600 text-white p-2.5 rounded focus:border-nc-accent focus:outline-none" onchange="renderPlanilha()">
                     </div>
-                    <ul id="lista-escolas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+                    <div class="w-full md:w-auto">
+                        <button onclick="adicionarAula()" class="w-full md:w-auto bg-nc-accent hover:bg-opacity-90 text-nc-dark font-bold px-5 py-2.5 rounded transition-colors">
+                            + Nova Aula
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Matérias -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <svg class="w-5 h-5 text-nc-primary dark:text-nc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Matérias / Cursos</h3>
-                    </div>
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="nome-materia" placeholder="Ex: GAMES, ROBÓTICA..." class="modern-input">
-                        <button onclick="adicionar('materias', 'nome-materia')" class="modern-btn btn-primary px-4">+</button>
-                    </div>
-                    <ul id="lista-materias" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+                <div class="overflow-x-auto shadow-lg rounded-lg border border-gray-700 bg-nc-panel">
+                    <table class="w-full border-collapse min-w-max text-sm" id="tabela-diario"></table>
                 </div>
+            </div>
 
-                <!-- Turmas -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <svg class="w-5 h-5 text-nc-primary dark:text-nc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Gestão de Turmas</h3>
-                    </div>
-                    <div class="space-y-3 mb-4">
-                        <select id="escola-turma" class="modern-input">
-                            <option value="">Selecione a Unidade vinculada</option>
-                        </select>
-                        <div class="flex gap-2">
-                            <input type="text" id="nome-turma" placeholder="Dia/Horário (Ex: Qua | 15:40)" class="modern-input">
-                            <button onclick="adicionarTurma()" class="modern-btn btn-primary px-4">+</button>
+            <!-- Seção de Cadastros -->
+            <div id="section-cadastros" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-nc-panel p-6 rounded-lg shadow-md border border-gray-700 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-nc-accent"></div>
+                        <h3 class="font-bold text-lg mb-4 text-white">Escolas</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nome-escola" placeholder="Nome da Escola" class="bg-nc-dark border border-gray-600 text-white p-2.5 flex-1 rounded focus:border-nc-accent focus:outline-none">
+                            <button onclick="adicionar('escolas', 'nome-escola')" class="bg-gray-700 hover:bg-gray-600 text-white font-medium px-4 py-2.5 rounded transition-colors">Salvar</button>
                         </div>
+                        <ul id="lista-escolas" class="divide-y divide-gray-700 text-sm text-gray-300"></ul>
                     </div>
-                    <ul id="lista-turmas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
-                </div>
 
-                <!-- Alunos -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <svg class="w-5 h-5 text-nc-primary dark:text-nc-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Alunos</h3>
-                    </div>
-                    <div class="space-y-3 mb-4">
-                        <select id="turma-aluno" class="modern-input">
-                            <option value="">Selecione a Turma de destino</option>
-                        </select>
-                        <div class="flex gap-2">
-                            <input type="text" id="nome-aluno" placeholder="Nome completo do aluno" class="modern-input">
-                            <button onclick="adicionarAluno()" class="modern-btn btn-primary px-4">+</button>
+                    <div class="bg-nc-panel p-6 rounded-lg shadow-md border border-gray-700 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-nc-accent"></div>
+                        <h3 class="font-bold text-lg mb-4 text-white">Matérias / Cursos</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nome-materia" placeholder="Ex: Games, Maker" class="bg-nc-dark border border-gray-600 text-white p-2.5 flex-1 rounded focus:border-nc-accent focus:outline-none">
+                            <button onclick="adicionar('materias', 'nome-materia')" class="bg-gray-700 hover:bg-gray-600 text-white font-medium px-4 py-2.5 rounded transition-colors">Salvar</button>
                         </div>
+                        <ul id="lista-materias" class="divide-y divide-gray-700 text-sm text-gray-300"></ul>
                     </div>
-                    <ul id="lista-alunos" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+
+                    <div class="bg-nc-panel p-6 rounded-lg shadow-md border border-gray-700 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-nc-accent"></div>
+                        <h3 class="font-bold text-lg mb-4 text-white">Turmas</h3>
+                        <div class="flex flex-col gap-3 mb-4">
+                            <select id="escola-turma" class="bg-nc-dark border border-gray-600 text-white p-2.5 rounded focus:border-nc-accent focus:outline-none"></select>
+                            <div class="flex gap-2">
+                                <input type="text" id="nome-turma" placeholder="Ex: Quarta 15:40" class="bg-nc-dark border border-gray-600 text-white p-2.5 flex-1 rounded focus:border-nc-accent focus:outline-none">
+                                <button onclick="adicionarTurma()" class="bg-gray-700 hover:bg-gray-600 text-white font-medium px-4 py-2.5 rounded transition-colors">Salvar</button>
+                            </div>
+                        </div>
+                        <ul id="lista-turmas" class="divide-y divide-gray-700 text-sm text-gray-300"></ul>
+                    </div>
+
+                    <div class="bg-nc-panel p-6 rounded-lg shadow-md border border-gray-700 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-nc-accent"></div>
+                        <h3 class="font-bold text-lg mb-4 text-white">Alunos</h3>
+                        <div class="flex flex-col gap-3 mb-4">
+                            <select id="turma-aluno" class="bg-nc-dark border border-gray-600 text-white p-2.5 rounded focus:border-nc-accent focus:outline-none"></select>
+                            <div class="flex gap-2">
+                                <input type="text" id="nome-aluno" placeholder="Nome Completo do Aluno" class="bg-nc-dark border border-gray-600 text-white p-2.5 flex-1 rounded focus:border-nc-accent focus:outline-none">
+                                <button onclick="adicionarAluno()" class="bg-gray-700 hover:bg-gray-600 text-white font-medium px-4 py-2.5 rounded transition-colors">Salvar</button>
+                            </div>
+                        </div>
+                        <ul id="lista-alunos" class="divide-y divide-gray-700 text-sm text-gray-300"></ul>
+                    </div>
                 </div>
-
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Modal de Nova Aula -->
-    <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl w-[90%] max-w-md transform scale-100 transition-all border border-nc-border dark:border-slate-700">
-            <div class="flex justify-between items-center mb-5 border-b border-gray-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-xl text-nc-primary dark:text-white">Registro de Aula</h3>
-                <button onclick="fecharModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Data da Aula</label>
-                    <input type="date" id="modal-data" class="modern-input">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Conteúdo / Observações (Opcional)</label>
-                    <input type="text" id="modal-conteudo" class="modern-input" placeholder="Ex: Introdução à Lógica de Programação">
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-50 dark:border-slate-700">
-                <button onclick="fecharModal()" class="modern-btn bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-200 border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600">Cancelar</button>
-                <button onclick="salvarAula()" class="modern-btn btn-primary">Salvar Registro</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // --- Sistema de Notificações Profissionais ---
-        function mostrarToast(mensagem, tipo = 'sucesso') {
+    <!-- Modal Conteúdo da Aula -->
+    <div id="modal-aula" class="hidden fixed inset-0 bg-nc-dark bg-opacity-80 flex items-center justify-center z-50 p-4">
+        <div class="bg-nc-panel border border-gray-700 p-6 rounded-lg shadow-2xl w-full max-w-md">
+            <h3 class="font-bold text-xl mb-5 text-white border-b border-gray-700 pb-3">Registro de Aula</h3>
+            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Data da Aula</label>
+            <input type="date" id="modal-data" class="w-full bg-nc-dark border border-gray-600 text-white p-2.5 mb-4 rounded focus:border-nc-accent focus:outline-none">
+            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Conteúdo Ministrado</label>
+            <textarea id="modal-conteudo" rows="3" class="w-full bg-nc-dark border border-gray-600 text-white p-2.5 mb-6 rounded focus:border-nc-accent focus:outline-none resize-none"></textarea>
+            <div class="flex justify-end gap-3">
+                <button onclick="fecharModal()" class="px-4 py-2.5 text-gray-300 font-medium hover:bg-gray-700 rounded transition-colors">Cancelar</button>
+                <button onclick="salvarAula()" class="px-5 py-2.5 bg-nc-accent hover:bg-opacity-90 text-nc-dark font-bold rounded transition-colors">Salvar Registro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORTAÇÃO OFICIAL DO FIREBASE (MODULAR) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // =========================================================================
+        // ATENÇÃO: COLE SUAS CREDENCIAIS DO FIREBASE AQUI DENTRO
+        // =========================================================================
+        const firebaseConfig = {
+          apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
+          authDomain: "diario-newcode.firebaseapp.com",
+          projectId: "diario-newcode",
+          storageBucket: "diario-newcode.firebasestorage.app",
+          messagingSenderId: "440225334729",
+          appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
+          measurementId: "G-1TQE6YPV6N"
+        };
+        // =========================================================================
+
+        let app, auth, dbFirestore;
+        
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            dbFirestore = getFirestore(app);
+        } catch(e) {
+            console.error("Erro ao iniciar Firebase. Verifique suas credenciais.", e);
+        }
+
+        // Variável global para armazenar os dados em tempo de execução
+        window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+        let currentUser = null;
+
+        // Funções UI
+        window.mostrarToast = function(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
-            let bgClass = 'bg-white dark:bg-slate-800 border-l-4';
-            let textClass = 'text-gray-700 dark:text-gray-200';
-            let borderClass = tipo === 'erro' ? 'border-red-500' : 'border-green-500';
-            let icon = tipo === 'erro' 
-                ? `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
-                : `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
-
-            toast.className = `toast-enter ${bgClass} ${borderClass} shadow-lg rounded-r-md p-4 flex items-center gap-3`;
-            toast.innerHTML = `
-                ${icon}
-                <span class="text-sm font-medium ${textClass}">${mensagem}</span>
-            `;
-            
+            toast.className = `toast ${tipo}`;
+            toast.innerText = mensagem;
             container.appendChild(toast);
-            
             setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.3s ease';
+                toast.style.animation = 'fadeOut 0.3s forwards';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
-        }
+        };
 
-        // --- Banco de Dados Local (LocalStorage) ---
-        let db = { users: [], escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
-
-        function carregarDados() {
-            // Alterado para uma nova chave para forçar a limpeza dos dados antigos de teste
-            const dadosSalvos = localStorage.getItem('newcode_db_prod');
-            if (dadosSalvos) {
-                db = JSON.parse(dadosSalvos);
-                if (!db.users) db.users = []; // Patch de atualização de banco
+        window.alternarTelaAuth = function(tela) {
+            if (tela === 'cadastro') {
+                document.getElementById('form-login').classList.add('hidden');
+                document.getElementById('form-cadastro').classList.remove('hidden');
             } else {
-                // Banco de dados inicial limpo para Produção
-                db.alunos = [];
-                db.escolas = [];
-                db.materias = [];
-                db.turmas = [];
-                db.aulas = [];
-                salvarDados();
+                document.getElementById('form-cadastro').classList.add('hidden');
+                document.getElementById('form-login').classList.remove('hidden');
             }
+        };
+
+        // Escutando mudanças de estado do usuário logado
+        onAuthStateChanged(auth, (user) => {
+            document.getElementById('tela-loading').classList.add('hidden');
+            if (user) {
+                currentUser = user;
+                document.getElementById('tela-auth').classList.add('hidden');
+                document.getElementById('tela-app').classList.remove('hidden');
+                document.getElementById('nome-professor-header').innerText = user.displayName || 'Professor';
+                
+                const dataAtual = new Date();
+                const mesFormatado = `${dataAtual.getFullYear()}-${String(dataAtual.getMonth() + 1).padStart(2, '0')}`;
+                document.getElementById('input-mes-diario').value = mesFormatado;
+
+                carregarDadosNuvem(user.uid);
+            } else {
+                currentUser = null;
+                document.getElementById('tela-app').classList.add('hidden');
+                document.getElementById('tela-auth').classList.remove('hidden');
+            }
+        });
+
+        // Eventos dos botões de Autenticação
+        document.getElementById('btn-login').addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-senha').value;
+            const btn = document.getElementById('btn-login');
+
+            if (!email || !senha) return window.mostrarToast("Preencha email e senha.", "erro");
             
-            // Define o mês inicial automaticamente para o mês atual
-            const dataAtual = new Date();
-            const mesFormatado = dataAtual.getFullYear() + '-' + String(dataAtual.getMonth() + 1).padStart(2, '0');
-            document.getElementById('input-mes-diario').value = mesFormatado;
+            btn.innerHTML = '<div class="loader"></div>';
+            try {
+                await signInWithEmailAndPassword(auth, email, senha);
+                document.getElementById('login-senha').value = '';
+            } catch (error) {
+                window.mostrarToast("Credenciais incorretas ou conta não existe.", "erro");
+            }
+            btn.innerHTML = 'Acessar Sistema';
+        });
+
+        document.getElementById('btn-cadastro').addEventListener('click', async () => {
+            const nome = document.getElementById('cadastro-nome').value.trim();
+            const email = document.getElementById('cadastro-email').value.trim();
+            const senha = document.getElementById('cadastro-senha').value;
+            const btn = document.getElementById('btn-cadastro');
+
+            if (!nome || !email || !senha) return window.mostrarToast("Preencha todos os campos.", "erro");
+            if (senha.length < 6) return window.mostrarToast("A senha deve ter no mínimo 6 caracteres.", "erro");
+
+            btn.innerHTML = '<div class="loader"></div>';
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+                await updateProfile(userCredential.user, { displayName: nome });
+                
+                // Cria documento zerado para o usuário no banco
+                await setDoc(doc(dbFirestore, "diarios", userCredential.user.uid), window.dbLocal);
+                window.mostrarToast("Conta criada com sucesso!", "sucesso");
+            } catch (error) {
+                if(error.code === 'auth/email-already-in-use') window.mostrarToast("E-mail já está em uso.", "erro");
+                else window.mostrarToast("Erro ao criar conta.", "erro");
+                console.error(error);
+            }
+            btn.innerHTML = 'Registrar Conta';
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Sincronização com o Firestore
+        function carregarDadosNuvem(uid) {
+            const docRef = doc(dbFirestore, "diarios", uid);
             
-            atualizarSelects();
-            renderCadastros();
-            renderPlanilha();
+            // onSnapshot escuta em tempo real. Qualquer mudança no banco reflete na tela.
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    window.dbLocal = docSnap.data();
+                } else {
+                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+                    setDoc(docRef, window.dbLocal);
+                }
+                
+                document.getElementById('sync-status').classList.remove('hidden');
+                
+                window.atualizarSelects();
+                window.renderCadastros();
+                window.renderPlanilha();
+            });
         }
 
-        function salvarDados() {
-            localStorage.setItem('newcode_db_prod', JSON.stringify(db));
+        window.salvarDados = async function() {
+            if(!currentUser) return;
+            document.getElementById('sync-status').classList.add('hidden'); // Apaga bolinha verde
+            try {
+                const docRef = doc(dbFirestore, "diarios", currentUser.uid);
+                await setDoc(docRef, window.dbLocal);
+                // A bolinha volta a acender via onSnapshot
+            } catch(e) {
+                window.mostrarToast("Erro ao salvar na nuvem.", "erro");
+                console.error(e);
+            }
         }
 
-        // --- Navegação ---
-        function changeTab(tab) {
+        // ==========================================
+        // LÓGICA DO DIÁRIO (IGUAL A ANTERIOR)
+        // ==========================================
+        window.changeTab = function(tab) {
             document.getElementById('section-diario').classList.add('hidden');
             document.getElementById('section-cadastros').classList.add('hidden');
-            
-            // Reseta botões
-            document.getElementById('tab-diario').className = 'px-4 py-1.5 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all';
-            document.getElementById('tab-cadastros').className = 'px-4 py-1.5 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all';
-
-            // Ativa selecionado
+            document.getElementById('tab-diario').className = 'tab-inactive px-1 py-2 text-sm focus:outline-none transition-colors';
+            document.getElementById('tab-cadastros').className = 'tab-inactive px-1 py-2 text-sm focus:outline-none transition-colors';
             document.getElementById('section-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).className = 'px-4 py-1.5 text-sm font-medium rounded-md bg-white text-nc-primary shadow-sm transition-all';
-
-            if(tab === 'cadastros') renderCadastros();
-            if(tab === 'diario') renderPlanilha();
+            document.getElementById('tab-' + tab).className = 'tab-active px-1 py-2 text-sm focus:outline-none transition-colors';
+            if(tab === 'cadastros') window.renderCadastros();
+            if(tab === 'diario') window.renderPlanilha();
         }
 
-        // --- Funções de Cadastro (CRUD) ---
-        function gerarId() { return Date.now(); }
+        window.gerarId = function() { return Date.now(); }
 
-        function adicionar(tabela, inputId) {
+        window.adicionar = function(tabela, inputId) {
             const input = document.getElementById(inputId);
-            if (!input.value.trim()) {
-                mostrarToast('Por favor, preencha o campo.', 'erro');
-                return;
-            }
-            db[tabela].push({ id: gerarId(), nome: input.value.trim() });
+            if (!input.value.trim()) return window.mostrarToast("O campo não pode estar vazio.", "erro");
+            window.dbLocal[tabela].push({ id: window.gerarId(), nome: input.value.trim() });
             input.value = '';
-            salvarDados();
-            renderCadastros();
-            atualizarSelects();
-            mostrarToast('Registro adicionado com sucesso.');
+            window.salvarDados();
+            window.mostrarToast("Registro salvo com sucesso.");
         }
 
-        function adicionarTurma() {
+        window.adicionarTurma = function() {
             const nome = document.getElementById('nome-turma').value;
             const escolaId = document.getElementById('escola-turma').value;
-            if (!nome.trim() || !escolaId) {
-                mostrarToast('Selecione uma escola e informe os dados da turma.', 'erro');
-                return;
-            }
-            db.turmas.push({ id: gerarId(), nome: nome.trim(), escolaId: parseInt(escolaId) });
+            if (!nome.trim() || !escolaId) return window.mostrarToast("Preencha o nome e selecione a escola.", "erro");
+            window.dbLocal.turmas.push({ id: window.gerarId(), nome: nome.trim(), escolaId: parseInt(escolaId) });
             document.getElementById('nome-turma').value = '';
-            salvarDados();
-            renderCadastros();
-            atualizarSelects();
-            mostrarToast('Turma cadastrada com sucesso.');
+            window.salvarDados();
+            window.mostrarToast("Turma salva com sucesso.");
         }
 
-        function adicionarAluno() {
+        window.adicionarAluno = function() {
             const nome = document.getElementById('nome-aluno').value;
             const turmaId = document.getElementById('turma-aluno').value;
-            if (!nome.trim() || !turmaId) {
-                mostrarToast('Selecione a turma e digite o nome do aluno.', 'erro');
-                return;
-            }
-            db.alunos.push({ id: gerarId(), nome: nome.trim(), turmaId: parseInt(turmaId) });
+            if (!nome.trim() || !turmaId) return window.mostrarToast("Preencha o nome e selecione a turma.", "erro");
+            window.dbLocal.alunos.push({ id: window.gerarId(), nome: nome.trim(), turmaId: parseInt(turmaId) });
             document.getElementById('nome-aluno').value = '';
-            salvarDados();
-            renderCadastros();
-            mostrarToast('Aluno matriculado com sucesso.');
+            window.salvarDados();
+            window.mostrarToast("Aluno adicionado à turma.");
         }
 
-        function remover(tabela, id) {
-            db[tabela] = db[tabela].filter(item => item.id !== id);
-            salvarDados();
-            renderCadastros();
-            atualizarSelects();
-            mostrarToast('Registro removido.');
+        window.remover = function(tabela, id) {
+            window.dbLocal[tabela] = window.dbLocal[tabela].filter(item => item.id !== id);
+            window.salvarDados();
+            window.mostrarToast("Registro removido.");
         }
 
-        function renderCadastros() {
+        window.renderCadastros = function() {
             const renderLista = (tabela, elementoId, infoExtra = null) => {
                 const ul = document.getElementById(elementoId);
                 ul.innerHTML = '';
-                db[tabela].forEach(item => {
+                if(window.dbLocal[tabela].length === 0) {
+                    ul.innerHTML = '<li class="py-3 text-gray-500 italic text-center">Nenhum registro encontrado.</li>';
+                    return;
+                }
+                window.dbLocal[tabela].forEach(item => {
                     let extra = '';
                     if (infoExtra === 'turma') {
-                        const escola = db.escolas.find(e => e.id === item.escolaId);
-                        extra = `<span class="text-xs font-medium text-nc-accent bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded ml-2">${escola ? escola.nome : ''}</span>`;
+                        const escola = window.dbLocal.escolas.find(e => e.id === item.escolaId);
+                        extra = `<span class="text-xs text-gray-500 block">${escola ? escola.nome : 'Sem escola'}</span>`;
                     } else if (infoExtra === 'aluno') {
-                        const turma = db.turmas.find(t => t.id === item.turmaId);
-                        extra = `<span class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded ml-2 mt-1 inline-block">${turma ? turma.nome : ''}</span>`;
+                        const turma = window.dbLocal.turmas.find(t => t.id === item.turmaId);
+                        extra = `<span class="text-xs text-gray-500 block">${turma ? turma.nome : 'Sem turma'}</span>`;
                     }
                     ul.innerHTML += `
-                        <li class="p-3 bg-gray-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center border border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600 transition-colors">
-                            <div class="flex flex-col sm:flex-row sm:items-center">
-                                <span class="text-sm font-semibold text-nc-text dark:text-slate-200">${item.nome}</span>${extra}
-                            </div>
-                            <button onclick="remover('${tabela}', ${item.id})" class="text-gray-400 hover:text-red-500 p-1 transition-colors" title="Remover">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
+                        <li class="py-3 flex justify-between items-center group">
+                            <div><span class="text-gray-200 font-medium">${item.nome}</span>${extra}</div>
+                            <button onclick="remover('${tabela}', ${item.id})" class="text-gray-500 hover:text-red-400 transition-colors px-2">X</button>
                         </li>`;
                 });
             };
-
             renderLista('escolas', 'lista-escolas');
             renderLista('materias', 'lista-materias');
             renderLista('turmas', 'lista-turmas', 'turma');
             renderLista('alunos', 'lista-alunos', 'aluno');
         }
 
-        function atualizarSelects() {
+        window.atualizarSelects = function() {
             const preencher = (selectId, dados, placeholder) => {
                 const select = document.getElementById(selectId);
                 const valorAtual = select.value;
@@ -513,7 +545,7 @@
                 dados.forEach(item => {
                     let extra = '';
                     if(selectId === 'select-turma-diario' || selectId === 'turma-aluno') {
-                        const escola = db.escolas.find(e => e.id === item.escolaId);
+                        const escola = window.dbLocal.escolas.find(e => e.id === item.escolaId);
                         extra = escola ? ` - ${escola.nome}` : '';
                     }
                     select.innerHTML += `<option value="${item.id}">${item.nome}${extra}</option>`;
@@ -521,363 +553,136 @@
                 if (dados.find(d => d.id == valorAtual)) select.value = valorAtual;
                 else if (dados.length > 0 && selectId === 'select-turma-diario') select.value = dados[0].id;
             };
-
-            preencher('escola-turma', db.escolas, 'Selecione a Escola...');
-            preencher('turma-aluno', db.turmas, 'Selecione a Turma...');
-            preencher('select-turma-diario', db.turmas, 'Selecione uma turma para carregar o diário...');
+            preencher('escola-turma', window.dbLocal.escolas, 'Selecione a Escola');
+            preencher('turma-aluno', window.dbLocal.turmas, 'Selecione a Turma');
+            preencher('select-turma-diario', window.dbLocal.turmas, 'Selecione a Turma...');
         }
 
-        // --- Lógica do Diário (Planilha Fiel à Imagem) ---
         let turmaAtualId = null;
 
-        function formatarData(dataString) {
+        window.formatarData = function(dataString) {
             const [ano, mes, dia] = dataString.split('-');
             const dataObj = new Date(ano, mes - 1, dia);
             const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            return `<div class="font-bold text-[13px]">${dia}/${mes}</div><div class="text-[11px] font-normal mt-0.5">${diasSemana[dataObj.getDay()]}</div>`;
+            return `<div class="font-bold">${dia}/${mes}</div><div class="text-[10px] font-normal text-gray-400 uppercase tracking-wider mt-0.5">${diasSemana[dataObj.getDay()]}</div>`;
         }
 
-        function renderPlanilha() {
+        window.renderPlanilha = function() {
             const turmaSelect = document.getElementById('select-turma-diario').value;
             const mesSelect = document.getElementById('input-mes-diario').value; 
             
             if (!turmaSelect) {
-                document.getElementById('tabela-diario').innerHTML = `
-                    <tr><td class="p-10 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-slate-800/50 rounded-b-xl">
-                        Nenhuma turma selecionada. Utilize os filtros acima.
-                    </td></tr>`;
+                document.getElementById('tabela-diario').innerHTML = '<tr><td class="p-8 text-center text-gray-400">Selecione uma turma.</td></tr>';
                 return;
             }
 
             turmaAtualId = parseInt(turmaSelect);
-            const turma = db.turmas.find(t => t.id === turmaAtualId);
-            const escola = db.escolas.find(e => e.id === turma.escolaId);
-            // Pegando a matéria (se houver, caso não, usa genérico)
-            const materia = db.materias.length > 0 ? db.materias[0] : {nome: 'CURSO'};
-            
-            const alunosTurma = db.alunos.filter(a => a.turmaId === turmaAtualId);
-            const aulas = db.aulas.filter(a => {
+            const turma = window.dbLocal.turmas.find(t => t.id === turmaAtualId);
+            const escola = window.dbLocal.escolas.find(e => e.id === turma.escolaId);
+            const alunosTurma = window.dbLocal.alunos.filter(a => a.turmaId === turmaAtualId);
+            const aulas = window.dbLocal.aulas.filter(a => {
                 if (a.turmaId !== turmaAtualId) return false;
                 if (mesSelect) return a.data.startsWith(mesSelect);
                 return true;
             }).sort((a, b) => a.data.localeCompare(b.data));
 
-            const nomeMes = mesSelect ? 
-                new Date(mesSelect + '-01').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'}) : 
-                'Todas as datas';
-            const mesFormatado = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1).replace(' de ', ' ');
+            const mesAnoFormatado = mesSelect ? 
+                new Date(mesSelect + '-01T00:00:00').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'}).replace(' de ', ' ') : 'Todas as datas';
 
-            /* CONSTRUÇÃO DO CABEÇALHO FIEL À IMAGEM 
-               - Azul Escuro, Ciano, Azul Escuro, Ciano
-               - Alinhamentos específicos
-            */
             let html = `
                 <thead>
-                    <!-- Titulo Principal -->
-                    <tr>
-                        <th colspan="${aulas.length + 3}" class="bg-nc-primary text-white p-3 text-center text-xl tracking-wide border-b-[6px] border-nc-accent font-semibold">
-                            NEW CODE &middot; Lista de Presença
-                        </th>
-                    </tr>
-                    <!-- Linha Escola/Mês -->
-                    <tr>
-                        <th colspan="${aulas.length + 3}" class="bg-nc-primary text-white p-2 text-center text-sm font-medium border-b border-gray-600/50">
-                            ${mesFormatado} &mdash; ${escola ? escola.nome : ''}
-                        </th>
-                    </tr>
-                    <!-- Linha Matéria/Turma -->
-                    <tr>
-                        <th colspan="${aulas.length + 3}" class="bg-nc-primary text-gray-300 p-1.5 text-center text-xs font-normal border-b-[6px] border-nc-accent tracking-wide">
-                            ${materia.nome} &middot; ${turma.nome}
-                        </th>
-                    </tr>
-                    <!-- Colunas (Aluno, Datas, Totais) -->
-                    <tr>
-                        <th class="bg-nc-primary text-white p-3 text-left w-64 text-sm font-bold tracking-wider border-r border-gray-600/30">ALUNO</th>
+                    <tr><th colspan="${aulas.length + 3}" class="bg-nc-header text-white p-3 text-center text-lg font-medium border-b-4 border-nc-accent"><span class="capitalize">${mesAnoFormatado}</span></th></tr>
+                    <tr><th colspan="${aulas.length + 3}" class="bg-nc-header text-gray-300 p-2 text-center text-xs font-normal tracking-wide uppercase border-b border-gray-600">${escola ? escola.nome : 'Sem escola'} &nbsp;&middot;&nbsp; ${turma.nome}</th></tr>
+                    <tr><th class="bg-nc-header text-white border-r border-gray-600 p-3 text-left w-64 uppercase tracking-wider text-xs font-semibold">ALUNO</th>
             `;
 
             aulas.forEach(aula => {
-                html += `
-                    <th class="bg-nc-primary text-white p-2 w-16 text-center border-r border-gray-600/30 cursor-pointer hover:bg-nc-primary-hover transition-colors group relative" title="${aula.conteudo || 'Editar aula'}" onclick="editarAula(${aula.id})">
-                        ${formatarData(aula.data)}
-                        <div class="hidden group-hover:block absolute bg-gray-800 text-xs p-1 rounded -top-8 left-1/2 transform -translate-x-1/2 shadow-lg z-10 whitespace-nowrap">Editar</div>
-                    </th>`;
+                html += `<th class="bg-nc-header text-white border-r border-gray-600 p-2 w-16 text-center cursor-pointer hover:bg-gray-700 transition-colors" title="${aula.conteudo || 'Sem conteúdo'}" onclick="editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
             });
+            if(aulas.length === 0) html += `<th class="bg-nc-header text-gray-500 font-normal text-xs p-2 text-center">Nenhuma aula</th>`;
 
             html += `
-                        <th class="bg-nc-p-header text-white p-2 w-20 text-center text-sm font-bold shadow-inner border-r border-gray-600/30">Total P</th>
-                        <th class="bg-nc-f-header text-white p-2 w-20 text-center text-sm font-bold shadow-inner">Total F</th>
+                        <th class="bg-nc-green-header text-white border-l border-gray-600 p-3 w-16 text-center text-xs uppercase tracking-wide">Total P</th>
+                        <th class="bg-nc-red-header text-white p-3 w-16 text-center text-xs uppercase tracking-wide">Total F</th>
                     </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-slate-800">
+                </thead><tbody>
             `;
 
-            if (alunosTurma.length === 0) {
-                html += `<tr><td colspan="${aulas.length + 3}" class="p-6 text-center text-gray-500 dark:text-gray-400 font-medium border-b dark:border-slate-700">Turma sem alunos matriculados.</td></tr>`;
-            }
+            if(alunosTurma.length === 0) html += `<tr><td colspan="${aulas.length + 3}" class="p-8 text-center text-gray-500">Nenhum aluno cadastrado.</td></tr>`;
 
             alunosTurma.forEach((aluno, index) => {
-                // Alternância de cor da linha (branco / azul super claro) -> adaptado pro dark mode
-                const bgClass = index % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-nc-row-alt dark:bg-slate-700/50';
-                let totalP = 0;
-                let totalF = 0;
-
-                html += `<tr class="${bgClass} hover:bg-blue-50/50 dark:hover:bg-slate-700 transition-colors">
-                            <td class="p-2.5 font-medium text-nc-text dark:text-slate-200 border-b border-r border-gray-200 dark:border-slate-600 text-[13px] whitespace-nowrap">${aluno.nome}</td>`;
+                const bgClass = index % 2 === 0 ? 'bg-nc-dark' : 'bg-nc-row-alt-dark';
+                let totalP = 0, totalF = 0;
+                html += `<tr class="${bgClass} hover:bg-gray-800 transition-colors"><td class="border-r border-gray-700 border-b p-3 text-gray-200 font-medium whitespace-nowrap">${aluno.nome}</td>`;
+                if(aulas.length === 0) html += `<td class="border-b border-gray-700"></td>`;
 
                 aulas.forEach(aula => {
                     const chave = `${aula.id}_${aluno.id}`;
-                    const status = db.presencas[chave] || '';
+                    const status = window.dbLocal.presencas[chave] || '';
                     if (status === 'P') totalP++;
                     if (status === 'F') totalF++;
+                    let textClass = status === 'P' ? 'status-p' : (status === 'F' ? 'status-f' : '');
 
-                    let textClass = 'text-gray-400 dark:text-gray-500';
-                    if(status === 'P') textClass = 'status-p';
-                    if(status === 'F') textClass = 'status-f';
-
-                    // O select ocupa todo o espaço, fica limpo e revela o P ou F em negrito
-                    html += `<td class="p-0 border-b border-r border-gray-200 dark:border-slate-600">
-                                <select class="select-status ${textClass} hover:bg-gray-100/50 dark:hover:bg-slate-600/50" onchange="registrarPresenca(${aula.id}, ${aluno.id}, this.value)">
+                    html += `<td class="border-r border-b border-gray-700 p-0">
+                                <select class="select-status ${textClass}" onchange="registrarPresenca(${aula.id}, ${aluno.id}, this.value)">
                                     <option value="" ${status === '' ? 'selected' : ''}></option>
                                     <option value="P" ${status === 'P' ? 'selected' : ''}>P</option>
                                     <option value="F" ${status === 'F' ? 'selected' : ''}>F</option>
                                 </select>
                              </td>`;
                 });
-
-                // Células de Totais com as cores adaptadas ao dark mode
-                html += `
-                    <td class="p-2 border-b border-r border-gray-300 dark:border-slate-600 bg-nc-p-cell dark:bg-[#2c4c34] text-center">
-                        <span class="font-bold text-nc-text dark:text-green-300">${totalP}</span>
-                    </td>
-                    <td class="p-2 border-b border-gray-300 dark:border-slate-600 bg-nc-f-cell dark:bg-[#5c2b2b] text-center">
-                        <span class="font-bold text-nc-text dark:text-red-300">${totalF}</span>
-                    </td>
-                </tr>`;
+                html += `<td class="border-l border-b border-gray-700 bg-nc-green-cell-dark text-center font-bold text-white">${totalP}</td><td class="border-b border-gray-700 bg-nc-red-cell-dark text-center font-bold text-white">${totalF}</td></tr>`;
             });
-
-            // Linhas extras em branco para preencher a tabela (como na imagem original)
-            for(let i=0; i<3; i++) {
-                const bgClass = (alunosTurma.length + i) % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-nc-row-alt dark:bg-slate-700/50';
-                html += `<tr class="${bgClass} h-10">
-                            <td class="border-b border-r border-gray-200 dark:border-slate-600"></td>`;
-                aulas.forEach(() => { html += `<td class="border-b border-r border-gray-200 dark:border-slate-600"></td>`; });
-                html += `<td class="border-b border-r border-gray-300 dark:border-slate-600 bg-nc-p-cell dark:bg-[#2c4c34] text-center font-bold text-nc-text dark:text-green-300">0</td>
-                         <td class="border-b border-gray-300 dark:border-slate-600 bg-nc-f-cell dark:bg-[#5c2b2b] text-center font-bold text-nc-text dark:text-red-300">0</td>
-                         </tr>`;
-            }
 
             html += `</tbody>`;
             document.getElementById('tabela-diario').innerHTML = html;
         }
 
-        // --- Interações da Planilha ---
-        function registrarPresenca(aulaId, alunoId, status) {
+        window.registrarPresenca = function(aulaId, alunoId, status) {
             const chave = `${aulaId}_${alunoId}`;
-            db.presencas[chave] = status;
-            salvarDados();
-            renderPlanilha(); 
-            // Opcional: Feedback silencioso sem toast para não atrapalhar o fluxo
+            window.dbLocal.presencas[chave] = status;
+            window.salvarDados(); 
+            // Não renderizamos manualmente aqui, o Firebase onSnapshot cuida disso!
         }
 
-        function adicionarAula() {
-            if (!turmaAtualId) {
-                mostrarToast('Selecione uma turma antes de lançar a aula.', 'erro');
-                return;
-            }
+        window.adicionarAula = function() {
+            if (!turmaAtualId) return window.mostrarToast("Selecione uma turma.", "erro");
             document.getElementById('modal-data').value = '';
             document.getElementById('modal-conteudo').value = '';
             document.getElementById('modal-aula').dataset.aulaId = '';
-            
-            const modal = document.getElementById('modal-aula');
-            modal.classList.remove('hidden');
+            document.getElementById('modal-aula').classList.remove('hidden');
         }
 
-        function editarAula(id) {
-            const aula = db.aulas.find(a => a.id === id);
+        window.editarAula = function(id) {
+            const aula = window.dbLocal.aulas.find(a => a.id === id);
             if(!aula) return;
             document.getElementById('modal-data').value = aula.data;
             document.getElementById('modal-conteudo').value = aula.conteudo;
             document.getElementById('modal-aula').dataset.aulaId = aula.id;
-            
-            const modal = document.getElementById('modal-aula');
-            modal.classList.remove('hidden');
+            document.getElementById('modal-aula').classList.remove('hidden');
         }
 
-        function fecharModal() {
-            document.getElementById('modal-aula').classList.add('hidden');
-        }
+        window.fecharModal = function() { document.getElementById('modal-aula').classList.add('hidden'); }
 
-        function salvarAula() {
+        window.salvarAula = function() {
             const data = document.getElementById('modal-data').value;
             const conteudo = document.getElementById('modal-conteudo').value;
             const aulaId = document.getElementById('modal-aula').dataset.aulaId;
 
-            if(!data) {
-                mostrarToast('A data é obrigatória.', 'erro');
-                return;
-            }
+            if(!data) return window.mostrarToast("A data é obrigatória.", "erro");
 
             if(aulaId) {
-                const aula = db.aulas.find(a => a.id === parseInt(aulaId));
+                const aula = window.dbLocal.aulas.find(a => a.id === parseInt(aulaId));
                 aula.data = data;
                 aula.conteudo = conteudo;
-                mostrarToast('Registro atualizado.');
+                window.mostrarToast("Aula atualizada com sucesso.");
             } else {
-                db.aulas.push({
-                    id: gerarId(),
-                    turmaId: turmaAtualId,
-                    data: data,
-                    conteudo: conteudo
-                });
-                mostrarToast('Nova aula lançada.');
+                window.dbLocal.aulas.push({ id: window.gerarId(), turmaId: turmaAtualId, data: data, conteudo: conteudo });
+                window.mostrarToast("Nova aula registrada.");
             }
-
-            salvarDados();
-            fecharModal();
-            renderPlanilha();
+            window.salvarDados();
+            window.fecharModal();
         }
-
-        // --- Inicialização ---
-        // Sistema de Autenticação
-        function verificarSessao() {
-            const session = localStorage.getItem('newcode_session');
-            if (session) {
-                const user = JSON.parse(session);
-                entrarNoApp(user.nome);
-            }
-        }
-
-        function toggleAuthMode() {
-            document.getElementById('form-login').classList.toggle('hidden');
-            document.getElementById('form-cadastro').classList.toggle('hidden');
-        }
-
-        function fazerLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const senha = document.getElementById('login-senha').value.trim();
-
-            const user = db.users.find(u => u.email === email && u.senha === senha);
-            if (user) {
-                localStorage.setItem('newcode_session', JSON.stringify({ id: user.id, nome: user.nome }));
-                document.getElementById('form-login').reset();
-                entrarNoApp(user.nome);
-                mostrarToast(`Bem-vindo(a) de volta, ${user.nome}!`);
-            } else {
-                mostrarToast('E-mail ou senha incorretos.', 'erro');
-            }
-        }
-
-        function criarConta(e) {
-            e.preventDefault();
-            const nome = document.getElementById('cad-nome').value.trim();
-            const email = document.getElementById('cad-email').value.trim();
-            const senha = document.getElementById('cad-senha').value.trim();
-
-            if (db.users.some(u => u.email === email)) {
-                mostrarToast('Este e-mail já está cadastrado.', 'erro');
-                return;
-            }
-
-            const newUser = { id: gerarId(), nome, email, senha };
-            db.users.push(newUser);
-            salvarDados();
-
-            localStorage.setItem('newcode_session', JSON.stringify({ id: newUser.id, nome: newUser.nome }));
-            document.getElementById('form-cadastro').reset();
-            entrarNoApp(newUser.nome);
-            mostrarToast('Conta criada com sucesso!');
-        }
-
-        function entrarNoApp(nomeUsuario) {
-            document.getElementById('auth-container').classList.add('hidden');
-            document.getElementById('app-header').classList.remove('hidden');
-            document.getElementById('app-main').classList.remove('hidden');
-            document.getElementById('user-display-name').textContent = nomeUsuario;
-            
-            // Re-renderiza para garantir que a tela receba os dados atualizados
-            carregarDados();
-        }
-
-        function fazerLogout() {
-            localStorage.removeItem('newcode_session');
-            document.getElementById('auth-container').classList.remove('hidden');
-            document.getElementById('app-header').classList.add('hidden');
-            document.getElementById('app-main').classList.add('hidden');
-            mostrarToast('Você saiu do sistema.');
-            fecharModal();
-        }
-
-        // --- Sistema de Tema ---
-        function initTheme() {
-            // Padrão como escuro, ou o que o usuário escolheu antes
-            const savedTheme = localStorage.getItem('newcode_theme') || 'dark'; // Dark é o padrão agora
-            if (savedTheme === 'light') {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('icon-sun').classList.remove('hidden');
-                document.getElementById('icon-moon').classList.add('hidden');
-            } else {
-                document.documentElement.classList.add('dark');
-                document.getElementById('icon-moon').classList.remove('hidden');
-                document.getElementById('icon-sun').classList.add('hidden');
-            }
-        }
-
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('newcode_theme', 'light');
-                document.getElementById('icon-sun').classList.remove('hidden');
-                document.getElementById('icon-moon').classList.add('hidden');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('newcode_theme', 'dark');
-                document.getElementById('icon-moon').classList.remove('hidden');
-                document.getElementById('icon-sun').classList.add('hidden');
-            }
-        }
-
-        // Executa inicialização
-        initTheme();
-        carregarDados();
-        verificarSessao();
-
     </script>
-
-    <!-- ======================================================== -->
-    <!-- PREPARAÇÃO PARA FIREBASE (NUVEM) E VERCEL (PRODUÇÃO)     -->
-    <!-- ======================================================== -->
-    <!-- Quando for criar seu banco na nuvem, remova os sinais de -->
-    <!-- comentário abaixo ( <!-- e - -> ) e cole suas chaves.   -->
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
-            authDomain: "diario-newcode.firebaseapp.com",
-            projectId: "diario-newcode",
-            storageBucket: "diario-newcode.firebasestorage.app",
-            messagingSenderId: "440225334729",
-            appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
-            measurementId: "G-1TQE6YPV6N"
-        };
-
-        // 2. Inicializa o serviço do Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const firestoreDb = getFirestore(app);
-
-        // 3. Deixa o banco da nuvem preparado para uso no app
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDb = firestoreDb;
-        console.log("Serviços em Nuvem (Firebase) preparados!");
-    </script>
-    
 </body>
 </html>

@@ -303,9 +303,6 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // =========================================================================
-        // ATENÇÃO: COLE SUAS CREDENCIAIS DO FIREBASE AQUI DENTRO
-        // =========================================================================
         const firebaseConfig = {
           apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
           authDomain: "diario-newcode.firebaseapp.com",
@@ -315,7 +312,9 @@
           appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
           measurementId: "G-1TQE6YPV6N"
         };
-        // =========================================================================
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
 
         let app, auth, dbFirestore;
         

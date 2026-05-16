@@ -3,26 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEW CODE - Diário Escolar</title>
-
+    <title>NEW CODE - Gestão Escolar</title>
+    
     <link rel="icon" type="image/png" href="icone.png">
     <link rel="shortcut icon" href="icone.png">
-
     <link rel="apple-touch-icon" href="icone.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icone.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icone.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="icone.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Diário NC">
-    
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Diário NC">
-    <meta name="theme-color" content="#1A2E4C">
+    <meta name="theme-color" content="#0F172A">
     
-    <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"Diário New Code","short_name":"Diário NC","display":"standalone","start_url":"/","theme_color":"#1A2E4C","background_color":"#0B1320","icons":[{"src":"icone.png","sizes":"192x192","type":"image/png"},{"src":"icone.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"Diário New Code","short_name":"Diário NC","display":"standalone","start_url":"/","theme_color":"#0F172A","background_color":"#0F172A","icons":[{"src":"icone.png","sizes":"192x192","type":"image/png"},{"src":"icone.png","sizes":"512x512","type":"image/png"}]}'>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,23 +24,6 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'nc-dark': '#0B1320',
-                        'nc-primary': '#1A2E4C',
-                        'nc-primary-hover': '#254069',
-                        'nc-accent': '#5CB4CD',
-                        'nc-bg': '#F1F5F9',
-                        'nc-surface': '#FFFFFF',
-                        'nc-text': '#334155',
-                        'nc-border': '#E2E8F0',
-                        'nc-row-alt': '#F0F4F8',
-                        'nc-p-header': '#528251',
-                        'nc-p-cell': '#D9EAD8',
-                        'nc-p-text': '#166534',
-                        'nc-f-header': '#B9634C',
-                        'nc-f-cell': '#F7D7D7',
-                        'nc-f-text': '#991B1B',
                     }
                 }
             }
@@ -55,329 +31,329 @@
     </script>
     <style>
         body { 
-            @apply bg-nc-bg text-nc-text dark:bg-slate-900 dark:text-slate-200;
+            @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-white;
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.2s ease;
         }
         
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-600 rounded; }
-        ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400 dark:bg-slate-500; }
+        ::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-slate-600 rounded-full; }
 
-        .modern-input {
+        .app-input {
             width: 100%;
-            padding: 0.625rem 0.875rem;
-            @apply bg-slate-50 border-slate-200 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200;
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 1rem 1.25rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            border-radius: 0.75rem;
+            @apply bg-gray-100 border-transparent text-gray-900 
+                   dark:bg-slate-800 dark:border-transparent dark:text-white dark:placeholder-gray-400;
             transition: all 0.2s ease;
         }
-        .modern-input:focus {
+        .app-input:focus {
             outline: none;
-            @apply border-nc-accent dark:border-nc-accent ring-2 ring-nc-accent/20 dark:ring-nc-accent/20;
-            @apply bg-white dark:bg-slate-800;
+            @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
+        }
+        
+        input[type="month"], input[type="date"] {
+            min-height: 3.5rem;
         }
 
-        .modern-btn {
+        .app-btn {
+            -webkit-appearance: none !important;
+            appearance: none !important;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.625rem 1.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            transition: all 0.2s;
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 800;
+            border-radius: 0.75rem;
+            border: none;
+            background-color: #2563EB !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
             cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
         }
-        .btn-primary { background-color: #1A2E4C; color: white; }
-        .btn-primary:hover:not(:disabled) { background-color: #254069; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+        .app-btn:active { transform: scale(0.98); }
+        .app-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .app-btn-outline {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: 0.75rem;
+            background-color: transparent !important;
+            border: 2px solid #2563EB !important;
+            color: #2563EB !important;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .dark .app-btn-outline {
+            border-color: #60A5FA !important;
+            color: #60A5FA !important;
+        }
+        .app-btn-outline:active { transform: scale(0.98); }
 
         .select-status {
+            -webkit-appearance: none;
             appearance: none;
-            background-color: transparent;
-            border: none;
             width: 100%;
-            height: 100%;
-            text-align: center;
-            font-weight: 700;
-            cursor: pointer;
+            height: 3.5rem;
+            border: none;
             outline: none;
-            font-size: 0.875rem;
-            padding: 0.5rem;
+            font-weight: 900;
+            font-size: 1.125rem;
+            text-align: center;
+            text-align-last: center;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
         }
-        .status-p { @apply text-green-700 dark:text-green-400; }
-        .status-f { @apply text-red-700 dark:text-red-400; }
 
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .status-p { 
+            @apply bg-green-200 dark:bg-green-700 text-black dark:text-white; 
         }
-        .toast-enter { animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        
-        .loader-spin {
-            animation: spin 1s linear infinite;
+        .status-f { 
+            @apply bg-red-200 dark:bg-red-700 text-black dark:text-white; 
         }
+        .status-empty {
+            @apply bg-transparent text-gray-400 dark:text-gray-500;
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast-enter { animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .loader-spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 w-80 pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-4 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
-    <div id="tela-loading" class="flex-1 flex items-center justify-center bg-nc-bg dark:bg-slate-900 z-50">
-        <svg class="loader-spin w-10 h-10 text-nc-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+    <div id="tela-loading" class="flex-1 flex items-center justify-center z-50 fixed inset-0 bg-gray-50 dark:bg-slate-900">
+        <svg class="loader-spin w-12 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
     </div>
 
-    <div id="auth-container" class="hidden flex-1 flex flex-col justify-center items-center p-6 w-full bg-nc-bg dark:bg-slate-900 transition-colors">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-nc-border dark:border-slate-700 transition-colors">
-            <div class="bg-nc-primary p-6 text-center border-b-[6px] border-nc-accent">
-                <div class="w-12 h-12 bg-nc-accent rounded flex items-center justify-center text-nc-primary font-bold text-2xl mx-auto mb-3 shadow-sm">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+    <!-- TELA DE AUTENTICAÇÃO -->
+    <div id="auth-container" class="hidden flex-1 flex flex-col justify-center items-center p-4 w-full">
+        <div class="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-700">
+            
+            <div class="p-8 pb-2 text-center">
+                <div class="w-20 h-20 bg-blue-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-4xl mx-auto mb-4 shadow-inner">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-white tracking-wider">NEW CODE</h2>
-                <p class="text-nc-accent text-sm font-medium mt-1">Portal do Professor</p>
+                <h2 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">NEW CODE</h2>
+                <p class="text-gray-500 dark:text-gray-400 text-sm font-bold mt-2 uppercase tracking-widest">Portal do Professor</p>
             </div>
             
-            <div class="p-8">
-
+            <div class="p-8 pt-4">
                 <div id="form-login" class="space-y-5">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
-                        <input type="email" id="login-email" class="modern-input" placeholder="professor@newcode.com">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail Corporativo</label>
+                        <input type="email" id="login-email" class="app-input" placeholder="nome@newcodeschool.com.br">
                     </div>
                     <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Senha</label>
-                            <button onclick="window.toggleRecuperarMode()" class="text-xs text-nc-accent hover:opacity-80 transition-opacity font-medium">Esqueceu?</button>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Senha</label>
+                            <button onclick="window.recuperarSenha()" class="text-xs text-blue-600 dark:text-blue-400 font-bold hover:underline py-1 px-2">Esqueceu a senha?</button>
                         </div>
-                        <input type="password" id="login-senha" class="modern-input" placeholder="••••••••">
+                        <input type="password" id="login-senha" class="app-input" placeholder="••••••••">
                     </div>
-                    <button id="btn-login" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg h-12">
-                        Acessar Sistema
-                    </button>
-                    <div class="text-center mt-4">
-                        <button onclick="window.toggleAuthMode()" class="text-sm text-nc-primary dark:text-nc-accent hover:opacity-80 transition-opacity font-medium">Não tem acesso? Criar conta</button>
+                    <button id="btn-login" class="app-btn mt-6">Entrar no Sistema</button>
+                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
+                        <button type="button" onclick="window.toggleAuthMode()" class="app-btn-outline">Criar Conta Agora</button>
                     </div>
                 </div>
 
                 <div id="form-cadastro" class="space-y-5 hidden">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Nome Completo</label>
-                        <input type="text" id="cad-nome" class="modern-input" placeholder="Ex: Prof. Silva">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Nome Completo</label>
+                        <input type="text" id="cad-nome" class="app-input" placeholder="Ex: Professor Davi">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
-                        <input type="email" id="cad-email" class="modern-input" placeholder="professor@newcode.com">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail Corporativo</label>
+                        <input type="email" id="cad-email" class="app-input" placeholder="seu.email@newcode.com">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Definir Senha</label>
-                        <input type="password" id="cad-senha" class="modern-input" placeholder="Mín. 6 caracteres">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Criar Senha Segura</label>
+                        <input type="password" id="cad-senha" class="app-input" placeholder="Mínimo 6 caracteres">
                     </div>
-                    <button id="btn-cadastro" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg h-12">
-                        Registrar e Acessar
-                    </button>
-                    <div class="text-center mt-4">
-                        <button onclick="window.voltarParaLogin()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Já possui conta? Fazer login</button>
-                    </div>
-                </div>
-
-                <div id="form-recuperar" class="space-y-5 hidden">
-                    <div class="text-center mb-2">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Digite seu e-mail para receber um link de redefinição de senha.</p>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">E-mail Corporativo</label>
-                        <input type="email" id="recuperar-email" class="modern-input" placeholder="professor@newcode.com">
-                    </div>
-                    <button id="btn-recuperar" class="modern-btn btn-primary w-full py-3 mt-2 text-base shadow-lg h-12">
-                        Enviar Link
-                    </button>
-                    <div class="text-center mt-4">
-                        <button onclick="window.voltarParaLogin()" class="text-sm text-gray-500 dark:text-gray-400 hover:text-nc-primary dark:hover:text-nc-accent transition-colors font-medium">Voltar para o Login</button>
+                    <button id="btn-cadastro" class="app-btn mt-6">Registrar e Entrar</button>
+                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
+                        <button type="button" onclick="window.toggleAuthMode()" class="app-btn-outline">Já tenho conta (Login)</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <header id="app-header" class="hidden bg-nc-primary w-full shadow-md z-10 transition-colors">
-        <div class="h-1 bg-nc-accent w-full"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-nc-accent rounded flex items-center justify-center text-nc-primary font-bold text-xl">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                </div>
-                <h1 class="text-xl font-bold text-white tracking-wider flex items-center gap-2">
-                    NEW CODE <span class="font-light opacity-75 text-sm ml-1 hidden sm:inline">| Gestão</span>
-                    <span id="status-nuvem" class="w-2 h-2 rounded-full bg-green-500 hidden" title="Sincronizado com a Nuvem"></span>
-                </h1>
-            </div>
-            
-            <nav class="flex space-x-2 bg-nc-primary-hover p-1 rounded-lg">
-                <button onclick="window.changeTab('diario')" id="tab-diario" class="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-white text-nc-primary shadow-sm transition-all">
-                    Diário
-                </button>
-                <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all">
-                    Cadastros
-                </button>
-            </nav>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="window.toggleTheme()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all">
-                    <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
-                <div class="hidden sm:block text-right">
-                    <p class="text-xs text-nc-accent font-medium uppercase tracking-wider">Professor</p>
-                    <p id="user-display-name" class="text-sm text-white font-bold truncate max-w-[120px]">...</p>
-                </div>
-                <button id="btn-logout" class="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/80 text-white flex items-center justify-center transition-all" title="Sair do Sistema">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main id="app-main" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-1 transition-colors">
-
-        <div id="section-diario" class="space-y-6">
-            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 flex flex-wrap gap-4 items-end justify-between transition-colors">
-                <div class="flex flex-wrap gap-4 flex-1">
-                    <div class="w-full sm:w-auto min-w-[200px]">
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Turma</label>
-                        <select id="select-turma-diario" class="modern-input" onchange="window.renderPlanilha()"></select>
+    <!-- TELA PRINCIPAL (APP) -->
+    <div id="app-container" class="hidden flex-col min-h-screen">
+        
+        <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 sticky top-0 z-20">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     </div>
-                    <div class="w-full sm:w-auto min-w-[180px]">
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Mês de Referência</label>
-                        <input type="month" id="input-mes-diario" class="modern-input" onchange="window.renderPlanilha()">
+                    <div>
+                        <h1 class="text-base font-black text-gray-900 dark:text-white leading-tight flex items-center gap-2">
+                            NEW CODE
+                            <span id="status-nuvem" class="w-2 h-2 rounded-full bg-green-500 hidden"></span>
+                        </h1>
+                        <p id="user-display-name" class="text-xs text-gray-500 dark:text-gray-400 font-bold truncate max-w-[150px]">...</p>
                     </div>
                 </div>
-                <div class="w-full sm:w-auto">
-                    <button onclick="window.adicionarAula()" class="modern-btn btn-primary w-full flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Lançar Aula
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-nc-border dark:border-slate-700 overflow-hidden transition-colors">
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse text-sm" id="tabela-diario"></table>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-cadastros" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Unidades / Escolas</h3>
-                    </div>
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="nome-escola" placeholder="Nome da instituição" class="modern-input">
-                        <button onclick="window.adicionar('escolas', 'nome-escola')" class="modern-btn btn-primary px-4">+</button>
-                    </div>
-                    <ul id="lista-escolas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                        <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button id="btn-logout" class="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    </button>
                 </div>
+            </div>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Matérias / Cursos</h3>
-                    </div>
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="nome-materia" placeholder="Ex: GAMES, ROBÓTICA..." class="modern-input">
-                        <button onclick="window.adicionar('materias', 'nome-materia')" class="modern-btn btn-primary px-4">+</button>
-                    </div>
-                    <ul id="lista-materias" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+            <div class="max-w-md mx-auto px-4 pb-4">
+                <div class="flex p-1.5 bg-gray-200 dark:bg-slate-800 rounded-xl w-full">
+                    <button onclick="window.changeTab('diario')" id="tab-diario" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm">Diário de Aulas</button>
+                    <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300">Gestão de Dados</button>
                 </div>
+            </div>
+        </header>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Turmas</h3>
+        <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6">
+            
+            <!-- DIÁRIO -->
+            <div id="section-diario" class="space-y-6">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-1/3 space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unidade / Escola</label>
+                        <select id="select-escola-diario" class="app-input" onchange="window.atualizarSelectTurmasDiario()"></select>
                     </div>
-                    <div class="space-y-3 mb-4">
-                        <select id="escola-turma" class="modern-input" onchange="window.renderCadastros()"></select>
-                        <div class="flex gap-2">
-                            <input type="text" id="nome-turma" placeholder="Dia/Horário (Ex: Qua | 15:40)" class="modern-input">
-                            <button onclick="window.adicionarTurma()" class="modern-btn btn-primary px-4">+</button>
+                    <div class="w-full md:w-1/3 space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Selecionar Turma</label>
+                        <select id="select-turma-diario" class="app-input" onchange="window.renderPlanilha()"></select>
+                    </div>
+                    <div class="w-full md:w-1/3 space-y-2 flex flex-col justify-between">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Mês Letivo</label>
+                            <input type="month" id="input-mes-diario" class="app-input" onchange="window.renderPlanilha()">
                         </div>
                     </div>
-                    <ul id="lista-turmas" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
+                    <div class="w-full mt-2 md:mt-0 md:w-auto self-end">
+                        <button onclick="window.adicionarAula()" class="app-btn w-full flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Nova Aula
+                        </button>
+                    </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-nc-border dark:border-slate-700 transition-colors">
-                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-nc-dark dark:text-white">Alunos</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse text-left" id="tabela-diario"></table>
                     </div>
-                    <div class="space-y-3 mb-4">
-                        <select id="turma-aluno" class="modern-input" onchange="window.renderCadastros()"></select>
-                        <div class="flex gap-2">
-                            <input type="text" id="nome-aluno" placeholder="Nome completo do aluno" class="modern-input">
-                            <button onclick="window.adicionarAluno()" class="modern-btn btn-primary px-4">+</button>
+                </div>
+            </div>
+
+            <!-- CADASTROS -->
+            <div id="section-cadastros" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Unidades / Escolas</h3>
+                        <div class="flex gap-3 mb-5">
+                            <input type="text" id="nome-escola" placeholder="Nome da instituição" class="app-input flex-1">
+                            <button id="btn-add-escola" onclick="window.adicionar('escolas', 'nome-escola')" class="app-btn !w-auto !px-6">+</button>
                         </div>
+                        <ul id="lista-escolas" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
                     </div>
-                    <ul id="lista-alunos" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
-                </div>
 
-            </div>
-        </div>
-    </main>
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cursos / Matérias</h3>
+                        <div class="flex gap-3 mb-5">
+                            <input type="text" id="nome-materia" placeholder="Ex: Games, Maker..." class="app-input flex-1">
+                            <button id="btn-add-materia" onclick="window.adicionar('materias', 'nome-materia')" class="app-btn !w-auto !px-6">+</button>
+                        </div>
+                        <ul id="lista-materias" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                    </div>
 
-    <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity p-4">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-nc-border dark:border-slate-700">
-            <div class="flex justify-between items-center mb-5 border-b border-gray-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-xl text-nc-primary dark:text-white">Registro de Aula</h3>
-                <button onclick="window.fecharModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Data da Aula</label>
-                    <input type="date" id="modal-data" class="modern-input">
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cadastro de Turmas</h3>
+                        <div class="space-y-3 mb-5 p-4 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent dark:border-slate-700">
+                            <select id="escola-turma" class="app-input" onchange="window.renderCadastros()"></select>
+                            <select id="materia-turma" class="app-input"></select>
+                            <div class="flex gap-3">
+                                <input type="text" id="nome-turma" placeholder="Dia/Horário (Ex: Qua | 15:40)" class="app-input flex-1">
+                                <button id="btn-add-turma" onclick="window.adicionarTurma()" class="app-btn !w-auto !px-6">+</button>
+                            </div>
+                        </div>
+                        <ul id="lista-turmas" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cadastro de Alunos</h3>
+                        <div class="space-y-3 mb-5 p-4 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent dark:border-slate-700">
+                            <select id="escola-aluno" class="app-input" onchange="window.atualizarSelectTurmasAluno()"></select>
+                            <select id="turma-aluno" class="app-input" onchange="window.renderCadastros()"></select>
+                            <div class="flex gap-3">
+                                <input type="text" id="nome-aluno" placeholder="Nome do aluno" class="app-input flex-1">
+                                <button id="btn-add-aluno" onclick="window.adicionarAluno()" class="app-btn !w-auto !px-6">+</button>
+                            </div>
+                        </div>
+                        <ul id="lista-alunos" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                    </div>
+
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Conteúdo Ministrado (Opcional)</label>
-                    <input type="text" id="modal-conteudo" class="modern-input" placeholder="Ex: Programação Básica">
-                </div>
             </div>
-            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-50 dark:border-slate-700">
-                <button onclick="window.fecharModal()" class="modern-btn bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-200 border border-gray-300 dark:border-slate-600">Cancelar</button>
-                <button onclick="window.salvarAula()" class="modern-btn btn-primary">Salvar Registro</button>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <div id="modal-editar" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity p-4">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-nc-border dark:border-slate-700">
-            <div class="flex justify-between items-center mb-5 border-b border-gray-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-xl text-nc-primary dark:text-white">Editar Registro</h3>
-                <button onclick="window.fecharModalEditar()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <!-- Modal Nova Aula -->
+    <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                <h3 class="font-black text-xl text-gray-900 dark:text-white">Dados da Aula</h3>
+                <button onclick="window.fecharModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="space-y-4">
+            <div class="space-y-5">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Novo Nome</label>
-                    <input type="text" id="modal-editar-nome" class="modern-input" placeholder="Digite o novo nome">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Data Letiva</label>
+                    <input type="date" id="modal-data" class="app-input">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Conteúdo (Opcional)</label>
+                    <input type="text" id="modal-conteudo" class="app-input" placeholder="Tema da aula...">
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-50 dark:border-slate-700">
-                <button onclick="window.fecharModalEditar()" class="modern-btn bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-200 border border-gray-300 dark:border-slate-600">Cancelar</button>
-                <button onclick="window.salvarEdicao()" class="modern-btn btn-primary">Salvar Alteração</button>
+            <div class="mt-8">
+                <button onclick="window.salvarAula()" class="app-btn w-full">Salvar Registro</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
@@ -396,52 +372,37 @@
         window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
         let currentUser = null;
         let unsubscribeSnapshot = null;
+        let modoEdicao = { ativo: false, tabela: null, id: null };
 
         window.mostrarToast = function(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             
-            let bgClass = 'bg-white dark:bg-slate-800 border-l-4';
-            let borderClass = tipo === 'erro' ? 'border-red-500' : 'border-green-500';
-            let icon = tipo === 'erro' 
-                ? `<svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
-                : `<svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
-
-            toast.className = `toast-enter ${bgClass} ${borderClass} shadow-lg rounded-r-md p-4 flex items-center gap-3`;
-            toast.innerHTML = `${icon} <span class="text-sm font-medium text-gray-700 dark:text-gray-200">${mensagem}</span>`;
+            let bgClass = tipo === 'erro' ? 'bg-red-600' : 'bg-gray-900 dark:bg-white';
+            let txtClass = tipo === 'erro' ? 'text-white' : 'text-white dark:text-gray-900';
+            
+            toast.className = `toast-enter ${bgClass} ${txtClass} shadow-xl rounded-full px-5 py-3 flex items-center gap-3 max-w-sm mx-auto font-bold text-sm border border-white/10`;
+            toast.innerHTML = `<span>${mensagem}</span>`;
             
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
+                toast.style.transform = 'translateY(-20px)';
                 toast.style.transition = 'all 0.3s ease';
                 setTimeout(() => toast.remove(), 300);
-            }, 5000); 
+            }, 4000); 
         };
 
         window.toggleAuthMode = function() {
             document.getElementById('form-login').classList.toggle('hidden');
             document.getElementById('form-cadastro').classList.toggle('hidden');
-            document.getElementById('form-recuperar').classList.add('hidden');
-        };
-
-        window.toggleRecuperarMode = function() {
-            document.getElementById('form-login').classList.add('hidden');
-            document.getElementById('form-cadastro').classList.add('hidden');
-            document.getElementById('form-recuperar').classList.remove('hidden');
-        };
-
-        window.voltarParaLogin = function() {
-            document.getElementById('form-recuperar').classList.add('hidden');
-            document.getElementById('form-cadastro').classList.add('hidden');
-            document.getElementById('form-login').classList.remove('hidden');
         };
 
         function setButtonLoading(btnId, isLoading, originalText) {
             const btn = document.getElementById(btnId);
             if (isLoading) {
                 btn.disabled = true;
-                btn.innerHTML = `<svg class="loader-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                btn.innerHTML = `<svg class="loader-spin w-6 h-6 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
             } else {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
@@ -451,22 +412,16 @@
         document.getElementById('btn-login').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value.trim();
             const senha = document.getElementById('login-senha').value.trim();
+            if (!email || !senha) return window.mostrarToast('Preencha os dados.', 'erro');
 
-            if (!email || !senha) return window.mostrarToast('Preencha o e-mail e a senha.', 'erro');
-
-            setButtonLoading('btn-login', true, 'Acessar Sistema');
+            setButtonLoading('btn-login', true, 'Entrar no Sistema');
             try {
                 await signInWithEmailAndPassword(auth, email, senha);
                 document.getElementById('login-senha').value = '';
             } catch (error) {
-                console.error(error);
-                if (error.code === 'auth/invalid-credential') {
-                    window.mostrarToast('E-mail ou senha incorretos.', 'erro');
-                } else {
-                    window.mostrarToast('ERRO: ' + error.code, 'erro');
-                }
+                window.mostrarToast('Dados de acesso inválidos.', 'erro');
             }
-            setButtonLoading('btn-login', false, 'Acessar Sistema');
+            setButtonLoading('btn-login', false, 'Entrar no Sistema');
         });
 
         document.getElementById('btn-cadastro').addEventListener('click', async () => {
@@ -474,274 +429,286 @@
             const email = document.getElementById('cad-email').value.trim();
             const senha = document.getElementById('cad-senha').value.trim();
 
-            if (!nome || !email || !senha) return window.mostrarToast('Preencha todos os campos.', 'erro');
+            if (!nome || !email || !senha) return window.mostrarToast('Preencha tudo.', 'erro');
             if (senha.length < 6) return window.mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
 
-            setButtonLoading('btn-cadastro', true, 'Registrar e Acessar');
+            setButtonLoading('btn-cadastro', true, 'Registrar e Entrar');
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, senha);
                 await updateProfile(userCred.user, { displayName: nome });
-                
                 await setDoc(doc(dbFirestore, "diarios", userCred.user.uid), window.dbLocal);
-                window.mostrarToast('Conta criada com sucesso!');
-                
-                document.getElementById('cad-nome').value = '';
-                document.getElementById('cad-email').value = '';
-                document.getElementById('cad-senha').value = '';
+                window.mostrarToast('Bem-vindo à New Code!');
             } catch (error) {
-                console.error("Erro Firebase Detalhado: ", error);
-                window.mostrarToast('ERRO: ' + error.code, 'erro');
+                window.mostrarToast('Erro ao criar conta. E-mail pode estar em uso.', 'erro');
             }
-            setButtonLoading('btn-cadastro', false, 'Registrar e Acessar');
+            setButtonLoading('btn-cadastro', false, 'Registrar e Entrar');
         });
 
-        document.getElementById('btn-recuperar').addEventListener('click', async () => {
-            const email = document.getElementById('recuperar-email').value.trim();
-
-            if (!email) return window.mostrarToast('Por favor, informe seu e-mail corporativo.', 'erro');
-
-            setButtonLoading('btn-recuperar', true, 'Enviar Link');
+        window.recuperarSenha = async function() {
+            const email = document.getElementById('login-email').value.trim();
+            if (!email) return window.mostrarToast('Digite o seu e-mail no campo acima primeiro.', 'erro');
+            
             try {
                 await sendPasswordResetEmail(auth, email);
-                window.mostrarToast('E-mail de recuperação enviado! Verifique sua caixa de entrada e pasta de SPAM.');
-                document.getElementById('recuperar-email').value = '';
-                window.voltarParaLogin();
+                window.mostrarToast('Verifique a sua caixa de entrada e SPAM!');
             } catch (error) {
-                console.error(error);
-                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-                    window.mostrarToast('Não há conta cadastrada com este e-mail.', 'erro');
-                } else if (error.code === 'auth/invalid-email') {
-                    window.mostrarToast('Formato de e-mail inválido.', 'erro');
-                } else {
-                    window.mostrarToast('ERRO: ' + error.code, 'erro');
-                }
+                window.mostrarToast('E-mail não encontrado ou inválido.', 'erro');
             }
-            setButtonLoading('btn-recuperar', false, 'Enviar Link');
-        });
+        };
 
         document.getElementById('btn-logout').addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.mostrarToast('Sessão encerrada com sucesso.');
-            } catch (error) {
-                window.mostrarToast('Erro ao sair da conta.', 'erro');
-            }
+            await signOut(auth);
         });
 
         onAuthStateChanged(auth, (user) => {
-            const telaLoading = document.getElementById('tela-loading');
-            const telaAuth = document.getElementById('auth-container');
-            const telaAppHeader = document.getElementById('app-header');
-            const telaAppMain = document.getElementById('app-main');
-            
-            telaLoading.classList.add('hidden');
-
+            document.getElementById('tela-loading').classList.add('hidden');
             if (user) {
                 currentUser = user;
-                telaAuth.classList.add('hidden');
-                telaAppHeader.classList.remove('hidden');
-                telaAppMain.classList.remove('hidden');
-                
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                document.getElementById('app-container').classList.add('flex');
                 document.getElementById('user-display-name').textContent = user.displayName || 'Professor';
                 
-                const dataAtual = new Date();
-                const mesFormatado = dataAtual.getFullYear() + '-' + String(dataAtual.getMonth() + 1).padStart(2, '0');
-                document.getElementById('input-mes-diario').value = mesFormatado;
+                const d = new Date();
+                document.getElementById('input-mes-diario').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 
                 iniciarSincronizacao(user.uid);
             } else {
                 currentUser = null;
                 if(unsubscribeSnapshot) unsubscribeSnapshot(); 
-                
-                telaAppHeader.classList.add('hidden');
-                telaAppMain.classList.add('hidden');
-                telaAuth.classList.remove('hidden');
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('flex');
+                document.getElementById('auth-container').classList.remove('hidden');
             }
         });
 
         function iniciarSincronizacao(uid) {
-            const docRef = doc(dbFirestore, "diarios", uid);
-            
-            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+            unsubscribeSnapshot = onSnapshot(doc(dbFirestore, "diarios", uid), (docSnap) => {
                 if (docSnap.exists()) {
-                    const dadosNuvem = docSnap.data();
-                    window.dbLocal = {
-                        escolas: dadosNuvem.escolas || [],
-                        materias: dadosNuvem.materias || [],
-                        turmas: dadosNuvem.turmas || [],
-                        alunos: dadosNuvem.alunos || [],
-                        aulas: dadosNuvem.aulas || [],
-                        presencas: dadosNuvem.presencas || {}
+                    const d = docSnap.data();
+                    window.dbLocal = { 
+                        escolas: d.escolas||[], 
+                        materias: d.materias||[], 
+                        turmas: d.turmas||[], 
+                        alunos: d.alunos||[], 
+                        aulas: d.aulas||[], 
+                        presencas: d.presencas||{} 
                     };
                 } else {
                     window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
-                    setDoc(docRef, window.dbLocal).catch(console.error);
+                    setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
                 }
-                
                 document.getElementById('status-nuvem').classList.remove('hidden');
-                
                 window.atualizarSelects();
                 window.renderCadastros();
                 window.renderPlanilha();
-            }, (error) => {
-                console.error("Erro na sincronização:", error);
-                window.mostrarToast("Erro ao sincronizar com a nuvem.", "erro");
             });
         }
 
         window.salvarDados = async function() {
             if (!currentUser) return;
             document.getElementById('status-nuvem').classList.add('hidden'); 
-            try {
-                const docRef = doc(dbFirestore, "diarios", currentUser.uid);
-                await setDoc(docRef, window.dbLocal);
-            } catch (error) {
-                console.error(error);
-                window.mostrarToast("Erro ao salvar dados na nuvem.", "erro");
-            }
+            await setDoc(doc(dbFirestore, "diarios", currentUser.uid), window.dbLocal);
         };
 
         window.changeTab = function(tab) {
             document.getElementById('section-diario').classList.add('hidden');
             document.getElementById('section-cadastros').classList.add('hidden');
             
-            document.getElementById('tab-diario').className = 'px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all';
-            document.getElementById('tab-cadastros').className = 'px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-all';
+            const baseClass = "flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 ";
+            const activeClass = baseClass + "bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm";
+            const inactiveClass = baseClass + "text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300";
+
+            document.getElementById('tab-diario').className = (tab === 'diario') ? activeClass : inactiveClass;
+            document.getElementById('tab-cadastros').className = (tab === 'cadastros') ? activeClass : inactiveClass;
 
             document.getElementById('section-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).className = 'px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-white text-nc-primary shadow-sm transition-all';
 
-            if(tab === 'cadastros') window.renderCadastros();
+            if(tab === 'cadastros') {
+                cancelarEdicao(); 
+                window.renderCadastros();
+            }
             if(tab === 'diario') window.renderPlanilha();
         };
 
         window.gerarId = function() { return Date.now(); };
 
-        window.adicionar = function(tabela, inputId) {
-            const input = document.getElementById(inputId);
-            if (!input.value.trim()) return window.mostrarToast('Por favor, preencha o campo.', 'erro');
+        function cancelarEdicao() {
+            modoEdicao = { ativo: false, tabela: null, id: null };
+            document.getElementById('btn-add-escola').innerText = "+";
+            document.getElementById('btn-add-materia').innerText = "+";
+            document.getElementById('btn-add-turma').innerText = "+";
+            document.getElementById('btn-add-aluno').innerText = "+";
             
-            window.dbLocal[tabela].push({ id: window.gerarId(), nome: input.value.trim() });
-            input.value = '';
+            document.getElementById('nome-escola').value = '';
+            document.getElementById('nome-materia').value = '';
+            document.getElementById('nome-turma').value = '';
+            document.getElementById('nome-aluno').value = '';
+        }
+
+        window.iniciarEdicao = function(tabela, id) {
+            const item = window.dbLocal[tabela].find(i => i.id === id);
+            if (!item) return;
+
+            cancelarEdicao();
+            modoEdicao = { ativo: true, tabela: tabela, id: id };
+
+            if (tabela === 'escolas') {
+                document.getElementById('nome-escola').value = item.nome;
+                document.getElementById('nome-escola').focus();
+                document.getElementById('btn-add-escola').innerText = "✓";
+            } else if (tabela === 'materias') {
+                document.getElementById('nome-materia').value = item.nome;
+                document.getElementById('nome-materia').focus();
+                document.getElementById('btn-add-materia').innerText = "✓";
+            } else if (tabela === 'turmas') {
+                document.getElementById('escola-turma').value = item.escolaId || "";
+                document.getElementById('materia-turma').value = item.materiaId || "";
+                document.getElementById('nome-turma').value = item.nome;
+                document.getElementById('nome-turma').focus();
+                document.getElementById('btn-add-turma').innerText = "✓";
+            } else if (tabela === 'alunos') {
+                const turma = window.dbLocal.turmas.find(t => t.id === item.turmaId);
+                if (turma) {
+                    document.getElementById('escola-aluno').value = turma.escolaId || "";
+                    window.atualizarSelectTurmasAluno();
+                }
+                document.getElementById('turma-aluno').value = item.turmaId || "";
+                document.getElementById('nome-aluno').value = item.nome;
+                document.getElementById('nome-aluno').focus();
+                document.getElementById('btn-add-aluno').innerText = "✓";
+            }
+            
+            window.mostrarToast('Modo de edição. Altere os dados e guarde.');
+        };
+
+        window.adicionar = function(tabela, inputId) {
+            const val = document.getElementById(inputId).value.trim();
+            if (!val) return window.mostrarToast('O campo não pode estar vazio.', 'erro');
+            
+            if (modoEdicao.ativo && modoEdicao.tabela === tabela) {
+                const item = window.dbLocal[tabela].find(i => i.id === modoEdicao.id);
+                if(item) item.nome = val;
+                window.mostrarToast('Registro atualizado.');
+            } else {
+                window.dbLocal[tabela].push({ id: window.gerarId(), nome: val });
+                window.mostrarToast('Registro adicionado.');
+            }
+            
+            cancelarEdicao();
             window.salvarDados();
-            window.mostrarToast('Registro adicionado.');
         };
 
         window.adicionarTurma = function() {
-            const nome = document.getElementById('nome-turma').value;
-            const escolaId = document.getElementById('escola-turma').value;
-            if (!nome.trim() || !escolaId) return window.mostrarToast('Selecione uma escola e informe os dados.', 'erro');
+            const nome = document.getElementById('nome-turma').value.trim();
+            const escId = document.getElementById('escola-turma').value;
+            const matId = document.getElementById('materia-turma').value; 
+            if (!nome || !escId || !matId) return window.mostrarToast('Selecione escola, curso e nome.', 'erro');
             
-            window.dbLocal.turmas.push({ id: window.gerarId(), nome: nome.trim(), escolaId: parseInt(escolaId) });
-            document.getElementById('nome-turma').value = '';
+            if (modoEdicao.ativo && modoEdicao.tabela === 'turmas') {
+                const item = window.dbLocal.turmas.find(i => i.id === modoEdicao.id);
+                if(item) {
+                    item.nome = nome;
+                    item.escolaId = parseInt(escId);
+                    item.materiaId = parseInt(matId);
+                }
+                window.mostrarToast('Turma atualizada.');
+            } else {
+                window.dbLocal.turmas.push({ id: window.gerarId(), nome, escolaId: parseInt(escId), materiaId: parseInt(matId) });
+                window.mostrarToast('Turma cadastrada.');
+            }
+            
+            cancelarEdicao();
             window.salvarDados();
-            window.mostrarToast('Turma cadastrada.');
         };
 
         window.adicionarAluno = function() {
-            const nome = document.getElementById('nome-aluno').value;
-            const turmaId = document.getElementById('turma-aluno').value;
-            if (!nome.trim() || !turmaId) return window.mostrarToast('Selecione a turma e digite o nome.', 'erro');
+            const nome = document.getElementById('nome-aluno').value.trim();
+            const turId = document.getElementById('turma-aluno').value;
+            if (!nome || !turId) return window.mostrarToast('Selecione a turma e digite o nome.', 'erro');
             
-            window.dbLocal.alunos.push({ id: window.gerarId(), nome: nome.trim(), turmaId: parseInt(turmaId) });
-            document.getElementById('nome-aluno').value = '';
+            if (modoEdicao.ativo && modoEdicao.tabela === 'alunos') {
+                const item = window.dbLocal.alunos.find(i => i.id === modoEdicao.id);
+                if(item) {
+                    item.nome = nome;
+                    item.turmaId = parseInt(turId);
+                }
+                window.mostrarToast('Aluno atualizado.');
+            } else {
+                window.dbLocal.alunos.push({ id: window.gerarId(), nome, turmaId: parseInt(turId) });
+                window.mostrarToast('Aluno matriculado.');
+            }
+
+            cancelarEdicao();
             window.salvarDados();
-            window.mostrarToast('Aluno matriculado.');
         };
 
         window.remover = function(tabela, id) {
-            window.dbLocal[tabela] = window.dbLocal[tabela].filter(item => item.id !== id);
-            window.salvarDados();
-            window.mostrarToast('Registro removido.');
-        };
-
-        window.abrirModalEditar = function(tabela, id, nomeAtual) {
-            const modal = document.getElementById('modal-editar');
-            const input = document.getElementById('modal-editar-nome');
-            
-            input.value = nomeAtual;
-            modal.dataset.tabela = tabela;
-            modal.dataset.id = id;
-            
-            modal.classList.remove('hidden');
-            setTimeout(() => input.focus(), 100);
-        };
-
-        window.fecharModalEditar = function() {
-            document.getElementById('modal-editar').classList.add('hidden');
-        };
-
-        window.salvarEdicao = function() {
-            const modal = document.getElementById('modal-editar');
-            const tabela = modal.dataset.tabela;
-            const id = parseInt(modal.dataset.id);
-            const novoNome = document.getElementById('modal-editar-nome').value.trim();
-
-            if (!novoNome) return window.mostrarToast('O nome não pode ficar vazio.', 'erro');
-
-            const item = window.dbLocal[tabela].find(i => i.id === id);
-            if (item) {
-                item.nome = novoNome;
+            if(confirm("Tem certeza que deseja apagar? Esta ação não pode ser desfeita.")) {
+                window.dbLocal[tabela] = window.dbLocal[tabela].filter(i => i.id !== id);
+                if(modoEdicao.id === id) cancelarEdicao();
                 window.salvarDados();
-                window.fecharModalEditar();
-                window.mostrarToast('Registro atualizado com sucesso.');
             }
         };
 
         window.renderCadastros = function() {
-            const renderLista = (tabela, elementoId, arrayDeDados, infoExtra = null) => {
-                const ul = document.getElementById(elementoId);
+            const renderLista = (tabela, elId, arr, infoExtra = null) => {
+                const ul = document.getElementById(elId);
                 ul.innerHTML = '';
-                
-                if (arrayDeDados.length === 0) {
-                    ul.innerHTML = `<li class="p-3 text-center text-gray-400 italic text-sm">Nenhum registro encontrado para a seleção atual.</li>`;
-                    return;
-                }
+                if (arr.length === 0) return ul.innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Sem registros</li>`;
 
-                arrayDeDados.forEach(item => {
+                arr.forEach(item => {
                     let extra = '';
                     if (infoExtra === 'turma') {
-                        const escola = window.dbLocal.escolas.find(e => e.id === item.escolaId);
-                        extra = `<span class="text-xs font-medium text-nc-accent bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded mt-1 inline-block">${escola ? escola.nome : ''}</span>`;
+                        const m = window.dbLocal.materias.find(x => x.id === item.materiaId);
+                        extra = `<span class="text-[11px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-700 px-2 py-0.5 rounded-md mt-1 inline-block">${m ? m.nome : 'Sem Curso'}</span>`;
                     } else if (infoExtra === 'aluno') {
-                        const turma = window.dbLocal.turmas.find(t => t.id === item.turmaId);
-                        extra = `<span class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded mt-1 inline-block">${turma ? turma.nome : ''}</span>`;
+                        const t = window.dbLocal.turmas.find(x => x.id === item.turmaId);
+                        extra = `<span class="text-[11px] font-black uppercase tracking-wider text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-slate-600 px-2 py-0.5 rounded-md mt-1 inline-block">${t ? t.nome : 'Turma Apagada'}</span>`;
                     }
                     
+                    const safeName = item.nome.replace(/'/g, "\\'");
+                    
                     ul.innerHTML += `
-                        <li class="p-3 bg-gray-50 dark:bg-slate-800/50 rounded-lg flex justify-between items-center border border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600 transition-colors mb-2">
+                        <li class="p-4 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-xl flex justify-between items-center mb-3">
                             <div class="flex flex-col">
-                                <span class="text-sm font-semibold text-nc-text dark:text-slate-200">${item.nome}</span>
+                                <span class="text-sm font-black text-gray-900 dark:text-white">${item.nome}</span>
                                 <div>${extra}</div>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <button data-nome="${item.nome}" onclick="window.abrirModalEditar('${tabela}', ${item.id}, this.getAttribute('data-nome'))" class="text-gray-400 hover:text-nc-accent p-1.5 transition-colors" title="Editar Nome">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            <div class="flex gap-1">
+                                <button onclick="window.iniciarEdicao('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-white dark:hover:bg-slate-800 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
-                                <button onclick="window.remover('${tabela}', ${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 transition-colors" title="Remover">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                <button onclick="window.remover('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white dark:hover:bg-slate-800 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </div>
                         </li>`;
                 });
             };
 
-            renderLista('escolas', 'lista-escolas', window.dbLocal.escolas);
-            renderLista('materias', 'lista-materias', window.dbLocal.materias);
+            const ordEsc = [...window.dbLocal.escolas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+            const ordMat = [...window.dbLocal.materias].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+            
+            renderLista('escolas', 'lista-escolas', ordEsc);
+            renderLista('materias', 'lista-materias', ordMat);
 
-            const escolaFiltro = document.getElementById('escola-turma').value;
-            let turmasFiltradas = window.dbLocal.turmas;
-            if (escolaFiltro) {
-                turmasFiltradas = turmasFiltradas.filter(t => t.escolaId == escolaFiltro);
+            const escFiltro = document.getElementById('escola-turma').value;
+            if (escFiltro) {
+                let tArr = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escFiltro));
+                renderLista('turmas', 'lista-turmas', tArr.sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')), 'turma');
+            } else {
+                document.getElementById('lista-turmas').innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola acima para ver as turmas</li>`;
             }
-            renderLista('turmas', 'lista-turmas', turmasFiltradas, 'turma');
 
-            const turmaFiltro = document.getElementById('turma-aluno').value;
-            let alunosFiltrados = window.dbLocal.alunos;
-            if (turmaFiltro) {
-                alunosFiltrados = alunosFiltrados.filter(a => a.turmaId == turmaFiltro);
+            const escAlunoFiltro = document.getElementById('escola-aluno').value;
+            const turFiltro = document.getElementById('turma-aluno').value;
+            if (escAlunoFiltro && turFiltro) {
+                let aArr = window.dbLocal.alunos.filter(a => a.turmaId == parseInt(turFiltro));
+                renderLista('alunos', 'lista-alunos', aArr.sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')), 'aluno');
+            } else {
+                document.getElementById('lista-alunos').innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola e turma acima</li>`;
             }
-            renderLista('alunos', 'lista-alunos', alunosFiltrados, 'aluno');
         };
 
         window.atualizarSelects = function() {
@@ -749,113 +716,147 @@
                 const select = document.getElementById(selectId);
                 const valorAtual = select.value;
                 select.innerHTML = `<option value="">${placeholder}</option>`;
-                dados.forEach(item => {
-                    let extra = '';
-                    if(selectId === 'select-turma-diario' || selectId === 'turma-aluno') {
-                        const escola = window.dbLocal.escolas.find(e => e.id === item.escolaId);
-                        extra = escola ? ` - ${escola.nome}` : '';
-                    }
-                    select.innerHTML += `<option value="${item.id}">${item.nome}${extra}</option>`;
+                
+                const sortedDados = [...dados].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+                
+                sortedDados.forEach(item => {
+                    select.innerHTML += `<option value="${item.id}">${item.nome}</option>`;
                 });
-                if (dados.find(d => d.id == valorAtual)) select.value = valorAtual;
-                else if (dados.length > 0 && selectId === 'select-turma-diario') select.value = dados[0].id;
+                
+                if (sortedDados.find(d => d.id == valorAtual)) select.value = valorAtual;
             };
             
-            preencher('escola-turma', window.dbLocal.escolas, 'Todas as Escolas (Filtro)...');
-            preencher('turma-aluno', window.dbLocal.turmas, 'Todas as Turmas (Filtro)...');
-            preencher('select-turma-diario', window.dbLocal.turmas, 'Selecione uma turma para carregar...');
+            preencher('escola-turma', window.dbLocal.escolas, 'Selecionar Escola...');
+            preencher('materia-turma', window.dbLocal.materias, 'Selecionar Curso...');
+            preencher('escola-aluno', window.dbLocal.escolas, 'Selecionar Escola...');
+            preencher('select-escola-diario', window.dbLocal.escolas, 'Selecionar Escola...');
+            
+            window.atualizarSelectTurmasAluno();
+            window.atualizarSelectTurmasDiario();
+        };
+
+        window.atualizarSelectTurmasAluno = function() {
+            const escolaId = document.getElementById('escola-aluno').value;
+            const select = document.getElementById('turma-aluno');
+            const valorAtual = select.value;
+            
+            select.innerHTML = `<option value="">Selecionar Turma...</option>`;
+            
+            if (escolaId) {
+                const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
+                const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+                
+                sorted.forEach(t => {
+                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
+                });
+                
+                if (sorted.find(d => d.id == valorAtual)) select.value = valorAtual;
+            }
+            window.renderCadastros();
+        };
+
+        window.atualizarSelectTurmasDiario = function() {
+            const escolaId = document.getElementById('select-escola-diario').value;
+            const select = document.getElementById('select-turma-diario');
+            const valorAtual = select.value;
+            
+            select.innerHTML = `<option value="">Selecionar Turma...</option>`;
+            
+            if (escolaId) {
+                const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
+                const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+                
+                sorted.forEach(t => {
+                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
+                });
+                
+                if (sorted.find(d => d.id == valorAtual)) select.value = valorAtual;
+            }
+            window.renderPlanilha();
         };
 
         window.formatarData = function(dataString) {
             const [ano, mes, dia] = dataString.split('-');
             const dataObj = new Date(ano, mes - 1, dia);
-            const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            return `<div class="font-bold text-[13px]">${dia}/${mes}</div><div class="text-[11px] font-normal mt-0.5">${diasSemana[dataObj.getDay()]}</div>`;
+            const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            return `<div class="font-black text-base">${dia}/${mes}</div><div class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-400">${dias[dataObj.getDay()]}</div>`;
         };
 
         let turmaAtualId = null;
 
         window.renderPlanilha = function() {
+            const escolaSelect = document.getElementById('select-escola-diario').value;
             const turmaSelect = document.getElementById('select-turma-diario').value;
             const mesSelect = document.getElementById('input-mes-diario').value; 
             
-            if (!turmaSelect) {
-                document.getElementById('tabela-diario').innerHTML = `<tr><td class="p-10 text-center text-gray-500 dark:text-gray-400">Nenhuma turma selecionada.</td></tr>`;
+            if (!escolaSelect || !turmaSelect) {
+                document.getElementById('tabela-diario').innerHTML = `<tr><td class="p-10 text-center text-gray-500 font-bold">Selecione uma escola e uma turma acima.</td></tr>`;
                 return;
             }
 
             turmaAtualId = parseInt(turmaSelect);
             const turma = window.dbLocal.turmas.find(t => t.id === turmaAtualId);
             const escola = window.dbLocal.escolas.find(e => e.id === turma.escolaId);
-            const materia = window.dbLocal.materias.length > 0 ? window.dbLocal.materias[0] : {nome: 'CURSO'};
+            const materia = window.dbLocal.materias.find(m => m.id === turma.materiaId) || {nome: 'Geral'};
             
-            const alunosTurma = window.dbLocal.alunos.filter(a => a.turmaId === turmaAtualId);
-            const aulas = window.dbLocal.aulas.filter(a => {
-                if (a.turmaId !== turmaAtualId) return false;
-                if (mesSelect) return a.data.startsWith(mesSelect);
-                return true;
-            }).sort((a, b) => a.data.localeCompare(b.data));
+            const alunosTurma = window.dbLocal.alunos.filter(a => a.turmaId === turmaAtualId).sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+            const aulas = window.dbLocal.aulas.filter(a => a.turmaId === turmaAtualId && (!mesSelect || a.data.startsWith(mesSelect))).sort((a, b) => a.data.localeCompare(b.data));
 
             const nomeMes = mesSelect ? new Date(mesSelect + '-01T00:00:00').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'}) : 'Todas as datas';
-            const mesFormatado = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1).replace(' de ', ' ');
 
             let html = `
                 <thead>
-                    <tr><th colspan="${aulas.length + 3}" class="bg-nc-primary text-white p-3 text-center text-xl tracking-wide border-b-[6px] border-nc-accent font-semibold">NEW CODE &middot; Lista de Presença</th></tr>
-                    <tr><th colspan="${aulas.length + 3}" class="bg-nc-primary text-white p-2 text-center text-sm font-medium border-b border-gray-600/50">${mesFormatado} &mdash; ${escola ? escola.nome : ''}</th></tr>
-                    <tr><th colspan="${aulas.length + 3}" class="bg-nc-primary text-gray-300 p-1.5 text-center text-xs font-normal border-b-[6px] border-nc-accent tracking-wide">${materia.nome} &middot; ${turma.nome}</th></tr>
-                    <tr><th class="bg-nc-primary text-white p-3 text-left w-64 text-sm font-bold tracking-wider border-r border-gray-600/30">ALUNO</th>
+                    <tr class="bg-gray-50 dark:bg-slate-800/80 border-b border-gray-200 dark:border-slate-700">
+                        <th colspan="${aulas.length + 3}" class="p-5 text-left">
+                            <div class="font-black text-2xl text-gray-900 dark:text-white capitalize mb-2">${nomeMes}</div>
+                            <div class="flex flex-wrap items-center gap-2 text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${escola ? escola.nome : 'Sem Escola'}</span>
+                                <span class="bg-blue-100 text-blue-700 dark:bg-slate-700 dark:text-blue-400 px-2 py-1 rounded-md">${materia.nome}</span>
+                                <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${turma.nome}</span>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 text-gray-500 dark:text-gray-400">
+                        <th class="p-4 text-left w-64 text-[11px] font-black tracking-widest uppercase border-r border-gray-200 dark:border-slate-700">Aluno</th>
             `;
 
             aulas.forEach(aula => {
-                html += `<th class="bg-nc-primary text-white p-2 w-16 text-center border-r border-gray-600/30 cursor-pointer hover:bg-nc-primary-hover transition-colors" title="${aula.conteudo || 'Editar'}" onclick="window.editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
+                html += `<th class="p-2 w-16 text-center border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" title="${aula.conteudo || 'Editar Aula'}" onclick="window.editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
             });
 
             html += `
-                        <th class="bg-nc-p-header text-white p-2 w-20 text-center text-sm font-bold border-r border-gray-600/30">Total P</th>
-                        <th class="bg-nc-f-header text-white p-2 w-20 text-center text-sm font-bold">Total F</th>
+                        <th class="p-3 w-16 text-center text-[10px] font-black uppercase tracking-widest border-r border-gray-200 dark:border-slate-700 text-green-600 dark:text-green-500">Pres</th>
+                        <th class="p-3 w-16 text-center text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-500">Falta</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-slate-800">
+                <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
             `;
 
-            if (alunosTurma.length === 0) {
-                html += `<tr><td colspan="${aulas.length + 3}" class="p-6 text-center text-gray-500">Sem alunos.</td></tr>`;
-            }
+            if (alunosTurma.length === 0) html += `<tr><td colspan="${aulas.length + 3}" class="p-8 text-center text-gray-400 font-bold">Nenhum aluno matriculado nesta turma.</td></tr>`;
 
-            alunosTurma.forEach((aluno, index) => {
-                const bgClass = index % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-nc-row-alt dark:bg-slate-700/50';
-                let totalP = 0, totalF = 0;
-
-                html += `<tr class="${bgClass} hover:bg-blue-50/50 dark:hover:bg-slate-700 transition-colors"><td class="p-2.5 font-medium text-nc-text dark:text-slate-200 border-b border-r border-gray-200 dark:border-slate-600 text-[13px] whitespace-nowrap">${aluno.nome}</td>`;
+            alunosTurma.forEach((aluno) => {
+                let tP = 0, tF = 0;
+                html += `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors"><td class="p-4 font-black text-gray-800 dark:text-white text-sm border-r border-gray-200 dark:border-slate-700 whitespace-nowrap">${aluno.nome}</td>`;
 
                 aulas.forEach(aula => {
-                    const chave = `${aula.id}_${aluno.id}`;
-                    const status = window.dbLocal.presencas[chave] || '';
-                    if (status === 'P') totalP++;
-                    if (status === 'F') totalF++;
-                    let textClass = status === 'P' ? 'status-p' : (status === 'F' ? 'status-f' : 'text-gray-400');
+                    const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`] || '';
+                    if (status === 'P') tP++;
+                    if (status === 'F') tF++;
+                    
+                    let c = status === 'P' ? 'status-p' : (status === 'F' ? 'status-f' : 'status-empty');
 
-                    html += `<td class="p-0 border-b border-r border-gray-200 dark:border-slate-600">
-                                <select class="select-status ${textClass} hover:bg-gray-100/50 dark:hover:bg-slate-600/50" onchange="window.registrarPresenca(${aula.id}, ${aluno.id}, this.value)">
-                                    <option value="" ${status === '' ? 'selected' : ''}></option>
-                                    <option value="P" ${status === 'P' ? 'selected' : ''}>P</option>
-                                    <option value="F" ${status === 'F' ? 'selected' : ''}>F</option>
+                    html += `<td class="p-0 border-r border-gray-200 dark:border-slate-700 relative align-middle">
+                                <select class="select-status ${c}" onchange="window.registrarPresenca(${aula.id}, ${aluno.id}, this.value)">
+                                    <option value="" ${!status?'selected':''}>-</option>
+                                    <option value="P" ${status==='P'?'selected':''}>P</option>
+                                    <option value="F" ${status==='F'?'selected':''}>F</option>
                                 </select>
                              </td>`;
                 });
 
-                html += `<td class="p-2 border-b border-r border-gray-300 dark:border-slate-600 bg-nc-p-cell dark:bg-[#2c4c34] text-center font-bold text-nc-text dark:text-green-300">${totalP}</td>
-                         <td class="p-2 border-b border-gray-300 dark:border-slate-600 bg-nc-f-cell dark:bg-[#5c2b2b] text-center font-bold text-nc-text dark:text-red-300">${totalF}</td></tr>`;
+                html += `<td class="p-0 border-r border-gray-200 dark:border-slate-700 text-center font-black text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 text-base">${tP}</td>
+                         <td class="p-0 text-center font-black text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 text-base">${tF}</td></tr>`;
             });
-
-            for(let i=0; i<3; i++) {
-                const bgClass = (alunosTurma.length + i) % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-nc-row-alt dark:bg-slate-700/50';
-                html += `<tr class="${bgClass} h-10"><td class="border-b border-r border-gray-200 dark:border-slate-600"></td>`;
-                aulas.forEach(() => { html += `<td class="border-b border-r border-gray-200 dark:border-slate-600"></td>`; });
-                html += `<td class="border-b border-r border-gray-300 dark:border-slate-600 bg-nc-p-cell dark:bg-[#2c4c34] text-center font-bold text-nc-text dark:text-green-300">0</td>
-                         <td class="border-b border-gray-300 dark:border-slate-600 bg-nc-f-cell dark:bg-[#5c2b2b] text-center font-bold text-nc-text dark:text-red-300">0</td></tr>`;
-            }
 
             html += `</tbody>`;
             document.getElementById('tabela-diario').innerHTML = html;
@@ -867,7 +868,7 @@
         };
 
         window.adicionarAula = function() {
-            if (!turmaAtualId) return window.mostrarToast('Selecione uma turma antes.', 'erro');
+            if (!turmaAtualId) return window.mostrarToast('Selecione uma turma.', 'erro');
             document.getElementById('modal-data').value = '';
             document.getElementById('modal-conteudo').value = '';
             document.getElementById('modal-aula').dataset.aulaId = '';
@@ -883,21 +884,17 @@
             document.getElementById('modal-aula').classList.remove('hidden');
         };
 
-        window.fecharModal = function() {
-            document.getElementById('modal-aula').classList.add('hidden');
-        };
+        window.fecharModal = function() { document.getElementById('modal-aula').classList.add('hidden'); };
 
         window.salvarAula = function() {
             const data = document.getElementById('modal-data').value;
             const conteudo = document.getElementById('modal-conteudo').value;
             const aulaId = document.getElementById('modal-aula').dataset.aulaId;
-
-            if(!data) return window.mostrarToast('A data é obrigatória.', 'erro');
+            if(!data) return window.mostrarToast('Data é obrigatória.', 'erro');
 
             if(aulaId) {
                 const aula = window.dbLocal.aulas.find(a => a.id === parseInt(aulaId));
-                aula.data = data;
-                aula.conteudo = conteudo;
+                aula.data = data; aula.conteudo = conteudo;
             } else {
                 window.dbLocal.aulas.push({ id: window.gerarId(), turmaId: turmaAtualId, data, conteudo });
             }
@@ -906,21 +903,17 @@
         };
 
         window.initTheme = function() {
-            const savedTheme = localStorage.getItem('newcode_theme') || 'dark';
-            if (savedTheme === 'light') {
+            if (localStorage.getItem('newcode_theme') === 'light') {
                 document.documentElement.classList.remove('dark');
                 document.getElementById('icon-sun').classList.remove('hidden');
-                document.getElementById('icon-moon').classList.add('hidden');
             } else {
                 document.documentElement.classList.add('dark');
                 document.getElementById('icon-moon').classList.remove('hidden');
-                document.getElementById('icon-sun').classList.add('hidden');
             }
         };
 
         window.toggleTheme = function() {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
+            if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('newcode_theme', 'light');
                 document.getElementById('icon-sun').classList.remove('hidden');

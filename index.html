@@ -109,16 +109,22 @@
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 3.5rem;
+            height: 2.5rem; /* Ajustado para mobile */
             border: none;
             outline: none;
             font-weight: 900;
-            font-size: 1.125rem;
+            font-size: 1rem; /* Ajustado para mobile */
             text-align: center;
             text-align-last: center;
             padding: 0;
             margin: 0;
             cursor: pointer;
+        }
+        @media (min-width: 640px) {
+            .select-status {
+                height: 3.5rem;
+                font-size: 1.125rem;
+            }
         }
 
         .status-p { 
@@ -164,7 +170,7 @@
                 <div id="form-login" class="space-y-5">
                     <div>
                         <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail Corporativo</label>
-                        <input type="email" id="login-email" class="app-input" placeholder="nome@newcodeschool.com.br">
+                        <input type="email" id="login-email" class="app-input" placeholder="seu.email@newcode.com">
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-2">
@@ -316,6 +322,10 @@
                                 <input type="text" id="nome-aluno" placeholder="Nome do aluno" class="app-input flex-1">
                                 <button id="btn-add-aluno" onclick="window.adicionarAluno()" class="app-btn !w-auto !px-6">+</button>
                             </div>
+                            <div class="flex items-center gap-2 px-1 pt-1">
+                                <input type="checkbox" id="demo-aluno" class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-slate-700 dark:border-slate-600">
+                                <label for="demo-aluno" class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer">Aula Experimental (Demo)</label>
+                            </div>
                         </div>
                         <ul id="lista-alunos" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
                     </div>
@@ -350,6 +360,7 @@
         </div>
     </div>
 
+    <!-- SCRIPT FIREBASE E LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -544,6 +555,7 @@
             document.getElementById('nome-materia').value = '';
             document.getElementById('nome-turma').value = '';
             document.getElementById('nome-aluno').value = '';
+            document.getElementById('demo-aluno').checked = false;
         }
 
         window.iniciarEdicao = function(tabela, id) {
@@ -575,11 +587,22 @@
                 }
                 document.getElementById('turma-aluno').value = item.turmaId || "";
                 document.getElementById('nome-aluno').value = item.nome;
+                document.getElementById('demo-aluno').checked = !!item.isDemo;
                 document.getElementById('nome-aluno').focus();
                 document.getElementById('btn-add-aluno').innerText = "✓";
             }
             
             window.mostrarToast('Modo de edição. Altere os dados e guarde.');
+        };
+
+        window.toggleDemo = function(id) {
+            const aluno = window.dbLocal.alunos.find(a => a.id === id);
+            if (aluno) {
+                aluno.isDemo = !aluno.isDemo;
+                window.salvarDados();
+                window.renderCadastros();
+                window.renderPlanilha();
+            }
         };
 
         window.adicionar = function(tabela, inputId) {
@@ -625,6 +648,8 @@
         window.adicionarAluno = function() {
             const nome = document.getElementById('nome-aluno').value.trim();
             const turId = document.getElementById('turma-aluno').value;
+            const isDemo = document.getElementById('demo-aluno').checked;
+            
             if (!nome || !turId) return window.mostrarToast('Selecione a turma e digite o nome.', 'erro');
             
             if (modoEdicao.ativo && modoEdicao.tabela === 'alunos') {
@@ -632,10 +657,11 @@
                 if(item) {
                     item.nome = nome;
                     item.turmaId = parseInt(turId);
+                    item.isDemo = isDemo;
                 }
                 window.mostrarToast('Aluno atualizado.');
             } else {
-                window.dbLocal.alunos.push({ id: window.gerarId(), nome, turmaId: parseInt(turId) });
+                window.dbLocal.alunos.push({ id: window.gerarId(), nome, turmaId: parseInt(turId), isDemo });
                 window.mostrarToast('Aluno matriculado.');
             }
 
@@ -659,12 +685,25 @@
 
                 arr.forEach(item => {
                     let extra = '';
+                    let btnDemo = '';
+                    
                     if (infoExtra === 'turma') {
                         const m = window.dbLocal.materias.find(x => x.id === item.materiaId);
                         extra = `<span class="text-[11px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-700 px-2 py-0.5 rounded-md mt-1 inline-block">${m ? m.nome : 'Sem Curso'}</span>`;
                     } else if (infoExtra === 'aluno') {
                         const t = window.dbLocal.turmas.find(x => x.id === item.turmaId);
                         extra = `<span class="text-[11px] font-black uppercase tracking-wider text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-slate-600 px-2 py-0.5 rounded-md mt-1 inline-block">${t ? t.nome : 'Turma Apagada'}</span>`;
+                        
+                        if (item.isDemo) {
+                            extra += ` <span class="text-[11px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-slate-700 border border-purple-200 dark:border-purple-600 px-2 py-0.5 rounded-md mt-1 inline-block ml-1">DEMO</span>`;
+                        }
+                        
+                        const demoColor = item.isDemo ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20' : 'text-gray-400 hover:text-purple-600 hover:bg-white dark:hover:bg-slate-800';
+                        btnDemo = `
+                            <button onclick="window.toggleDemo(${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center transition-all ${demoColor}" title="Alternar Demo">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </button>
+                        `;
                     }
                     
                     const safeName = item.nome.replace(/'/g, "\\'");
@@ -676,10 +715,11 @@
                                 <div>${extra}</div>
                             </div>
                             <div class="flex gap-1">
-                                <button onclick="window.iniciarEdicao('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-white dark:hover:bg-slate-800 transition-all">
+                                ${btnDemo}
+                                <button onclick="window.iniciarEdicao('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-white dark:hover:bg-slate-800 transition-all" title="Editar">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
-                                <button onclick="window.remover('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white dark:hover:bg-slate-800 transition-all">
+                                <button onclick="window.remover('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white dark:hover:bg-slate-800 transition-all" title="Apagar">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </div>
@@ -779,7 +819,7 @@
             const [ano, mes, dia] = dataString.split('-');
             const dataObj = new Date(ano, mes - 1, dia);
             const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            return `<div class="font-black text-base">${dia}/${mes}</div><div class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-400">${dias[dataObj.getDay()]}</div>`;
+            return `<div class="font-black text-xs sm:text-base">${dia}/${mes}</div><div class="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5 sm:mt-1 text-gray-400">${dias[dataObj.getDay()]}</div>`;
         };
 
         let turmaAtualId = null;
@@ -807,9 +847,9 @@
             let html = `
                 <thead>
                     <tr class="bg-gray-50 dark:bg-slate-800/80 border-b border-gray-200 dark:border-slate-700">
-                        <th colspan="${aulas.length + 3}" class="p-5 text-left">
-                            <div class="font-black text-2xl text-gray-900 dark:text-white capitalize mb-2">${nomeMes}</div>
-                            <div class="flex flex-wrap items-center gap-2 text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th colspan="${aulas.length + 3}" class="p-3 sm:p-5 text-left">
+                            <div class="font-black text-xl sm:text-2xl text-gray-900 dark:text-white capitalize mb-2">${nomeMes}</div>
+                            <div class="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${escola ? escola.nome : 'Sem Escola'}</span>
                                 <span class="bg-blue-100 text-blue-700 dark:bg-slate-700 dark:text-blue-400 px-2 py-1 rounded-md">${materia.nome}</span>
                                 <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${turma.nome}</span>
@@ -817,16 +857,16 @@
                         </th>
                     </tr>
                     <tr class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 text-gray-500 dark:text-gray-400">
-                        <th class="p-4 text-left w-64 text-[11px] font-black tracking-widest uppercase border-r border-gray-200 dark:border-slate-700">Aluno</th>
+                        <th class="p-2 sm:p-4 text-left text-[10px] sm:text-[11px] font-black tracking-widest uppercase border-r border-gray-200 dark:border-slate-700 w-1/3 sm:w-auto truncate max-w-[120px] sm:max-w-none">Aluno</th>
             `;
 
             aulas.forEach(aula => {
-                html += `<th class="p-2 w-16 text-center border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" title="${aula.conteudo || 'Editar Aula'}" onclick="window.editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
+                html += `<th class="p-1 sm:p-2 w-10 sm:w-16 text-center border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" title="${aula.conteudo || 'Editar Aula'}" onclick="window.editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
             });
 
             html += `
-                        <th class="p-3 w-16 text-center text-[10px] font-black uppercase tracking-widest border-r border-gray-200 dark:border-slate-700 text-green-600 dark:text-green-500">Pres</th>
-                        <th class="p-3 w-16 text-center text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-500">Falta</th>
+                        <th class="p-1 sm:p-3 w-8 sm:w-16 text-center text-[9px] sm:text-[10px] font-black uppercase tracking-widest border-r border-gray-200 dark:border-slate-700 text-green-600 dark:text-green-500">Pres</th>
+                        <th class="p-1 sm:p-3 w-8 sm:w-16 text-center text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-500">Falta</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
@@ -836,7 +876,14 @@
 
             alunosTurma.forEach((aluno) => {
                 let tP = 0, tF = 0;
-                html += `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors"><td class="p-4 font-black text-gray-800 dark:text-white text-sm border-r border-gray-200 dark:border-slate-700 whitespace-nowrap">${aluno.nome}</td>`;
+                
+                html += `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-2 sm:p-4 border-r border-gray-200 dark:border-slate-700 max-w-[120px] sm:max-w-none truncate">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 truncate">
+                                    <span class="font-black text-gray-800 dark:text-white text-xs sm:text-sm truncate" title="${aluno.nome}">${aluno.nome}</span>
+                                    ${aluno.isDemo ? `<span class="px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-black uppercase tracking-wider text-purple-700 dark:text-purple-400 bg-purple-100 dark:bg-slate-800 border border-purple-200 dark:border-purple-700 w-max">Demo</span>` : ''}
+                                </div>
+                            </td>`;
 
                 aulas.forEach(aula => {
                     const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`] || '';
@@ -854,8 +901,8 @@
                              </td>`;
                 });
 
-                html += `<td class="p-0 border-r border-gray-200 dark:border-slate-700 text-center font-black text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 text-base">${tP}</td>
-                         <td class="p-0 text-center font-black text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 text-base">${tF}</td></tr>`;
+                html += `<td class="p-1 sm:p-0 border-r border-gray-200 dark:border-slate-700 text-center font-black text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 text-sm sm:text-base">${tP}</td>
+                         <td class="p-1 sm:p-0 text-center font-black text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20 text-sm sm:text-base">${tF}</td></tr>`;
             });
 
             html += `</tbody>`;

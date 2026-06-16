@@ -31,9 +31,10 @@
         }
     </script>
     <style>
-        html { color-scheme: light; }
-        html.dark { color-scheme: dark; }
-
+        :root {
+            color-scheme: light dark;
+        }
+        
         body { 
             @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-white;
             -webkit-font-smoothing: antialiased;
@@ -56,20 +57,21 @@
                    dark:bg-slate-800 dark:border-transparent dark:text-white dark:placeholder-gray-400;
             transition: all 0.2s ease;
         }
-        .app-input:focus {
-            outline: none;
-            @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
-        }
-
+        
         select.app-input {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 1rem center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
+            background-position: right 1rem center;
             background-size: 1.5em 1.5em;
             padding-right: 2.5rem;
         }
         .dark select.app-input {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .app-input:focus {
+            outline: none;
+            @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
         }
         
         input[type="month"], input[type="date"] {
@@ -231,7 +233,7 @@
                         <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Criar Senha Segura</label>
                         <input type="password" id="cad-senha" class="app-input" placeholder="Mínimo 6 caracteres">
                     </div>
-                    <button id="btn-cadastro" class="app-btn mt-6">Registrar e Entrar</button>
+                    <button id="btn-cadastro" class="app-btn mt-6">Registar e Entrar</button>
                     <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
                         <button type="button" onclick="window.toggleAuthMode()" class="app-btn-outline">Já tenho conta (Login)</button>
                     </div>
@@ -263,7 +265,7 @@
                         <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button id="btn-logout" class="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                    <button id="btn-logout" class="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Sair do Sistema">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     </button>
                 </div>
@@ -296,10 +298,17 @@
                             <input type="month" id="input-mes-diario" class="app-input" onchange="window.renderPlanilha()">
                         </div>
                     </div>
-                    <div class="w-full mt-2 md:mt-0 md:w-auto self-end">
-                        <button onclick="window.adicionarAula()" class="app-btn w-full flex items-center justify-center gap-2">
+                    
+                    <div class="w-full mt-2 md:mt-0 md:w-auto self-end flex gap-2">
+                        <button onclick="window.adicionarAula()" class="app-btn flex-1 md:flex-none flex items-center justify-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             Nova Aula
+                        </button>
+                        <button id="btn-whatsapp" onclick="window.exportarWhatsApp()" class="app-btn hidden flex-1 md:flex-none flex items-center justify-center gap-2 !bg-green-600 hover:!bg-green-700 text-white transition-colors" title="Enviar para o WhatsApp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                            </svg>
+                            Enviar
                         </button>
                     </div>
                 </div>
@@ -313,6 +322,12 @@
 
             <!-- CADASTROS -->
             <div id="section-cadastros" class="hidden">
+                <div class="flex justify-end mb-4">
+                    <button onclick="window.abrirModalImportacao()" class="app-btn !w-auto !bg-green-600 hover:!bg-green-700 gap-2 px-6">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Importar Planilha
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     
                     <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
@@ -368,6 +383,31 @@
         </main>
     </div>
 
+    <!-- Modal Importação -->
+    <div id="modal-importacao" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                <h3 class="font-black text-xl text-gray-900 dark:text-white">Importar Dados (Excel / Sheets)</h3>
+                <button onclick="window.fecharModalImportacao()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="space-y-5">
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Copie as colunas da sua planilha e cole abaixo. O sistema espera que os dados estejam na seguinte ordem (separados por colunas do Excel):
+                </p>
+                <div class="bg-blue-50 dark:bg-slate-900 p-3 rounded-xl border border-blue-100 dark:border-slate-700 text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between uppercase">
+                    <span>1. Escola</span> <span>2. Curso</span> <span>3. Turma</span> <span>4. Nome do Aluno</span>
+                </div>
+                <textarea id="texto-importacao" rows="8" class="app-input resize-none font-mono text-sm" placeholder="Cole aqui os dados do seu Excel..."></textarea>
+            </div>
+            <div class="mt-8 flex gap-3">
+                <button onclick="window.fecharModalImportacao()" class="flex-1 py-3 text-sm font-bold rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">Cancelar</button>
+                <button id="btn-processar-importacao" onclick="window.processarImportacao()" class="flex-1 py-3 text-sm font-bold rounded-xl bg-green-600 text-white hover:bg-green-700 transition-colors shadow-lg shadow-green-600/30">Processar e Importar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Nova Aula -->
     <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
         <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
@@ -394,7 +434,7 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação (Substitui confirm nativo) -->
+    <!-- Modal de Confirmação -->
     <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
         <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 dark:border-slate-700 text-center">
             <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center text-red-600 dark:text-red-400 mx-auto mb-4">
@@ -549,45 +589,30 @@
         });
 
         async function iniciarSincronizacao(uid) {
+            // 1. Carrega primeiro da memória rápida do navegador para evitar o "Reset"
+            const cache = localStorage.getItem('diario_nc_' + uid);
+            if (cache) {
+                try {
+                    window.dbLocal = JSON.parse(cache);
+                    window.atualizarSelects();
+                    window.renderCadastros();
+                    window.renderPlanilha();
+                } catch(e) {}
+            }
+
+            // 2. Procura na nuvem para manter tudo sincronizado com segurança
             const { data, error } = await supabaseClient
                 .from('diarios')
                 .select('dados')
                 .eq('user_id', uid)
-                .single();
+                .maybeSingle();
 
-            if (error && error.code !== 'PGRST116') {
-                console.error("Erro banco de dados:", error);
-                window.mostrarToast(`Erro a ler dados: ${error.message}`, 'erro');
-            } else if (data && data.dados) {
-                const d = data.dados;
-                const escolas = d.escolas || [];
-                const materias = d.materias || [];
-                let turmas = d.turmas || [];
-
-                if (escolas.length > 0) {
-                    turmas = turmas.map(t => {
-                        if (!t.escolaId || !t.materiaId) {
-                            return {
-                                ...t,
-                                escolaId: t.escolaId || escolas[0].id,
-                                materiaId: t.materiaId || (materias.length > 0 ? materias[0].id : null)
-                            };
-                        }
-                        return t;
-                    });
-                }
-
-                window.dbLocal = { 
-                    escolas: escolas, 
-                    materias: materias, 
-                    turmas: turmas, 
-                    alunos: d.alunos||[], 
-                    aulas: d.aulas||[], 
-                    presencas: d.presencas||{} 
-                };
-            } else {
+            if (data && data.dados) {
+                window.dbLocal = data.dados;
+                localStorage.setItem('diario_nc_' + uid, JSON.stringify(window.dbLocal));
+            } else if (!cache) {
                 window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
-                await salvarDados();
+                await salvarDados(true);
             }
             
             document.getElementById('status-nuvem').classList.remove('hidden');
@@ -596,10 +621,14 @@
             window.renderPlanilha();
         }
 
-        window.salvarDados = async function() {
+        window.salvarDados = async function(silencioso = false) {
             if (!currentUser) return;
             document.getElementById('status-nuvem').classList.add('hidden'); 
             
+            // Grava sempre no aparelho para blindar os seus dados contra a perda na atualização
+            localStorage.setItem('diario_nc_' + currentUser.id, JSON.stringify(window.dbLocal));
+
+            // Tenta gravar na nuvem
             const { error } = await supabaseClient
                 .from('diarios')
                 .upsert({ user_id: currentUser.id, dados: window.dbLocal });
@@ -607,8 +636,10 @@
             if (!error) {
                 document.getElementById('status-nuvem').classList.remove('hidden');
             } else {
-                console.error("Erro ao guardar:", error);
-                window.mostrarToast(`Erro ao gravar: ${error.message || 'Sem permissão na tabela diarios'}`, 'erro');
+                console.error("A Nuvem bloqueou:", error);
+                if(!silencioso) {
+                    window.mostrarToast(`A nuvem falhou, mas os dados estão a salvo no seu aparelho! Execute o comando SQL.`, 'erro');
+                }
             }
         };
 
@@ -711,7 +742,7 @@
             cancelarEdicao();
             window.salvarDados();
             window.renderCadastros();
-            if(['escolas', 'materias', 'turmas'].includes(tabela)) {
+            if(['escolas', 'materias'].includes(tabela)) {
                 window.atualizarSelects();
             }
         };
@@ -776,6 +807,85 @@
                     window.atualizarSelects();
                 }
             });
+        };
+
+        // --- Lógica de Importação em Massa ---
+        window.abrirModalImportacao = function() {
+            document.getElementById('texto-importacao').value = '';
+            document.getElementById('modal-importacao').classList.remove('hidden');
+        };
+
+        window.fecharModalImportacao = function() {
+            document.getElementById('modal-importacao').classList.add('hidden');
+        };
+
+        window.processarImportacao = function() {
+            const texto = document.getElementById('texto-importacao').value.trim();
+            if (!texto) {
+                window.mostrarToast('Cole os dados do Excel primeiro.', 'erro');
+                return;
+            }
+
+            const linhas = texto.split('\n');
+            let cadastrados = 0;
+
+            linhas.forEach(linha => {
+                let colunas = linha.split('\t');
+                if(colunas.length < 4) colunas = linha.split(';');
+                if(colunas.length < 4) colunas = linha.split(',');
+
+                if (colunas.length >= 4) {
+                    const nomeEscola = colunas[0].trim();
+                    const nomeCurso = colunas[1].trim();
+                    const nomeTurma = colunas[2].trim();
+                    const nomeAluno = colunas[3].trim();
+
+                    if (!nomeEscola || !nomeCurso || !nomeTurma || !nomeAluno) return;
+
+                    // 1. Processa Escola
+                    let escola = window.dbLocal.escolas.find(e => e.nome.toLowerCase() === nomeEscola.toLowerCase());
+                    if (!escola) {
+                        escola = { id: window.gerarId() + Math.random(), nome: nomeEscola };
+                        window.dbLocal.escolas.push(escola);
+                    }
+
+                    // 2. Processa Curso
+                    let curso = window.dbLocal.materias.find(m => m.nome.toLowerCase() === nomeCurso.toLowerCase());
+                    if (!curso) {
+                        curso = { id: window.gerarId() + Math.random(), nome: nomeCurso };
+                        window.dbLocal.materias.push(curso);
+                    }
+
+                    // 3. Processa Turma
+                    let turma = window.dbLocal.turmas.find(t => 
+                        t.nome.toLowerCase() === nomeTurma.toLowerCase() && 
+                        t.escolaId === escola.id && 
+                        t.materiaId === curso.id
+                    );
+                    if (!turma) {
+                        turma = { id: window.gerarId() + Math.random(), nome: nomeTurma, escolaId: escola.id, materiaId: curso.id };
+                        window.dbLocal.turmas.push(turma);
+                    }
+
+                    // 4. Processa Aluno
+                    let aluno = window.dbLocal.alunos.find(a => a.nome.toLowerCase() === nomeAluno.toLowerCase() && a.turmaId === turma.id);
+                    if (!aluno) {
+                        aluno = { id: window.gerarId() + Math.random(), nome: nomeAluno, turmaId: turma.id, isDemo: false };
+                        window.dbLocal.alunos.push(aluno);
+                        cadastrados++;
+                    }
+                }
+            });
+
+            if (cadastrados > 0) {
+                window.salvarDados();
+                window.atualizarSelects();
+                window.renderCadastros();
+                window.fecharModalImportacao();
+                window.mostrarToast(`${cadastrados} alunos importados com sucesso!`);
+            } else {
+                window.mostrarToast('Nenhum dado válido encontrado. Verifique o formato.', 'erro');
+            }
         };
 
         window.renderCadastros = function() {
@@ -930,8 +1040,10 @@
             
             if (!escolaSelect || !turmaSelect) {
                 document.getElementById('tabela-diario').innerHTML = `<tr><td class="p-10 text-center text-gray-500 font-bold">Selecione uma escola e uma turma acima.</td></tr>`;
+                document.getElementById('btn-whatsapp').classList.add('hidden');
                 return;
             }
+            document.getElementById('btn-whatsapp').classList.remove('hidden');
 
             turmaAtualId = parseInt(turmaSelect);
             const turma = window.dbLocal.turmas.find(t => t.id === turmaAtualId);
@@ -1007,6 +1119,47 @@
 
             html += `</tbody>`;
             document.getElementById('tabela-diario').innerHTML = html;
+        };
+
+        window.exportarWhatsApp = function() {
+            if (!turmaAtualId) return window.mostrarToast('Selecione uma turma.', 'erro');
+
+            const turma = window.dbLocal.turmas.find(t => t.id === turmaAtualId);
+            const escola = window.dbLocal.escolas.find(e => e.id === turma.escolaId);
+            const materia = window.dbLocal.materias.find(m => m.id === turma.materiaId) || {nome: 'Geral'};
+            const mesSelect = document.getElementById('input-mes-diario').value;
+
+            const nomeMes = mesSelect ? new Date(mesSelect + '-01T00:00:00').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'}) : 'Geral';
+            const professor = currentUser ? currentUser.user_metadata?.display_name : 'Professor';
+
+            let relatorio = `Relatório de Chamada\n`;
+            relatorio += `Mês: ${nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1)}\n`;
+            relatorio += `Professor(a): ${professor}\n`;
+            relatorio += `Unidade: ${escola ? escola.nome : 'Sem Escola'}\n`;
+            relatorio += `Curso: ${materia.nome}\n`;
+            relatorio += `Turma: ${turma.nome}\n`;
+            relatorio += `\nFrequência Mensal:\n`;
+
+            const alunosTurma = window.dbLocal.alunos.filter(a => a.turmaId === turmaAtualId).sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+            const aulas = window.dbLocal.aulas.filter(a => a.turmaId === turmaAtualId && (!mesSelect || a.data.startsWith(mesSelect)));
+
+            if(alunosTurma.length === 0) {
+                relatorio += `Nenhum aluno matriculado.\n`;
+            } else {
+                alunosTurma.forEach((aluno) => {
+                    let tP = 0, tF = 0;
+                    aulas.forEach(aula => {
+                        const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`] || '';
+                        if (status === 'P') tP++;
+                        if (status === 'F') tF++;
+                    });
+                    let demoTag = aluno.isDemo ? ' [DEMO]' : '';
+                    relatorio += `- ${aluno.nome}${demoTag}: P: ${tP} | F: ${tF}\n`;
+                });
+            }
+
+            const encodedText = encodeURIComponent(relatorio);
+            window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
         };
 
         window.registrarPresenca = function(aulaId, alunoId, status) {
@@ -1099,7 +1252,6 @@
 
         window.initTheme();
 
-        // Configurar submissão de formulários ao pressionar Enter
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeId = document.activeElement.id;

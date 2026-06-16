@@ -388,7 +388,7 @@
                 </div>
             </div>
             <div class="mt-8 flex flex-col gap-3">
-                <button onclick="window.salvarAula()" class="app-btn w-full">Salvar Registro</button>
+                <button id="btn-salvar-aula" onclick="window.salvarAula()" class="app-btn w-full">Salvar Registro</button>
                 <button id="btn-excluir-aula" onclick="window.excluirAula()" class="hidden w-full py-3 text-sm font-bold text-red-500 hover:text-red-700 transition-colors">Excluir esta aula</button>
             </div>
         </div>
@@ -555,12 +555,32 @@
                 .eq('user_id', uid)
                 .single();
 
-            if (data && data.dados) {
+            if (error && error.code !== 'PGRST116') {
+                console.error("Erro banco de dados:", error);
+                window.mostrarToast(`Erro a ler dados: ${error.message}`, 'erro');
+            } else if (data && data.dados) {
                 const d = data.dados;
+                const escolas = d.escolas || [];
+                const materias = d.materias || [];
+                let turmas = d.turmas || [];
+
+                if (escolas.length > 0) {
+                    turmas = turmas.map(t => {
+                        if (!t.escolaId || !t.materiaId) {
+                            return {
+                                ...t,
+                                escolaId: t.escolaId || escolas[0].id,
+                                materiaId: t.materiaId || (materias.length > 0 ? materias[0].id : null)
+                            };
+                        }
+                        return t;
+                    });
+                }
+
                 window.dbLocal = { 
-                    escolas: d.escolas||[], 
-                    materias: d.materias||[], 
-                    turmas: d.turmas||[], 
+                    escolas: escolas, 
+                    materias: materias, 
+                    turmas: turmas, 
                     alunos: d.alunos||[], 
                     aulas: d.aulas||[], 
                     presencas: d.presencas||{} 
@@ -586,6 +606,9 @@
                 
             if (!error) {
                 document.getElementById('status-nuvem').classList.remove('hidden');
+            } else {
+                console.error("Erro ao guardar:", error);
+                window.mostrarToast(`Erro ao gravar: ${error.message || 'Sem permissão na tabela diarios'}`, 'erro');
             }
         };
 
@@ -1077,29 +1100,28 @@
         window.initTheme();
 
         // Configurar submissão de formulários ao pressionar Enter
-        const enterMappings = [
-            { input: 'login-email', action: () => document.getElementById('btn-login').click() },
-            { input: 'login-senha', action: () => document.getElementById('btn-login').click() },
-            { input: 'cad-nome', action: () => document.getElementById('btn-cadastro').click() },
-            { input: 'cad-email', action: () => document.getElementById('btn-cadastro').click() },
-            { input: 'cad-senha', action: () => document.getElementById('btn-cadastro').click() },
-            { input: 'nome-escola', action: () => document.getElementById('btn-add-escola').click() },
-            { input: 'nome-materia', action: () => document.getElementById('btn-add-materia').click() },
-            { input: 'nome-turma', action: () => document.getElementById('btn-add-turma').click() },
-            { input: 'nome-aluno', action: () => document.getElementById('btn-add-aluno').click() },
-            { input: 'modal-data', action: () => window.salvarAula() },
-            { input: 'modal-conteudo', action: () => window.salvarAula() }
-        ];
-
-        enterMappings.forEach(mapping => {
-            const el = document.getElementById(mapping.input);
-            if (el) {
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        mapping.action();
-                    }
-                });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const activeId = document.activeElement.id;
+                const map = {
+                    'login-email': 'btn-login',
+                    'login-senha': 'btn-login',
+                    'cad-nome': 'btn-cadastro',
+                    'cad-email': 'btn-cadastro',
+                    'cad-senha': 'btn-cadastro',
+                    'nome-escola': 'btn-add-escola',
+                    'nome-materia': 'btn-add-materia',
+                    'nome-turma': 'btn-add-turma',
+                    'nome-aluno': 'btn-add-aluno',
+                    'modal-data': 'btn-salvar-aula',
+                    'modal-conteudo': 'btn-salvar-aula'
+                };
+                
+                if (map[activeId]) {
+                    e.preventDefault();
+                    const btn = document.getElementById(map[activeId]);
+                    if (btn) btn.click();
+                }
             }
         });
     </script>

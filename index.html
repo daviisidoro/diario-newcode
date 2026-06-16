@@ -30,12 +30,9 @@
         }
     </script>
     <style>
-        :root {
-            color-scheme: light;
-        }
-        :root.dark {
-            color-scheme: dark;
-        }
+        /* Sincronização do tema nativo do navegador (Calendários e Selects escuros) */
+        :root { color-scheme: light; }
+        :root.dark { color-scheme: dark; }
 
         body { 
             @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-white;
@@ -49,7 +46,7 @@
 
         .app-input {
             width: 100%;
-            /* Removed appearance: none to allow native arrows on selects and date pickers */
+            /* Removido o appearance: none para permitir que o ícone ▼ apareça nos selects */
             padding: 1rem 1.25rem;
             font-size: 1.05rem;
             font-weight: 500;
@@ -401,13 +398,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE E LÓGICA COMPLETA -->
+    <!-- SCRIPT FIREBASE COMPLETO -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Conexão original Firebase
+        // As suas chaves originais e fiéis do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
             authDomain: "diario-newcode.firebaseapp.com",
@@ -568,7 +565,26 @@
                     setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
                 }
                 document.getElementById('status-nuvem').classList.remove('hidden');
+                
+                // Correção do "Bug do F5" (Não forçar seleção se o select já estava num estado específico)
+                const sET = document.getElementById('escola-turma').value;
+                const sMT = document.getElementById('materia-turma').value;
+                const sEA = document.getElementById('escola-aluno').value;
+                const sED = document.getElementById('select-escola-diario').value;
+
                 window.atualizarSelects();
+
+                if(sET) document.getElementById('escola-turma').value = sET;
+                if(sMT) document.getElementById('materia-turma').value = sMT;
+                if(sEA) {
+                    document.getElementById('escola-aluno').value = sEA;
+                    window.atualizarSelectTurmasAluno();
+                }
+                if(sED) {
+                    document.getElementById('select-escola-diario').value = sED;
+                    window.atualizarSelectTurmasDiario();
+                }
+
                 window.renderCadastros();
                 window.renderPlanilha();
             }, (error) => {
@@ -667,8 +683,6 @@
             if (aluno) {
                 aluno.isDemo = !aluno.isDemo;
                 window.salvarDados();
-                window.renderCadastros();
-                window.renderPlanilha();
             }
         };
 
@@ -828,11 +842,9 @@
                     select.innerHTML += `<option value="${item.id}">${item.nome}</option>`;
                 });
                 
-                // Correção do Bug do F5: Se não tinha valor selecionado, força a seleção do primeiro da lista
+                // Retorna o valor original para o select se ele ainda existir na lista
                 if (sortedDados.find(d => d.id == valorAtual)) {
                     select.value = valorAtual;
-                } else if (sortedDados.length > 0) {
-                    select.value = sortedDados[0].id;
                 }
             };
             
@@ -862,8 +874,6 @@
                 
                 if (sorted.find(d => d.id == valorAtual)) {
                     select.value = valorAtual;
-                } else if (sorted.length > 0) {
-                    select.value = sorted[0].id;
                 }
             }
             window.renderCadastros();
@@ -886,8 +896,6 @@
                 
                 if (sorted.find(d => d.id == valorAtual)) {
                     select.value = valorAtual;
-                } else if (sorted.length > 0) {
-                    select.value = sorted[0].id;
                 }
             }
             window.renderPlanilha();
@@ -991,7 +999,6 @@
         window.registrarPresenca = function(aulaId, alunoId, status) {
             window.dbLocal.presencas[`${aulaId}_${alunoId}`] = status;
             window.salvarDados(); 
-            window.renderPlanilha(); 
         };
 
         window.adicionarAula = function() {
@@ -1076,7 +1083,7 @@
 
         window.initTheme();
 
-        // Sistema do Enter
+        // Sistema para capturar o Enter nos inputs
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeId = document.activeElement.id;

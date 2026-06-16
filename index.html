@@ -17,7 +17,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -290,7 +289,7 @@
                     </div>
                     
                     <div class="w-full mt-2 md:mt-0 md:w-auto self-end flex gap-2">
-                        <button onclick="window.adicionarAula()" class="app-btn flex-1 md:flex-none flex items-center justify-center gap-2">
+                        <button id="btn-nova-aula" onclick="window.adicionarAula()" class="app-btn flex-1 md:flex-none flex items-center justify-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             Nova Aula
                         </button>
@@ -402,14 +401,29 @@
         </div>
     </div>
 
-    <!-- SCRIPT SUPABASE E LÓGICA -->
+    <!-- SCRIPT FIREBASE E LÓGICA COMPLETA -->
     <script type="module">
-        const SUPABASE_URL = 'https://fyvvwoomuqdpcsaxnrry.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5dnZ3b29tdXFkcGNzYXhucnJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NzI5MDAsImV4cCI6MjA5NzE0ODkwMH0.hRc37ZfKsXYhiwKxy0cudIpOoIHECiO7Mz5UCOm8iTA';
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Conexão original Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
+            authDomain: "diario-newcode.firebaseapp.com",
+            projectId: "diario-newcode",
+            storageBucket: "diario-newcode.firebasestorage.app",
+            messagingSenderId: "440225334729",
+            appId: "1:440225334729:web:6e2fc05a88502c3ff69418"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const dbFirestore = getFirestore(app);
 
         window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
         let currentUser = null;
+        let unsubscribeSnapshot = null;
         let modoEdicao = { ativo: false, tabela: null, id: null };
         let acaoConfirmar = null;
 
@@ -470,12 +484,11 @@
             if (!email || !senha) return window.mostrarToast('Preencha os dados.', 'erro');
 
             setButtonLoading('btn-login', true, 'Entrar no Sistema');
-            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
-            
-            if (error) {
-                window.mostrarToast('Dados de acesso inválidos.', 'erro');
-            } else {
+            try {
+                await signInWithEmailAndPassword(auth, email, senha);
                 document.getElementById('login-senha').value = '';
+            } catch (error) {
+                window.mostrarToast('Dados de acesso inválidos.', 'erro');
             }
             setButtonLoading('btn-login', false, 'Entrar no Sistema');
         });
@@ -488,110 +501,91 @@
             if (!nome || !email || !senha) return window.mostrarToast('Preencha tudo.', 'erro');
             if (senha.length < 6) return window.mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
 
-            setButtonLoading('btn-cadastro', true, 'Registar e Entrar');
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: senha,
-                options: { data: { display_name: nome } }
-            });
-
-            if (error) {
-                window.mostrarToast('Erro ao criar conta. E-mail pode estar em uso.', 'erro');
-            } else {
+            setButtonLoading('btn-cadastro', true, 'Registrar e Entrar');
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, email, senha);
+                await updateProfile(userCred.user, { displayName: nome });
+                await setDoc(doc(dbFirestore, "diarios", userCred.user.uid), window.dbLocal);
                 window.mostrarToast('Bem-vindo à New Code!');
+            } catch (error) {
+                window.mostrarToast('Erro ao criar conta. E-mail pode estar em uso.', 'erro');
             }
-            setButtonLoading('btn-cadastro', false, 'Registar e Entrar');
+            setButtonLoading('btn-cadastro', false, 'Registrar e Entrar');
         });
 
         window.recuperarSenha = async function() {
             const email = document.getElementById('login-email').value.trim();
             if (!email) return window.mostrarToast('Digite o seu e-mail no campo acima primeiro.', 'erro');
             
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
-            if (error) {
-                window.mostrarToast('Erro ao tentar redefinir senha.', 'erro');
-            } else {
+            try {
+                await sendPasswordResetEmail(auth, email);
                 window.mostrarToast('Verifique a sua caixa de entrada e SPAM!');
+            } catch (error) {
+                window.mostrarToast('E-mail não encontrado ou inválido.', 'erro');
             }
         };
 
         document.getElementById('btn-logout').addEventListener('click', async () => {
-            await supabaseClient.auth.signOut();
+            await signOut(auth);
         });
 
-        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        onAuthStateChanged(auth, (user) => {
             document.getElementById('tela-loading').classList.add('hidden');
-            if (session?.user) {
-                currentUser = session.user;
+            if (user) {
+                currentUser = user;
                 document.getElementById('auth-container').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
                 document.getElementById('app-container').classList.add('flex');
-                document.getElementById('user-display-name').textContent = session.user.user_metadata?.display_name || 'Professor';
+                document.getElementById('user-display-name').textContent = user.displayName || 'Professor';
                 
                 const d = new Date();
                 document.getElementById('input-mes-diario').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 
-                await iniciarSincronizacao(session.user.id);
+                iniciarSincronizacao(user.uid);
             } else {
                 currentUser = null;
+                if(unsubscribeSnapshot) unsubscribeSnapshot(); 
                 document.getElementById('app-container').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('flex');
                 document.getElementById('auth-container').classList.remove('hidden');
             }
         });
 
-        async function iniciarSincronizacao(uid) {
-            // Usa maybeSingle() em vez de single() para evitar o erro PGRST116 se a tabela estiver vazia
-            const { data, error } = await supabaseClient
-                .from('diarios')
-                .select('dados')
-                .eq('user_id', uid)
-                .maybeSingle();
-
-            if (error) {
-                console.error("Erro banco de dados:", error);
-                window.mostrarToast(`Erro a ler dados: ${error.message}`, 'erro');
-            } else if (data && data.dados) {
-                const d = data.dados;
-                window.dbLocal = { 
-                    escolas: d.escolas||[], 
-                    materias: d.materias||[], 
-                    turmas: d.turmas||[], 
-                    alunos: d.alunos||[], 
-                    aulas: d.aulas||[], 
-                    presencas: d.presencas||{} 
-                };
-            } else {
-                // Se a tabela estiver vazia (novo utilizador), inicializa e força gravação
-                window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
-                await salvarDados();
-            }
-            
-            document.getElementById('status-nuvem').classList.remove('hidden');
-            window.atualizarSelects();
-            window.renderCadastros();
-            window.renderPlanilha();
+        function iniciarSincronizacao(uid) {
+            unsubscribeSnapshot = onSnapshot(doc(dbFirestore, "diarios", uid), (docSnap) => {
+                if (docSnap.exists()) {
+                    const d = docSnap.data();
+                    window.dbLocal = { 
+                        escolas: d.escolas||[], 
+                        materias: d.materias||[], 
+                        turmas: d.turmas||[], 
+                        alunos: d.alunos||[], 
+                        aulas: d.aulas||[], 
+                        presencas: d.presencas||{} 
+                    };
+                } else {
+                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+                    setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
+                }
+                document.getElementById('status-nuvem').classList.remove('hidden');
+                window.atualizarSelects();
+                window.renderCadastros();
+                window.renderPlanilha();
+            }, (error) => {
+                console.error("Erro Firebase Snapshot:", error);
+                window.mostrarToast("Sem permissão para ler o Firebase (Verifique as Regras).", 'erro');
+            });
         }
 
         window.salvarDados = async function() {
             if (!currentUser) return;
             document.getElementById('status-nuvem').classList.add('hidden'); 
-            
             try {
-                // A flag onConflict é crucial para evitar PGRST116 no Supabase durante o upsert
-                const { error } = await supabaseClient
-                    .from('diarios')
-                    .upsert({ user_id: currentUser.id, dados: window.dbLocal }, { onConflict: 'user_id' });
-                    
-                if (!error) {
-                    document.getElementById('status-nuvem').classList.remove('hidden');
-                } else {
-                    console.error("Erro ao guardar no Supabase:", error);
-                    window.mostrarToast(`Erro ao gravar na nuvem: ${error.message}`, 'erro');
-                }
-            } catch (err) {
-                 console.error("Erro inesperado ao guardar:", err);
-                 window.mostrarToast(`Erro inesperado: ${err.message}`, 'erro');
+                await setDoc(doc(dbFirestore, "diarios", currentUser.uid), window.dbLocal);
+                document.getElementById('status-nuvem').classList.remove('hidden');
+            } catch(error) {
+                console.error("Erro Firebase Gravação:", error);
+                window.mostrarToast("Sem permissão para gravar no Firebase (Verifique as Regras).", 'erro');
             }
         };
 
@@ -693,10 +687,6 @@
             
             cancelarEdicao();
             window.salvarDados();
-            window.renderCadastros();
-            if(['escolas', 'materias', 'turmas'].includes(tabela)) {
-                window.atualizarSelects();
-            }
         };
 
         window.adicionarTurma = function() {
@@ -720,8 +710,6 @@
             
             cancelarEdicao();
             window.salvarDados();
-            window.renderCadastros();
-            window.atualizarSelects();
         };
 
         window.adicionarAluno = function() {
@@ -746,7 +734,6 @@
 
             cancelarEdicao();
             window.salvarDados();
-            window.renderCadastros();
         };
 
         window.remover = function(tabela, id) {
@@ -754,10 +741,6 @@
                 window.dbLocal[tabela] = window.dbLocal[tabela].filter(i => i.id !== id);
                 if(modoEdicao.id === id) cancelarEdicao();
                 window.salvarDados();
-                window.renderCadastros();
-                if(['escolas', 'materias', 'turmas'].includes(tabela)) {
-                    window.atualizarSelects();
-                }
             });
         };
 
@@ -845,7 +828,7 @@
                     select.innerHTML += `<option value="${item.id}">${item.nome}</option>`;
                 });
                 
-                // Preenche com o valor antigo se existir, se não, preenche com o primeiro valor da lista
+                // Correção do Bug do F5: Se não tinha valor selecionado, força a seleção do primeiro da lista
                 if (sortedDados.find(d => d.id == valorAtual)) {
                     select.value = valorAtual;
                 } else if (sortedDados.length > 0) {
@@ -1046,7 +1029,6 @@
             }
             window.salvarDados();
             window.fecharModal();
-            window.renderPlanilha();
         };
 
         window.excluirAula = function() {
@@ -1063,7 +1045,6 @@
                 }
 
                 window.salvarDados();
-                window.renderPlanilha();
                 window.fecharModal();
                 window.mostrarToast('Aula removida com sucesso.');
             });
@@ -1095,7 +1076,7 @@
 
         window.initTheme();
 
-        // Mapeamento global de "Enter"
+        // Sistema do Enter
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeId = document.activeElement.id;
@@ -1115,7 +1096,8 @@
                 
                 if (map[activeId]) {
                     e.preventDefault();
-                    document.getElementById(map[activeId]).click();
+                    const btn = document.getElementById(map[activeId]);
+                    if (btn) btn.click();
                 }
             }
         });

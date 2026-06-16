@@ -17,6 +17,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -30,6 +31,9 @@
         }
     </script>
     <style>
+        html { color-scheme: light; }
+        html.dark { color-scheme: dark; }
+
         body { 
             @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-white;
             -webkit-font-smoothing: antialiased;
@@ -55,6 +59,17 @@
         .app-input:focus {
             outline: none;
             @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
+        }
+
+        select.app-input {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 1rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        .dark select.app-input {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
         }
         
         input[type="month"], input[type="date"] {
@@ -394,28 +409,15 @@
         </div>
     </div>
 
+    <!-- SCRIPT SUPABASE E LÓGICA -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
-            authDomain: "diario-newcode.firebaseapp.com",
-            projectId: "diario-newcode",
-            storageBucket: "diario-newcode.firebasestorage.app",
-            messagingSenderId: "440225334729",
-            appId: "1:440225334729:web:6e2fc05a88502c3ff69418",
-            measurementId: "G-1TQE6YPV6N"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const dbFirestore = getFirestore(app);
+        const SUPABASE_URL = 'https://fyvvwoomuqdpcsaxnrry.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5dnZ3b29tdXFkcGNzYXhucnJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NzI5MDAsImV4cCI6MjA5NzE0ODkwMH0.hRc37ZfKsXYhiwKxy0cudIpOoIHECiO7Mz5UCOm8iTA';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
         let currentUser = null;
-        let unsubscribeSnapshot = null;
+        let unsubscribeSnapshot = null; 
         let modoEdicao = { ativo: false, tabela: null, id: null };
         let acaoConfirmar = null;
 
@@ -476,11 +478,12 @@
             if (!email || !senha) return window.mostrarToast('Preencha os dados.', 'erro');
 
             setButtonLoading('btn-login', true, 'Entrar no Sistema');
-            try {
-                await signInWithEmailAndPassword(auth, email, senha);
-                document.getElementById('login-senha').value = '';
-            } catch (error) {
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
+            
+            if (error) {
                 window.mostrarToast('Dados de acesso inválidos.', 'erro');
+            } else {
+                document.getElementById('login-senha').value = '';
             }
             setButtonLoading('btn-login', false, 'Entrar no Sistema');
         });
@@ -493,83 +496,97 @@
             if (!nome || !email || !senha) return window.mostrarToast('Preencha tudo.', 'erro');
             if (senha.length < 6) return window.mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
 
-            setButtonLoading('btn-cadastro', true, 'Registrar e Entrar');
-            try {
-                const userCred = await createUserWithEmailAndPassword(auth, email, senha);
-                await updateProfile(userCred.user, { displayName: nome });
-                await setDoc(doc(dbFirestore, "diarios", userCred.user.uid), window.dbLocal);
-                window.mostrarToast('Bem-vindo à New Code!');
-            } catch (error) {
+            setButtonLoading('btn-cadastro', true, 'Registar e Entrar');
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: senha,
+                options: { data: { display_name: nome } }
+            });
+
+            if (error) {
                 window.mostrarToast('Erro ao criar conta. E-mail pode estar em uso.', 'erro');
+            } else {
+                window.mostrarToast('Bem-vindo à New Code!');
             }
-            setButtonLoading('btn-cadastro', false, 'Registrar e Entrar');
+            setButtonLoading('btn-cadastro', false, 'Registar e Entrar');
         });
 
         window.recuperarSenha = async function() {
             const email = document.getElementById('login-email').value.trim();
             if (!email) return window.mostrarToast('Digite o seu e-mail no campo acima primeiro.', 'erro');
             
-            try {
-                await sendPasswordResetEmail(auth, email);
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+            if (error) {
+                window.mostrarToast('Erro ao tentar redefinir senha.', 'erro');
+            } else {
                 window.mostrarToast('Verifique a sua caixa de entrada e SPAM!');
-            } catch (error) {
-                window.mostrarToast('E-mail não encontrado ou inválido.', 'erro');
             }
         };
 
         document.getElementById('btn-logout').addEventListener('click', async () => {
-            await signOut(auth);
+            await supabaseClient.auth.signOut();
         });
 
-        onAuthStateChanged(auth, (user) => {
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
             document.getElementById('tela-loading').classList.add('hidden');
-            if (user) {
-                currentUser = user;
+            if (session?.user) {
+                currentUser = session.user;
                 document.getElementById('auth-container').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
                 document.getElementById('app-container').classList.add('flex');
-                document.getElementById('user-display-name').textContent = user.displayName || 'Professor';
+                document.getElementById('user-display-name').textContent = session.user.user_metadata?.display_name || 'Professor';
                 
                 const d = new Date();
                 document.getElementById('input-mes-diario').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 
-                iniciarSincronizacao(user.uid);
+                await iniciarSincronizacao(session.user.id);
             } else {
                 currentUser = null;
-                if(unsubscribeSnapshot) unsubscribeSnapshot(); 
                 document.getElementById('app-container').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('flex');
                 document.getElementById('auth-container').classList.remove('hidden');
             }
         });
 
-        function iniciarSincronizacao(uid) {
-            unsubscribeSnapshot = onSnapshot(doc(dbFirestore, "diarios", uid), (docSnap) => {
-                if (docSnap.exists()) {
-                    const d = docSnap.data();
-                    window.dbLocal = { 
-                        escolas: d.escolas||[], 
-                        materias: d.materias||[], 
-                        turmas: d.turmas||[], 
-                        alunos: d.alunos||[], 
-                        aulas: d.aulas||[], 
-                        presencas: d.presencas||{} 
-                    };
-                } else {
-                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
-                    setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
-                }
-                document.getElementById('status-nuvem').classList.remove('hidden');
-                window.atualizarSelects();
-                window.renderCadastros();
-                window.renderPlanilha();
-            });
+        async function iniciarSincronizacao(uid) {
+            const { data, error } = await supabaseClient
+                .from('diarios')
+                .select('dados')
+                .eq('user_id', uid)
+                .single();
+
+            if (data && data.dados) {
+                const d = data.dados;
+                window.dbLocal = { 
+                    escolas: d.escolas||[], 
+                    materias: d.materias||[], 
+                    turmas: d.turmas||[], 
+                    alunos: d.alunos||[], 
+                    aulas: d.aulas||[], 
+                    presencas: d.presencas||{} 
+                };
+            } else {
+                window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+                await salvarDados();
+            }
+            
+            document.getElementById('status-nuvem').classList.remove('hidden');
+            window.atualizarSelects();
+            window.renderCadastros();
+            window.renderPlanilha();
         }
 
         window.salvarDados = async function() {
             if (!currentUser) return;
             document.getElementById('status-nuvem').classList.add('hidden'); 
-            await setDoc(doc(dbFirestore, "diarios", currentUser.uid), window.dbLocal);
+            
+            const { error } = await supabaseClient
+                .from('diarios')
+                .upsert({ user_id: currentUser.id, dados: window.dbLocal });
+                
+            if (!error) {
+                document.getElementById('status-nuvem').classList.remove('hidden');
+            }
         };
 
         window.changeTab = function(tab) {
@@ -670,6 +687,10 @@
             
             cancelarEdicao();
             window.salvarDados();
+            window.renderCadastros();
+            if(['escolas', 'materias', 'turmas'].includes(tabela)) {
+                window.atualizarSelects();
+            }
         };
 
         window.adicionarTurma = function() {
@@ -693,6 +714,8 @@
             
             cancelarEdicao();
             window.salvarDados();
+            window.renderCadastros();
+            window.atualizarSelects();
         };
 
         window.adicionarAluno = function() {
@@ -717,6 +740,7 @@
 
             cancelarEdicao();
             window.salvarDados();
+            window.renderCadastros();
         };
 
         window.remover = function(tabela, id) {
@@ -759,8 +783,6 @@
                             </button>
                         `;
                     }
-                    
-                    const safeName = item.nome.replace(/'/g, "\\'");
                     
                     ul.innerHTML += `
                         <li class="p-4 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-xl flex justify-between items-center mb-3">
@@ -1005,6 +1027,7 @@
             }
             window.salvarDados();
             window.fecharModal();
+            window.renderPlanilha();
         };
 
         window.excluirAula = function() {
@@ -1052,6 +1075,33 @@
         };
 
         window.initTheme();
+
+        // Configurar submissão de formulários ao pressionar Enter
+        const enterMappings = [
+            { input: 'login-email', action: () => document.getElementById('btn-login').click() },
+            { input: 'login-senha', action: () => document.getElementById('btn-login').click() },
+            { input: 'cad-nome', action: () => document.getElementById('btn-cadastro').click() },
+            { input: 'cad-email', action: () => document.getElementById('btn-cadastro').click() },
+            { input: 'cad-senha', action: () => document.getElementById('btn-cadastro').click() },
+            { input: 'nome-escola', action: () => document.getElementById('btn-add-escola').click() },
+            { input: 'nome-materia', action: () => document.getElementById('btn-add-materia').click() },
+            { input: 'nome-turma', action: () => document.getElementById('btn-add-turma').click() },
+            { input: 'nome-aluno', action: () => document.getElementById('btn-add-aluno').click() },
+            { input: 'modal-data', action: () => window.salvarAula() },
+            { input: 'modal-conteudo', action: () => window.salvarAula() }
+        ];
+
+        enterMappings.forEach(mapping => {
+            const el = document.getElementById(mapping.input);
+            if (el) {
+                el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        mapping.action();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

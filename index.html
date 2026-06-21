@@ -60,7 +60,14 @@
             @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
         }
         
-        input[type="month"], input[type="date"], select.app-input {
+        input[type="month"], input[type="date"] {
+            min-height: 3.5rem;
+            -webkit-appearance: none;
+            appearance: none;
+            max-width: 100%;
+        }
+
+        select.app-input {
             min-height: 3.5rem;
         }
 

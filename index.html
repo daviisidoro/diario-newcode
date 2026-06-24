@@ -46,7 +46,6 @@
 
         .app-input {
             width: 100%;
-            /* Removido o appearance: none para permitir que o ícone ▼ apareça nos selects */
             padding: 1rem 1.25rem;
             font-size: 1.05rem;
             font-weight: 500;
@@ -58,6 +57,13 @@
         .app-input:focus {
             outline: none;
             @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
+        }
+        
+        /* Regra para remover botão nativo do calendário no iPhone */
+        input[type="month"]::-webkit-calendar-picker-indicator, 
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
         }
         
         input[type="month"], input[type="date"] {
@@ -264,10 +270,12 @@
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto px-4 pb-4">
-                <div class="flex p-1.5 bg-gray-200 dark:bg-slate-800 rounded-xl w-full">
-                    <button onclick="window.changeTab('diario')" id="tab-diario" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm">Diário de Aulas</button>
-                    <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300">Gestão de Dados</button>
+            <!-- Abas de Navegação -->
+            <div class="max-w-xl mx-auto px-4 pb-4">
+                <div class="flex p-1.5 bg-gray-200 dark:bg-slate-800 rounded-xl w-full overflow-x-auto snap-x">
+                    <button onclick="window.changeTab('diario')" id="tab-diario" class="flex-1 min-w-[120px] py-2.5 px-2 text-sm font-bold rounded-lg text-center transition-all duration-200 bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm whitespace-nowrap">Diário de Aulas</button>
+                    <button onclick="window.changeTab('projetos')" id="tab-projetos" class="flex-1 min-w-[120px] py-2.5 px-2 text-sm font-bold rounded-lg text-center transition-all duration-200 text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Projetos (Links)</button>
+                    <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="flex-1 min-w-[120px] py-2.5 px-2 text-sm font-bold rounded-lg text-center transition-all duration-200 text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Gestão de Dados</button>
                 </div>
             </div>
         </header>
@@ -303,6 +311,42 @@
                 <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden flex-1 relative flex flex-col min-h-[400px]">
                     <div class="overflow-x-auto overflow-y-auto flex-1 h-full w-full">
                         <table class="w-full border-collapse text-left" id="tabela-diario"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJETOS (LINKS DRIVE) -->
+            <div id="section-projetos" class="hidden space-y-6 flex-1 flex flex-col h-full">
+                <!-- Barra Superior de Filtros -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col md:flex-row gap-4 shrink-0">
+                    <div class="w-full md:w-1/3 space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unidade / Escola</label>
+                        <select id="select-escola-proj" class="app-input" onchange="window.atualizarSelectTurmasProj()"></select>
+                    </div>
+                    <div class="w-full md:w-1/3 space-y-2">
+                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Selecionar Turma</label>
+                        <select id="select-turma-proj" class="app-input" onchange="window.renderProjetos()"></select>
+                    </div>
+                    
+                    <div class="w-full mt-2 md:mt-0 md:w-1/3 self-end flex gap-2">
+                        <button id="btn-novo-projeto" onclick="window.abrirModalProjeto()" class="app-btn w-full flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            Adicionar Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Área da Lista de Projetos -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden flex-1 relative flex flex-col p-4 sm:p-6">
+                    <h3 class="font-black text-xl text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Materiais da Turma
+                    </h3>
+                    
+                    <div class="overflow-y-auto flex-1 h-full w-full pr-2">
+                        <ul id="lista-projetos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Os projetos serão renderizados aqui -->
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -390,6 +434,39 @@
         </div>
     </div>
 
+    <!-- Modal Novo Projeto (Link Drive) -->
+    <div id="modal-projeto" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                <h3 class="font-black text-xl text-gray-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    Adicionar Material
+                </h3>
+                <button onclick="window.fecharModalProjeto()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Qual é o Conteúdo/Tema?</label>
+                    <input type="text" id="proj-conteudo" class="app-input" placeholder="Ex: Manual de Construct 3, Slides Maker...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                        Link do Google Drive (ou outro)
+                    </label>
+                    <input type="url" id="proj-url" class="app-input" placeholder="https://drive.google.com/...">
+                    <p class="text-[10px] text-gray-500 mt-2 font-medium">Faça o upload do PDF no seu Google Drive, clique em "Partilhar", mude para "Qualquer pessoa com o link", copie o link e cole aqui.</p>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <button id="btn-enviar-proj" onclick="window.uploadProjeto()" class="app-btn w-full">Salvar Projeto</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Confirmação -->
     <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
         <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 dark:border-slate-700 text-center">
@@ -405,13 +482,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE COMPLETO -->
+    <!-- SCRIPT FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // As suas chaves originais e fiéis do Firebase
+        // Chaves Originais (Firebase)
         const firebaseConfig = {
             apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
             authDomain: "diario-newcode.firebaseapp.com",
@@ -425,11 +502,12 @@
         const auth = getAuth(app);
         const dbFirestore = getFirestore(app);
 
-        window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+        window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], projetos: [], presencas: {} };
         let currentUser = null;
         let unsubscribeSnapshot = null;
         let modoEdicao = { ativo: false, tabela: null, id: null };
         let acaoConfirmar = null;
+        let turmaProjetoAtualId = null;
 
         window.mostrarToast = function(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
@@ -565,19 +643,20 @@
                         turmas: d.turmas||[], 
                         alunos: d.alunos||[], 
                         aulas: d.aulas||[], 
+                        projetos: d.projetos||[], 
                         presencas: d.presencas||{} 
                     };
                 } else {
-                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], presencas: {} };
+                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], projetos: [], presencas: {} };
                     setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
                 }
                 document.getElementById('status-nuvem').classList.remove('hidden');
                 
-                // Correção do "Bug do F5" (Não forçar seleção se o select já estava num estado específico)
                 const sET = document.getElementById('escola-turma').value;
                 const sMT = document.getElementById('materia-turma').value;
                 const sEA = document.getElementById('escola-aluno').value;
                 const sED = document.getElementById('select-escola-diario').value;
+                const sEP = document.getElementById('select-escola-proj').value;
 
                 window.atualizarSelects();
 
@@ -591,12 +670,17 @@
                     document.getElementById('select-escola-diario').value = sED;
                     window.atualizarSelectTurmasDiario();
                 }
+                if(sEP) {
+                    document.getElementById('select-escola-proj').value = sEP;
+                    window.atualizarSelectTurmasProj();
+                }
 
                 window.renderCadastros();
                 window.renderPlanilha();
+                window.renderProjetos();
             }, (error) => {
                 console.error("Erro Firebase Snapshot:", error);
-                window.mostrarToast("Sem permissão para ler o Firebase (Verifique as Regras).", 'erro');
+                window.mostrarToast("Sem permissão para ler o Firebase.", 'erro');
             });
         }
 
@@ -608,20 +692,22 @@
                 document.getElementById('status-nuvem').classList.remove('hidden');
             } catch(error) {
                 console.error("Erro Firebase Gravação:", error);
-                window.mostrarToast("Sem permissão para gravar no Firebase (Verifique as Regras).", 'erro');
+                window.mostrarToast("Sem permissão para gravar no Firebase.", 'erro');
             }
         };
 
         window.changeTab = function(tab) {
             document.getElementById('section-diario').classList.add('hidden');
             document.getElementById('section-cadastros').classList.add('hidden');
+            document.getElementById('section-projetos').classList.add('hidden');
             
-            const baseClass = "flex-1 py-2.5 text-sm font-bold rounded-lg text-center transition-all duration-200 ";
+            const baseClass = "flex-1 min-w-[120px] py-2.5 px-2 text-sm font-bold rounded-lg text-center transition-all duration-200 whitespace-nowrap ";
             const activeClass = baseClass + "bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm";
             const inactiveClass = baseClass + "text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300";
 
             document.getElementById('tab-diario').className = (tab === 'diario') ? activeClass : inactiveClass;
             document.getElementById('tab-cadastros').className = (tab === 'cadastros') ? activeClass : inactiveClass;
+            document.getElementById('tab-projetos').className = (tab === 'projetos') ? activeClass : inactiveClass;
 
             document.getElementById('section-' + tab).classList.remove('hidden');
 
@@ -630,6 +716,7 @@
                 window.renderCadastros();
             }
             if(tab === 'diario') window.renderPlanilha();
+            if(tab === 'projetos') window.renderProjetos();
         };
 
         window.gerarId = function() { return Date.now(); };
@@ -849,7 +936,6 @@
                     select.innerHTML += `<option value="${item.id}">${item.nome}</option>`;
                 });
                 
-                // Retorna o valor original para o select se ele ainda existir na lista
                 if (sortedDados.find(d => d.id == valorAtual)) {
                     select.value = valorAtual;
                 }
@@ -859,9 +945,11 @@
             preencher('materia-turma', window.dbLocal.materias, 'Selecionar Curso...');
             preencher('escola-aluno', window.dbLocal.escolas, 'Selecionar Escola...');
             preencher('select-escola-diario', window.dbLocal.escolas, 'Selecionar Escola...');
+            preencher('select-escola-proj', window.dbLocal.escolas, 'Selecionar Escola...');
             
             window.atualizarSelectTurmasAluno();
             window.atualizarSelectTurmasDiario();
+            window.atualizarSelectTurmasProj();
         };
 
         window.atualizarSelectTurmasAluno = function() {
@@ -906,6 +994,28 @@
                 }
             }
             window.renderPlanilha();
+        };
+
+        window.atualizarSelectTurmasProj = function() {
+            const escolaId = document.getElementById('select-escola-proj').value;
+            const select = document.getElementById('select-turma-proj');
+            const valorAtual = select.value;
+            
+            select.innerHTML = `<option value="">Selecionar Turma...</option>`;
+            
+            if (escolaId) {
+                const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
+                const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+                
+                sorted.forEach(t => {
+                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
+                });
+                
+                if (sorted.find(d => d.id == valorAtual)) {
+                    select.value = valorAtual;
+                }
+            }
+            window.renderProjetos();
         };
 
         window.formatarData = function(dataString) {
@@ -1064,6 +1174,100 @@
             });
         };
 
+        // ==========================================
+        // SISTEMA DE PROJETOS E UPLOAD (LINKS DRIVE)
+        // ==========================================
+
+        window.renderProjetos = function() {
+            const escolaSelect = document.getElementById('select-escola-proj').value;
+            const turmaSelect = document.getElementById('select-turma-proj').value;
+            const ul = document.getElementById('lista-projetos');
+            
+            ul.innerHTML = '';
+
+            if (!escolaSelect || !turmaSelect) {
+                ul.innerHTML = `<li class="p-10 text-center text-gray-500 font-bold col-span-full border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola e uma turma acima para ver os materiais.</li>`;
+                return;
+            }
+
+            turmaProjetoAtualId = parseInt(turmaSelect);
+            const projetosDaTurma = (window.dbLocal.projetos || []).filter(p => p.turmaId === turmaProjetoAtualId);
+
+            if (projetosDaTurma.length === 0) {
+                ul.innerHTML = `<li class="p-10 text-center text-gray-500 font-bold col-span-full border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Nenhum projeto inserido nesta turma. Clique em 'Adicionar Link'.</li>`;
+                return;
+            }
+
+            projetosDaTurma.reverse().forEach(proj => {
+                const dataUpload = new Date(proj.dataUpload).toLocaleDateString('pt-BR');
+                
+                ul.innerHTML += `
+                    <li class="bg-gray-50 dark:bg-slate-900/50 p-4 border border-gray-200 dark:border-slate-700 rounded-xl flex flex-col justify-between group hover:border-blue-500 transition-colors relative">
+                        <div class="flex items-start gap-3 mb-4">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-black text-sm text-gray-900 dark:text-white leading-tight truncate" title="${proj.conteudo}">${proj.conteudo}</h4>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-wider font-bold">Adicionado a ${dataUpload}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="${proj.url}" target="_blank" class="flex-1 py-2 text-center text-xs font-bold rounded-lg bg-blue-100 dark:bg-slate-800 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-slate-700 transition-colors">Abrir Link</a>
+                            <button onclick="window.excluirProjeto(${proj.id})" class="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-200 dark:bg-slate-800 text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 transition-colors" title="Apagar Projeto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    </li>
+                `;
+            });
+        };
+
+        window.abrirModalProjeto = function() {
+            if (!turmaProjetoAtualId) return window.mostrarToast('Selecione uma turma primeiro.', 'erro');
+            document.getElementById('proj-conteudo').value = '';
+            document.getElementById('proj-url').value = '';
+            document.getElementById('modal-projeto').classList.remove('hidden');
+        };
+
+        window.fecharModalProjeto = function() {
+            document.getElementById('modal-projeto').classList.add('hidden');
+        };
+
+        window.uploadProjeto = function() {
+            const conteudo = document.getElementById('proj-conteudo').value.trim();
+            const url = document.getElementById('proj-url').value.trim();
+            
+            if (!conteudo) return window.mostrarToast('Digite o conteúdo/tema do material.', 'erro');
+            if (!url) return window.mostrarToast('Cole o link do Google Drive.', 'erro');
+            
+            if (!window.dbLocal.projetos) window.dbLocal.projetos = [];
+            
+            window.dbLocal.projetos.push({
+                id: window.gerarId(),
+                turmaId: turmaProjetoAtualId,
+                conteudo: conteudo,
+                url: url,
+                dataUpload: Date.now()
+            });
+
+            window.salvarDados();
+            window.renderProjetos();
+            window.fecharModalProjeto();
+            window.mostrarToast('Link adicionado com sucesso!');
+        };
+
+        window.excluirProjeto = function(id) {
+            window.abrirConfirm("Tem a certeza que deseja excluir este link?", async () => {
+                window.dbLocal.projetos = window.dbLocal.projetos.filter(p => p.id !== id);
+                await window.salvarDados();
+                window.renderProjetos();
+                window.mostrarToast('Material removido.');
+            });
+        };
+
+        // ==========================================
+
         window.initTheme = function() {
             if (localStorage.getItem('newcode_theme') === 'light') {
                 document.documentElement.classList.remove('dark');
@@ -1090,7 +1294,6 @@
 
         window.initTheme();
 
-        // Sistema para capturar o Enter nos inputs
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeId = document.activeElement.id;
@@ -1105,13 +1308,15 @@
                     'nome-turma': 'btn-add-turma',
                     'nome-aluno': 'btn-add-aluno',
                     'modal-data': 'btn-salvar-aula',
-                    'modal-conteudo': 'btn-salvar-aula'
+                    'modal-conteudo': 'btn-salvar-aula',
+                    'proj-conteudo': 'btn-enviar-proj',
+                    'proj-url': 'btn-enviar-proj'
                 };
                 
                 if (map[activeId]) {
                     e.preventDefault();
                     const btn = document.getElementById(map[activeId]);
-                    if (btn) btn.click();
+                    if (btn && !btn.disabled) btn.click();
                 }
             }
         });

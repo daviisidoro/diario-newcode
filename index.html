@@ -102,6 +102,185 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #334155; }
+
+        /* Identidade visual — Aurora Educacional */
+        :root {
+            --ink: #18223b;
+            --muted: #66728c;
+            --paper: #f5f7fc;
+            --line: rgba(24, 34, 59, .10);
+            --violet: #6c4cff;
+            --blue: #2777ff;
+            --cyan: #31c8d5;
+            --card: rgba(255,255,255,.82);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% -10%, rgba(49,200,213,.22), transparent 31rem),
+                radial-gradient(circle at 100% 14%, rgba(108,76,255,.15), transparent 29rem),
+                var(--paper);
+            color: var(--ink);
+        }
+        body::before {
+            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: .28;
+            background-image: linear-gradient(rgba(75,91,130,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(75,91,130,.055) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: linear-gradient(to bottom, black, transparent 65%);
+        }
+        .dark body {
+            --ink: #edf2ff; --muted: #99a8c5; --paper: #10172b; --line: rgba(174,191,232,.13); --card: rgba(24,34,59,.72);
+            background: radial-gradient(circle at 8% -10%, rgba(38,173,190,.16), transparent 31rem), radial-gradient(circle at 100% 14%, rgba(108,76,255,.22), transparent 29rem), var(--paper);
+        }
+        .fade-in { animation: riseIn .55s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes riseIn { from { opacity: 0; transform: translateY(15px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes softPulse { 50% { box-shadow: 0 0 0 7px rgba(49,200,213,.08), 0 16px 35px rgba(67,52,178,.15); } }
+
+        /* Superfícies e hierarquia */
+        header {
+            background: rgba(255,255,255,.74) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            border-color: var(--line) !important; box-shadow: 0 7px 22px rgba(35,48,83,.05) !important;
+        }
+        .dark header { background: rgba(16,23,43,.77) !important; }
+        header h1 { letter-spacing: .09em !important; font-size: 1rem !important; }
+        header h1 span { background: #31c8d5 !important; animation: softPulse 2.8s ease-in-out infinite; }
+        main { position: relative; }
+        .bg-white.dark\\:bg-slate-800 {
+            background: var(--card) !important; border-color: var(--line) !important;
+            box-shadow: 0 13px 35px rgba(34,47,80,.07) !important;
+        }
+        .dark .bg-white.dark\\:bg-slate-800 { box-shadow: 0 16px 38px rgba(0,0,0,.18) !important; }
+        .rounded-2xl { border-radius: 1.25rem !important; }
+
+        /* Campos e ações */
+        .app-input {
+            background: rgba(246,248,253,.88); border-color: var(--line); border-radius: .9rem;
+            padding: .86rem 1rem; box-shadow: inset 0 1px 1px rgba(18,34,69,.025); font-size: .92rem;
+        }
+        .app-input:hover { border-color: rgba(39,119,255,.32); }
+        .app-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(39,119,255,.12), inset 0 1px 1px rgba(18,34,69,.025); }
+        .dark .app-input { background: rgba(12,19,37,.55); border-color: var(--line); }
+        .app-btn {
+            position: relative; overflow: hidden; border-radius: .9rem; letter-spacing: .015em;
+            background: linear-gradient(115deg, var(--violet), var(--blue));
+            box-shadow: 0 12px 25px rgba(75,79,208,.28); transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+        }
+        .app-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 32%, rgba(255,255,255,.25) 47%, transparent 62%); transform: translateX(-115%); transition: transform .55s ease; }
+        .app-btn:hover { background: linear-gradient(115deg, #5a3eeb, #186cff); transform: translateY(-2px); box-shadow: 0 17px 28px rgba(75,79,208,.34); }
+        .app-btn:hover::after { transform: translateX(115%); }
+        .app-btn:active { transform: translateY(0) scale(.985); }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        button:not(.app-btn) { transition: transform .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease; }
+        button:not(.app-btn):active { transform: scale(.95); }
+
+        /* Navegação de abas */
+        header .grid.grid-cols-3 { background: rgba(216,224,241,.58) !important; border-color: transparent !important; padding: .3rem !important; border-radius: 1rem !important; }
+        .dark header .grid.grid-cols-3 { background: rgba(5,10,24,.56) !important; }
+        #tab-diario, #tab-projetos, #tab-cadastros { border-radius: .72rem !important; letter-spacing: .01em; }
+        #tab-diario.bg-white, #tab-projetos.bg-white, #tab-cadastros.bg-white {
+            background: linear-gradient(115deg, var(--violet), var(--blue)) !important; color: white !important; box-shadow: 0 7px 16px rgba(61,73,188,.28);
+        }
+
+        /* Conteúdo, listas e tabela */
+        #planilha-container { overflow: hidden; }
+        #planilha-container > div:first-child > h2 { letter-spacing: -.035em; }
+        #planilha-container table thead { background: rgba(223,229,242,.56) !important; }
+        .dark #planilha-container table thead { background: rgba(5,10,24,.48) !important; }
+        #planilha-container tbody tr { transition: background-color .2s ease, transform .2s ease; }
+        #planilha-container tbody tr:hover { background: rgba(70,108,245,.045) !important; }
+        #planilha-container .student-name { overflow-wrap: normal; word-break: normal; hyphens: none; }
+        #planilha-container .date-label { display: flex; flex-direction: column; align-items: center; gap: .14rem; white-space: nowrap; }
+        #planilha-container .date-month { font-size: .72em; font-weight: 800; letter-spacing: .04em; color: #71809d; }
+        .dark #planilha-container .date-month { color: #9eacc8; }
+        #lista-projetos > div { animation: riseIn .48s cubic-bezier(.2,.8,.2,1) both; }
+        #lista-projetos .group { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        #lista-projetos .group:hover { transform: translateY(-4px); border-color: rgba(86,103,242,.32) !important; box-shadow: 0 15px 30px rgba(37,54,101,.12) !important; }
+        #lista-projetos .group > div:first-child > div:first-child { background: linear-gradient(135deg, rgba(108,76,255,.16), rgba(49,200,213,.17)) !important; color: var(--violet) !important; }
+
+        /* Entrada e modais */
+        #login-screen { position: relative; overflow: hidden; }
+        #login-screen::before, #login-screen::after { content: ""; position: absolute; border-radius: 999px; filter: blur(2px); pointer-events: none; }
+        #login-screen::before { width: 30rem; height: 30rem; left: -15rem; top: -12rem; background: radial-gradient(circle, rgba(49,200,213,.24), transparent 68%); }
+        #login-screen::after { width: 32rem; height: 32rem; right: -17rem; bottom: -17rem; background: radial-gradient(circle, rgba(108,76,255,.20), transparent 68%); }
+        #login-screen > div { position: relative; isolation: isolate; background: rgba(255,255,255,.82) !important; backdrop-filter: blur(20px); border-color: rgba(255,255,255,.64) !important; box-shadow: 0 26px 65px rgba(35,46,83,.16) !important; }
+        .dark #login-screen > div { background: rgba(23,33,59,.78) !important; border-color: rgba(151,174,231,.15) !important; }
+        #login-screen img { filter: drop-shadow(0 9px 12px rgba(78,66,184,.18)); }
+        [id^="modal-"] > div { animation: riseIn .32s cubic-bezier(.2,.8,.2,1) both; }
+
+        @media (max-width: 640px) {
+            main { padding-top: 1.1rem !important; }
+            header .h-20 { height: 4.5rem !important; }
+            #login-screen > div { padding: 1.7rem !important; }
+        }
+
+        /* Sistema visual ampliado: formulários e estados da aplicação */
+        #view-cadastros { position: relative; }
+        #view-cadastros > .grid { gap: 1.45rem !important; }
+        #view-cadastros .form-card {
+            --accent-a: #6c4cff; --accent-b: #2777ff; --accent-soft: rgba(97,91,255,.12);
+            position: relative; overflow: hidden; isolation: isolate; border-radius: 1.55rem !important;
+            border: 1px solid rgba(87,104,158,.13) !important; box-shadow: 0 14px 30px rgba(39,54,95,.07) !important;
+            transition: transform .32s cubic-bezier(.2,.8,.2,1), box-shadow .32s ease, border-color .32s ease;
+        }
+        #view-cadastros .form-card::before { content: ""; position: absolute; height: 3px; inset: 0 0 auto; background: linear-gradient(90deg, var(--accent-a), var(--accent-b), transparent 76%); opacity: .95; }
+        #view-cadastros .form-card::after { content: ""; position: absolute; width: 11rem; height: 11rem; right: -5.5rem; top: -6rem; z-index: -1; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft), transparent 69%); transition: transform .45s ease; }
+        #view-cadastros .form-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent-a) 30%, transparent) !important; box-shadow: 0 20px 42px rgba(39,54,95,.12) !important; }
+        #view-cadastros .form-card:hover::after { transform: scale(1.35) translate(-8px, 9px); }
+        #view-cadastros .form-card[data-accent="cyan"] { --accent-a: #06aeca; --accent-b: #2d8cff; --accent-soft: rgba(14,174,203,.15); }
+        #view-cadastros .form-card[data-accent="orange"] { --accent-a: #ee6b45; --accent-b: #f4a340; --accent-soft: rgba(238,107,69,.14); }
+        #view-cadastros .form-card[data-accent="pink"] { --accent-a: #df4aa5; --accent-b: #8a61ed; --accent-soft: rgba(223,74,165,.13); }
+        #view-cadastros .form-card h3 { display: flex; align-items: center; gap: .7rem; font-size: 1.08rem; letter-spacing: -.02em; }
+        #view-cadastros .form-card h3::before { content: ""; display: block; width: .62rem; height: .62rem; border-radius: 50%; background: linear-gradient(135deg, var(--accent-a), var(--accent-b)); box-shadow: 0 0 0 5px var(--accent-soft); }
+        #view-cadastros .form-card .app-input { border-radius: 1rem; }
+        #view-cadastros .form-card .app-btn { min-width: 3.25rem; border-radius: 1rem; }
+        #view-cadastros .form-card .border-t { border-color: rgba(87,104,158,.11) !important; }
+        .data-empty { min-height: 8.4rem; display: grid; place-items: center; padding: 1.4rem; border: 1px dashed rgba(102,117,159,.22); border-radius: 1.1rem; background: linear-gradient(135deg, rgba(238,242,252,.65), rgba(255,255,255,.2)); text-align: center; }
+        .dark .data-empty { background: linear-gradient(135deg, rgba(9,16,34,.58), rgba(30,41,69,.27)); border-color: rgba(147,167,218,.20); }
+        .data-empty svg { width: 1.55rem; height: 1.55rem; margin: 0 auto .6rem; color: var(--violet); }
+        .data-empty strong { display: block; color: var(--ink); font-size: .78rem; letter-spacing: .01em; }
+        .data-empty span { display: block; margin-top: .25rem; color: var(--muted); font-size: .7rem; font-weight: 600; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty) { border-radius: 1rem !important; background: rgba(242,245,251,.72) !important; border-color: rgba(98,113,153,.08) !important; transition: transform .2s ease, background .2s ease, box-shadow .2s ease !important; }
+        .dark #view-cadastros [id^="lista-"] > div:not(.data-empty) { background: rgba(9,16,34,.42) !important; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty):hover { transform: translateX(3px); background: rgba(231,236,251,.94) !important; box-shadow: 0 7px 16px rgba(43,58,105,.08); }
+        .dark #view-cadastros [id^="lista-"] > div:not(.data-empty):hover { background: rgba(36,49,82,.7) !important; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty) button { border-radius: .65rem; }
+        select.app-input { cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, #64748b 50%), linear-gradient(135deg, #64748b 50%, transparent 50%); background-position: calc(100% - 19px) calc(50% - 2px), calc(100% - 14px) calc(50% - 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2.7rem; }
+        select.app-input:focus { background-image: linear-gradient(45deg, transparent 50%, var(--blue) 50%), linear-gradient(135deg, var(--blue) 50%, transparent 50%); }
+        .dark select.app-input { background-image: linear-gradient(45deg, transparent 50%, #a8b6d5 50%), linear-gradient(135deg, #a8b6d5 50%, transparent 50%); }
+        input.app-input::placeholder, textarea.app-input::placeholder { opacity: 1; color: #99a9c3; }
+        .app-btn:focus-visible, .app-input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid rgba(49,200,213,.42); outline-offset: 3px; }
+        [id^="modal-"] { background: rgba(10,18,39,.62) !important; }
+        [id^="modal-"] > div {
+            border-color: rgba(167,183,226,.21) !important; border-radius: 1.55rem !important;
+            box-shadow: 0 28px 70px rgba(3,8,24,.34) !important;
+        }
+        [id^="modal-"] h3 { letter-spacing: -.025em; }
+        [id^="modal-"] label { color: #71809d !important; letter-spacing: .095em !important; }
+        #toast-content { background: linear-gradient(115deg, #202b48, #15213f) !important; border-color: rgba(170,189,241,.18) !important; border-radius: 1rem !important; box-shadow: 0 17px 42px rgba(9,17,38,.28) !important; }
+        #status-nuvem { padding: .43rem; border-radius: .7rem; background: rgba(43,198,133,.09); border: 1px solid rgba(43,198,133,.17); }
+        #app-screen { animation: appReveal .55s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes appReveal { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 639px) {
+            /* Prioriza o nome completo, sem esconder datas nem totais. */
+            #planilha-container { padding: .35rem !important; }
+            #planilha-container table { font-size: .72rem; }
+            #planilha-container th:first-child, #planilha-container td:first-child { width: 44% !important; min-width: 0; }
+            #planilha-container th:nth-last-child(-n+2), #planilha-container td:nth-last-child(-n+2) { width: 8% !important; }
+            #planilha-container th:not(:first-child):not(:nth-last-child(-n+2)), #planilha-container td:not(:first-child):not(:nth-last-child(-n+2)) { width: 8% !important; }
+            #planilha-container th:first-child { white-space: nowrap; }
+            #planilha-container td:first-child.student-name {
+                white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+                padding: .62rem .52rem !important; font-size: .77rem !important; line-height: 1.2 !important;
+            }
+            #planilha-container th:not(:first-child) { padding-left: 0 !important; padding-right: 0 !important; white-space: nowrap; }
+            #planilha-container th:not(:first-child) > div:first-child { font-size: .65rem !important; }
+            #planilha-container th:not(:first-child) > div:last-child { font-size: .55rem !important; }
+            #planilha-container .date-label { gap: .08rem; line-height: 1 !important; }
+            #planilha-container .date-month { font-size: .5rem; letter-spacing: 0; }
+            #planilha-container td:not(:first-child) span { padding-top: .62rem !important; padding-bottom: .62rem !important; font-size: .86rem !important; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-500/30">
@@ -261,7 +440,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <!-- Escolas -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]">
+                    <div class="form-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]" data-accent="cyan">
                         <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Unidades / Escolas</h3>
                         <div class="flex gap-2 mb-4">
                             <input type="text" id="nome-escola" class="app-input !py-3" placeholder="Nome da instituição">
@@ -271,7 +450,7 @@
                     </div>
 
                     <!-- Matérias -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]">
+                    <div class="form-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]" data-accent="orange">
                         <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cursos / Matérias</h3>
                         <div class="flex gap-2 mb-4">
                             <input type="text" id="nome-materia" class="app-input !py-3" placeholder="Ex: Games, Maker...">
@@ -281,7 +460,7 @@
                     </div>
 
                     <!-- Turmas -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]">
+                    <div class="form-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]" data-accent="pink">
                         <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cadastro de Turmas</h3>
                         <div class="space-y-3 mb-4">
                             <select id="escola-turma" class="app-input !py-3">
@@ -299,7 +478,7 @@
                     </div>
 
                     <!-- Alunos -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]">
+                    <div class="form-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]" data-accent="">
                         <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cadastro de Alunos</h3>
                         <div class="space-y-3 mb-4">
                             <select id="escola-aluno" onchange="window.atualizarSelectTurmasAluno()" class="app-input !py-3">
@@ -586,7 +765,10 @@
                 document.getElementById(`tab-${t}`).classList.add('text-gray-500', 'dark:text-slate-400');
             });
             
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            const viewAtiva = document.getElementById(`view-${tab}`);
+            viewAtiva.classList.remove('hidden', 'fade-in');
+            void viewAtiva.offsetWidth;
+            viewAtiva.classList.add('fade-in');
             document.getElementById(`tab-${tab}`).classList.add('bg-white', 'dark:bg-slate-800', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
             document.getElementById(`tab-${tab}`).classList.remove('text-gray-500', 'dark:text-slate-400');
 
@@ -763,6 +945,12 @@
                 sorted.forEach(item => container.innerHTML += formatter(item));
             };
 
+            const renderAguardandoSelecao = (containerId, titulo, descricao) => {
+                const container = document.getElementById(containerId);
+                if(!container) return;
+                container.innerHTML = `<div class="data-empty"><div><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 6h18M6 12h12m-9 6h6"></path></svg><strong>${titulo}</strong><span>${descricao}</span></div></div>`;
+            };
+
             renderLista('lista-escolas', window.dbLocal.escolas, item => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
                     <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
@@ -778,8 +966,11 @@
             `);
 
             const turmaEscolaId = document.getElementById('escola-turma').value;
-            const turmasFiltradas = turmaEscolaId ? window.dbLocal.turmas.filter(t => t.escolaId == turmaEscolaId) : window.dbLocal.turmas;
-            renderLista('lista-turmas', turmasFiltradas, item => `
+            if (!turmaEscolaId) {
+                renderAguardandoSelecao('lista-turmas', 'Nenhuma escola selecionada', 'Escolha uma escola acima para visualizar as turmas.');
+            } else {
+                const turmasFiltradas = window.dbLocal.turmas.filter(t => t.escolaId == turmaEscolaId);
+                renderLista('lista-turmas', turmasFiltradas, item => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
                     <div class="truncate pr-2">
                         <div class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate">${item.nome}</div>
@@ -787,16 +978,21 @@
                     </div>
                     <button onclick="window.delTurma(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                 </div>
-            `);
+                `);
+            }
 
             const alunoTurmaId = document.getElementById('turma-aluno').value;
-            const alunosFiltrados = alunoTurmaId ? window.dbLocal.alunos.filter(a => a.turmaId == alunoTurmaId) : window.dbLocal.alunos;
-            renderLista('lista-alunos', alunosFiltrados, item => `
+            if (!alunoTurmaId) {
+                renderAguardandoSelecao('lista-alunos', 'Nenhuma turma selecionada', 'Selecione uma escola e uma turma para visualizar os alunos.');
+            } else {
+                const alunosFiltrados = window.dbLocal.alunos.filter(a => a.turmaId == alunoTurmaId);
+                renderLista('lista-alunos', alunosFiltrados, item => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
                     <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
                     <button onclick="window.delAluno(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                 </div>
-            `);
+                `);
+            }
         };
 
         // --- Diário de Aulas ---
@@ -971,10 +1167,11 @@
                 const dObj = new Date(dStr);
                 const dia = String(dObj.getDate()).padStart(2, '0');
                 const mes = String(dObj.getMonth() + 1).padStart(2, '0');
+                const mesAbreviado = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'][dObj.getMonth()];
                 const sem = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dObj.getDay()];
                 
                 html += `<th class="py-2 px-0 text-center border-l border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors" onclick="window.abrirModalEdicaoAula(${aula.id})" title="${aula.conteudo || 'Sem conteúdo'}">
-                    <div class="font-bold text-gray-700 dark:text-gray-300 text-[9px] sm:text-xs leading-none mb-0.5">${dia}/${mes}</div>
+                    <div class="date-label font-bold text-gray-700 dark:text-gray-300 text-[9px] sm:text-xs leading-none mb-0.5"><span>${dia}</span><span class="date-month">${mesAbreviado}</span></div>
                     <div class="text-[8px] sm:text-[10px] text-gray-500 dark:text-gray-400 uppercase">${sem}</div>
                 </th>`;
             });
@@ -991,9 +1188,9 @@
                 let faltas = 0;
                 let presencas = 0;
 
-                // Coluna do aluno permite truncate para não alargar a tabela
+                // No mobile o nome pode ocupar mais de uma linha; datas e totais seguem visíveis.
                 let rowHtml = `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <td class="py-2 px-2 font-bold text-gray-900 dark:text-white text-xs sm:text-sm truncate" title="${aluno.nome}">${aluno.nome}</td>`;
+                    <td class="student-name py-2 px-2 font-bold text-gray-900 dark:text-white text-xs sm:text-sm" title="${aluno.nome}">${aluno.nome}</td>`;
 
                 aulasMes.forEach(aula => {
                     const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`];

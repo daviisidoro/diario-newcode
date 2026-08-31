@@ -3,390 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEW CODE - Gestão Escolar</title>
-    
-    <link rel="icon" type="image/png" href="icone.png">
-    <link rel="shortcut icon" href="icone.png">
-    <link rel="apple-touch-icon" href="icone.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="application-name" content="Diário NC">
-    <meta name="theme-color" content="#0F172A">
-    
-    <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"Diário New Code","short_name":"Diário NC","display":"standalone","start_url":"/","theme_color":"#0F172A","background_color":"#0F172A","icons":[{"src":"icone.png","sizes":"192x192","type":"image/png"},{"src":"icone.png","sizes":"512x512","type":"image/png"}]}'>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Diário Escolar - New Code</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        :root { color-scheme: light; }
-        :root.dark { color-scheme: dark; }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
         body { 
-            @apply bg-gray-50 text-gray-900 dark:bg-slate-900 dark:text-white;
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.2s ease;
+            -webkit-tap-highlight-color: transparent; 
+            background-color: #f8fafc;
+            color: #0f172a;
+            transition: background-color 0.3s ease;
         }
         
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-slate-600 rounded-full; }
+        .dark body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
 
+        /* CSS Puro Blindado para Inputs e Botões (Garante que nunca quebra) */
         .app-input {
             width: 100%;
-            padding: 1rem 1.25rem;
-            font-size: 1.05rem;
-            font-weight: 500;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 0.75rem;
-            @apply bg-gray-100 border-transparent text-gray-900 
-                   dark:bg-slate-800 dark:border-transparent dark:text-white dark:placeholder-gray-400;
-            transition: all 0.2s ease;
-        }
-        .app-input:focus {
             outline: none;
-            @apply ring-2 ring-blue-500 bg-white dark:bg-slate-700;
+            font-weight: 500;
+            color: #0f172a;
+            transition: all 0.3s ease;
         }
-        
-        input[type="month"]::-webkit-calendar-picker-indicator, 
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.2s;
-        }
-
-        input[type="month"]::-webkit-calendar-picker-indicator:hover, 
-        input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            opacity: 1;
+        .app-input::placeholder { color: #94a3b8; }
+        .app-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
 
-        .dark input[type="month"]::-webkit-calendar-picker-indicator, 
-        .dark input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
+        .dark .app-input {
+            background-color: rgba(15, 23, 42, 0.5);
+            border-color: #334155;
+            color: #ffffff;
         }
-        
-        input[type="month"], input[type="date"] {
-            min-height: 3.5rem;
-            -webkit-appearance: none;
-            appearance: none;
-            max-width: 100%;
-        }
-
-        select.app-input { min-height: 3.5rem; }
+        .dark .app-input::placeholder { color: #64748b; }
 
         .app-btn {
-            -webkit-appearance: none !important;
-            appearance: none !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
             padding: 1rem 1.5rem;
-            font-size: 1.125rem;
-            font-weight: 800;
-            border-radius: 0.75rem;
-            border: none;
-            background-color: #2563EB !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-        }
-        .app-btn:active { transform: scale(0.98); }
-        .app-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-
-        .app-btn-outline {
-            -webkit-appearance: none !important;
-            appearance: none !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem 1.5rem;
-            font-size: 1.05rem;
-            font-weight: 800;
-            border-radius: 0.75rem;
-            background-color: transparent !important;
-            border: 2px solid #2563EB !important;
-            color: #2563EB !important;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-        }
-        .dark .app-btn-outline { border-color: #60A5FA !important; color: #60A5FA !important; }
-        .app-btn-outline:active { transform: scale(0.98); }
-
-        .select-status {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 100%;
-            min-height: 3.5rem;
-            background-color: transparent !important;
-            border: none;
-            outline: none;
+            background-color: #2563eb;
+            color: #ffffff;
             font-weight: 900;
-            font-size: 1.125rem;
-            text-align: center;
-            text-align-last: center;
-            padding: 0;
-            margin: 0;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .app-btn:hover { background-color: #1d4ed8; }
+        .app-btn:active { transform: scale(0.98); }
+        .app-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Correção para o Safari no iPhone - Mês */
+        input[type="month"] {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="month"]::-webkit-calendar-picker-indicator {
+            display: block;
             cursor: pointer;
         }
 
-        .sticky-col { position: sticky; left: 0; z-index: 10; @apply bg-gray-50 dark:bg-[#0F172A]; }
-        .sticky-col-header { position: sticky; left: 0; z-index: 11; @apply bg-white dark:bg-slate-900; }
-        .sticky-col-right { position: sticky; right: 0; z-index: 10; }
-        .sticky-col-right-2 { position: sticky; right: 3rem; z-index: 10; }
-        @media (min-width: 640px) { .sticky-col-right-2 { right: 4rem; } }
+        .dark input[type="month"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
 
-        @keyframes slideInDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .toast-enter { animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .loader-spin { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* Animações suaves */
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Esconder barra de scroll */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="antialiased selection:bg-blue-500/30">
 
-    <div id="toast-container" class="fixed top-4 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
+    <!-- Tela de Login -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white dark:bg-slate-800 p-8 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-2xl fade-in">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-gray-200 dark:border-slate-700 shadow-inner">
+                    <img src="icone.png" alt="New Code" class="w-12 h-12 object-contain drop-shadow-sm">
+                </div>
+                <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Acesso Restrito</h1>
+                <p class="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">Plataforma de Gestão Docente</p>
+            </div>
 
-    <div id="tela-loading" class="flex-1 flex items-center justify-center z-50 fixed inset-0 bg-gray-50 dark:bg-slate-900">
-        <svg class="loader-spin w-12 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-    </div>
-
-    <div id="auth-container" class="hidden flex-1 flex flex-col justify-center items-center p-4 w-full">
-        <div class="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-700">
-            
-            <div class="p-8 pb-2 text-center">
-                <img src="icone.png" alt="Logo New Code" class="w-20 h-20 object-contain mx-auto mb-4 rounded-2xl drop-shadow-sm">
-                <h2 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">NEW CODE</h2>
-                <p class="text-gray-500 dark:text-gray-400 text-sm font-bold mt-2 uppercase tracking-widest">Portal do Professor</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail</label>
+                    <input type="email" id="login-email" class="app-input" placeholder="seu@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Senha</label>
+                    <input type="password" id="login-senha" class="app-input" placeholder="••••••••">
+                </div>
+                <button id="btn-login" onclick="window.login()" class="app-btn w-full mt-2">Entrar no Sistema</button>
             </div>
             
-            <div class="p-8 pt-4">
-                <div id="form-login" class="space-y-5">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail Corporativo</label>
-                        <input type="email" id="login-email" class="app-input" placeholder="seu.email@newcode.com">
-                    </div>
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Senha</label>
-                            <button onclick="window.recuperarSenha()" class="text-xs text-blue-600 dark:text-blue-400 font-bold hover:underline py-1 px-2">Esqueceu a senha?</button>
-                        </div>
-                        <input type="password" id="login-senha" class="app-input" placeholder="••••••••">
-                    </div>
-                    <button id="btn-login" class="app-btn mt-6">Entrar no Sistema</button>
-                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
-                        <button type="button" onclick="window.toggleAuthMode()" class="app-btn-outline">Criar Conta Agora</button>
-                    </div>
-                </div>
-
-                <div id="form-cadastro" class="space-y-5 hidden">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Nome Completo</label>
-                        <input type="text" id="cad-nome" class="app-input" placeholder="Ex: Professor Davi">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">E-mail Corporativo</label>
-                        <input type="email" id="cad-email" class="app-input" placeholder="seu.email@newcode.com">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Criar Senha Segura</label>
-                        <input type="password" id="cad-senha" class="app-input" placeholder="Mínimo 6 caracteres">
-                    </div>
-                    <button id="btn-cadastro" class="app-btn mt-6">Registrar e Entrar</button>
-                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
-                        <button type="button" onclick="window.toggleAuthMode()" class="app-btn-outline">Já tenho conta (Login)</button>
-                    </div>
-                </div>
-            </div>
+            <p id="login-erro" class="text-red-500 text-sm font-bold text-center mt-4 hidden bg-red-50 dark:bg-red-500/10 py-3 rounded-lg"></p>
         </div>
     </div>
 
-    <div id="app-container" class="hidden flex-col min-h-screen">
+    <!-- App Principal -->
+    <div id="app-screen" class="hidden min-h-screen flex flex-col">
         
-        <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 sticky top-0 z-20">
-            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-5xl mx-auto px-4 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <img src="icone.png" alt="Logo New Code" class="w-10 h-10 object-contain rounded-xl drop-shadow-sm">
+                    <img src="icone.png" alt="New Code" class="w-8 h-8 object-contain drop-shadow-sm">
                     <div>
-                        <h1 class="text-base font-black text-gray-900 dark:text-white leading-tight flex items-center gap-2">
-                            NEW CODE
-                            <span id="status-nuvem" class="w-2 h-2 rounded-full bg-green-500 hidden"></span>
+                        <h1 class="text-xl font-black tracking-tight flex items-center gap-2 text-gray-900 dark:text-white">
+                            NEW CODE <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
                         </h1>
-                        <p id="user-display-name" class="text-xs text-gray-500 dark:text-gray-400 font-bold truncate max-w-[150px]">...</p>
+                        <p id="user-name-display" class="text-xs font-bold text-gray-500 dark:text-gray-400">Carregando...</p>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-2">
-                    <button onclick="window.toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
-                        <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                <div class="flex items-center gap-4">
+                    <div id="status-nuvem" class="hidden" title="Sincronizado com a Nuvem">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                    </div>
+                    <button onclick="window.toggleTheme()" class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors bg-gray-50 hover:bg-gray-100 dark:bg-slate-900/50 dark:hover:bg-slate-700 rounded-full border border-gray-200 dark:border-slate-700">
+                        <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <svg id="theme-icon-light" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     </button>
-                    <button id="btn-logout" class="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Sair do Sistema">
+                    <button onclick="window.logout()" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-colors border border-transparent dark:border-slate-700">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     </button>
                 </div>
             </div>
-
-            <!-- Abas de Navegação (Agora em Grelha Centralizada) -->
-            <div class="max-w-2xl mx-auto px-4 pb-4 w-full">
-                <div class="grid grid-cols-3 gap-1 p-1.5 bg-gray-200 dark:bg-slate-800 rounded-xl w-full">
-                    <button onclick="window.changeTab('diario')" id="tab-diario" class="py-2 px-1 text-[11px] sm:text-[13px] font-bold rounded-lg text-center transition-all duration-200 flex items-center justify-center leading-tight bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm">Diário de Aulas</button>
-                    <button onclick="window.changeTab('projetos')" id="tab-projetos" class="py-2 px-1 text-[11px] sm:text-[13px] font-bold rounded-lg text-center transition-all duration-200 flex items-center justify-center leading-tight text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300">Projetos (Links)</button>
-                    <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="py-2 px-1 text-[11px] sm:text-[13px] font-bold rounded-lg text-center transition-all duration-200 flex items-center justify-center leading-tight text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300">Gestão de Dados</button>
+            
+            <!-- Tabs (Grid com 3 colunas) -->
+            <div class="max-w-5xl mx-auto px-4 pb-4">
+                <div class="grid grid-cols-3 gap-2 bg-gray-100 dark:bg-slate-900 p-1.5 rounded-xl border border-gray-200 dark:border-slate-700">
+                    <button onclick="window.changeTab('diario')" id="tab-diario" class="py-2.5 px-1 text-[11px] sm:text-sm font-black rounded-lg transition-all text-center">Diário de Aulas</button>
+                    <button onclick="window.changeTab('projetos')" id="tab-projetos" class="py-2.5 px-1 text-[11px] sm:text-sm font-black rounded-lg transition-all text-center text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white">Projetos (Links)</button>
+                    <button onclick="window.changeTab('cadastros')" id="tab-cadastros" class="py-2.5 px-1 text-[11px] sm:text-sm font-black rounded-lg transition-all text-center text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white">Gestão de Dados</button>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 overflow-hidden flex flex-col">
+        <!-- Main Content -->
+        <main class="flex-1 max-w-5xl w-full mx-auto p-4 py-6">
             
-            <div id="section-diario" class="space-y-6 flex-1 flex flex-col h-full">
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col md:flex-row gap-4 shrink-0">
-                    <div class="w-full md:w-1/3 space-y-2">
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unidade / Escola</label>
-                        <select id="select-escola-diario" class="app-input" onchange="window.atualizarSelectTurmasDiario()"></select>
-                    </div>
-                    <div class="w-full md:w-1/3 space-y-2">
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Selecionar Turma</label>
-                        <select id="select-turma-diario" class="app-input" onchange="window.renderPlanilha()"></select>
-                    </div>
-                    <div class="w-full md:w-1/3 space-y-2 flex flex-col justify-between">
+            <!-- Aba Diário -->
+            <div id="view-diario" class="fade-in space-y-6">
+                
+                <!-- Filtros Diário -->
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+                    <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Unidade / Escola</label>
+                            <select id="select-escola-diario" onchange="window.atualizarSelectTurmasDiario()" class="app-input !py-3">
+                                <option value="">Selecionar Escola...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Selecionar Turma</label>
+                            <select id="select-turma-diario" onchange="window.renderPlanilha()" class="app-input !py-3">
+                                <option value="">Selecionar Turma...</option>
+                            </select>
+                        </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Mês Letivo</label>
-                            <input type="month" id="input-mes-diario" class="app-input" onchange="window.renderPlanilha()">
+                            <input type="month" id="input-mes-diario" onchange="window.mudarMesDiario()" class="app-input !py-3">
                         </div>
                     </div>
-                    
-                    <div class="w-full mt-2 md:mt-0 md:w-auto self-end flex gap-2">
-                        <button id="btn-nova-aula" onclick="window.adicionarAula()" class="app-btn flex-1 md:flex-none flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            Nova Aula
-                        </button>
+                    <button onclick="window.abrirModalNovaAula()" class="app-btn w-full md:w-auto shrink-0 !py-3 !px-6">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Nova Aula
+                    </button>
+                </div>
+
+                <!-- Planilha Container -->
+                <div id="planilha-container" class="bg-white dark:bg-slate-800 p-2 md:p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm min-h-[400px]">
+                    <div class="text-center text-gray-500 dark:text-slate-400 py-20 font-medium">
+                        Selecione uma escola e uma turma acima.
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden flex-1 relative flex flex-col min-h-[400px]">
-                    <div class="overflow-x-auto overflow-y-auto flex-1 h-full w-full">
-                        <table class="w-full border-collapse text-left" id="tabela-diario"></table>
-                    </div>
-                </div>
             </div>
 
-            <div id="section-projetos" class="hidden space-y-6 flex-1 flex flex-col h-full">
+            <!-- Aba Projetos (Links) -->
+            <div id="view-projetos" class="hidden fade-in space-y-6">
                 
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col md:flex-row gap-4 shrink-0">
-                    <div class="w-full md:w-1/3 space-y-2">
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unidade / Escola</label>
-                        <select id="select-escola-proj" class="app-input" onchange="window.atualizarSelectTurmasProj()"></select>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+                    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Unidade / Escola</label>
+                            <select id="escola-projeto" onchange="window.atualizarSelectTurmasProjeto()" class="app-input !py-3">
+                                <option value="">Selecionar Escola...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Selecionar Turma</label>
+                            <select id="turma-projeto" onchange="window.renderProjetos()" class="app-input !py-3">
+                                <option value="">Selecionar Turma...</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="w-full md:w-1/3 space-y-2">
-                        <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Selecionar Turma</label>
-                        <select id="select-turma-proj" class="app-input" onchange="window.renderProjetos()"></select>
-                    </div>
-                    
-                    <!-- Botões alinhados na direita, um em cima do outro -->
-                    <div class="w-full mt-2 md:mt-0 md:w-1/3 flex flex-col justify-end gap-2">
-                        <button id="btn-novo-projeto" onclick="window.abrirModalProjeto()" class="app-btn w-full flex items-center justify-center gap-2 whitespace-nowrap !py-3 !text-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    <div class="flex flex-col gap-2 w-full md:w-auto shrink-0">
+                        <button onclick="window.abrirModalLink()" class="app-btn !py-3 !px-6 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                             Adicionar Link
                         </button>
-                        <button id="btn-lote-projeto" onclick="window.abrirModalLote()" class="app-btn-outline w-full flex items-center justify-center gap-2 bg-white dark:bg-slate-800 whitespace-nowrap !py-3 !text-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                        <button onclick="window.abrirModalImportar()" class="app-btn !py-3 !px-6 text-sm !bg-slate-700 hover:!bg-slate-600 !shadow-none border border-slate-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             Importar Vários
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden flex-1 relative flex flex-col p-4 sm:p-6">
-                    <h3 class="font-black text-xl text-gray-900 dark:text-white mb-6 flex items-center gap-2 shrink-0">
-                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm">
+                    <h3 class="text-lg font-black mb-6 flex items-center gap-2 text-gray-900 dark:text-white">
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Materiais da Turma
                     </h3>
-                    
-                    <div class="overflow-y-auto flex-1 h-full w-full pr-2" id="area-projetos-container">
-                        <div id="lista-projetos" class="block">
-                            <!-- Os projetos serão renderizados aqui, agrupados por matéria e em 2 colunas -->
+                    <div id="lista-projetos" class="space-y-8">
+                        <div class="text-center text-gray-500 dark:text-slate-400 py-10 font-medium border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">
+                            Selecione uma escola e uma turma acima para ver os materiais.
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="section-cadastros" class="hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Aba Cadastros -->
+            <div id="view-cadastros" class="hidden fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Unidades / Escolas</h3>
-                        <div class="flex gap-3 mb-5">
-                            <input type="text" id="nome-escola" placeholder="Nome da instituição" class="app-input flex-1">
-                            <button id="btn-add-escola" onclick="window.adicionar('escolas', 'nome-escola')" class="app-btn !w-auto !px-6">+</button>
+                    <!-- Escolas -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]">
+                        <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Unidades / Escolas</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nome-escola" class="app-input !py-3" placeholder="Nome da instituição">
+                            <button id="btn-add-escola" onclick="window.addEscola()" class="app-btn !py-3 !px-4 aspect-square">+</button>
                         </div>
-                        <ul id="lista-escolas" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                        <div id="lista-escolas" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
                     </div>
 
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cursos / Matérias</h3>
-                        <div class="flex gap-3 mb-5">
-                            <input type="text" id="nome-materia" placeholder="Ex: Games, Maker..." class="app-input flex-1">
-                            <button id="btn-add-materia" onclick="window.adicionar('materias', 'nome-materia')" class="app-btn !w-auto !px-6">+</button>
+                    <!-- Matérias -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[400px]">
+                        <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cursos / Matérias</h3>
+                        <div class="flex gap-2 mb-4">
+                            <input type="text" id="nome-materia" class="app-input !py-3" placeholder="Ex: Games, Maker...">
+                            <button id="btn-add-materia" onclick="window.addMateria()" class="app-btn !py-3 !px-4 aspect-square">+</button>
                         </div>
-                        <ul id="lista-materias" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                        <div id="lista-materias" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
                     </div>
 
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cadastro de Turmas</h3>
-                        <div class="space-y-3 mb-5 p-4 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent dark:border-slate-700">
-                            <select id="escola-turma" class="app-input" onchange="window.renderCadastros()"></select>
-                            <select id="materia-turma" class="app-input"></select>
-                            <div class="flex gap-3">
-                                <input type="text" id="nome-turma" placeholder="Dia/Horário (Ex: Qua | 15:40)" class="app-input flex-1">
-                                <button id="btn-add-turma" onclick="window.adicionarTurma()" class="app-btn !w-auto !px-6">+</button>
+                    <!-- Turmas -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]">
+                        <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cadastro de Turmas</h3>
+                        <div class="space-y-3 mb-4">
+                            <select id="escola-turma" class="app-input !py-3">
+                                <option value="">Selecionar Escola...</option>
+                            </select>
+                            <select id="materia-turma" class="app-input !py-3">
+                                <option value="">Selecionar Curso...</option>
+                            </select>
+                            <div class="flex gap-2">
+                                <input type="text" id="nome-turma" class="app-input !py-3" placeholder="Ex: 5º Ano A - Manhã">
+                                <button id="btn-add-turma" onclick="window.addTurma()" class="app-btn !py-3 !px-4 aspect-square">+</button>
                             </div>
                         </div>
-                        <ul id="lista-turmas" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                        <div id="lista-turmas" class="flex-1 overflow-y-auto space-y-2 pr-2 border-t border-gray-100 dark:border-slate-700 pt-4"></div>
                     </div>
 
-                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 class="font-black text-lg text-gray-900 dark:text-white mb-4">Cadastro de Alunos</h3>
-                        <div class="space-y-3 mb-5 p-4 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent dark:border-slate-700">
-                            <select id="escola-aluno" class="app-input" onchange="window.atualizarSelectTurmasAluno()"></select>
-                            <select id="turma-aluno" class="app-input" onchange="window.renderCadastros()"></select>
-                            <div class="flex gap-3">
-                                <input type="text" id="nome-aluno" placeholder="Nome do aluno" class="app-input flex-1">
-                                <button id="btn-add-aluno" onclick="window.adicionarAluno()" class="app-btn !w-auto !px-6">+</button>
-                            </div>
-                            <div class="flex items-center gap-2 px-1 pt-1">
-                                <input type="checkbox" id="demo-aluno" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-slate-700 dark:border-slate-600">
-                                <label for="demo-aluno" class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer">Aula Experimental (Demo)</label>
+                    <!-- Alunos -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col h-[500px]">
+                        <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white">Cadastro de Alunos</h3>
+                        <div class="space-y-3 mb-4">
+                            <select id="escola-aluno" onchange="window.atualizarSelectTurmasAluno()" class="app-input !py-3">
+                                <option value="">Selecionar Escola...</option>
+                            </select>
+                            <select id="turma-aluno" onchange="window.renderCadastros()" class="app-input !py-3">
+                                <option value="">Selecionar Turma...</option>
+                            </select>
+                            <div class="flex gap-2">
+                                <input type="text" id="nome-aluno" class="app-input !py-3" placeholder="Nome completo do aluno">
+                                <button id="btn-add-aluno" onclick="window.addAluno()" class="app-btn !py-3 !px-4 aspect-square">+</button>
                             </div>
                         </div>
-                        <ul id="lista-alunos" class="space-y-3 max-h-72 overflow-y-auto pr-1"></ul>
+                        <div id="lista-alunos" class="flex-1 overflow-y-auto space-y-2 pr-2 border-t border-gray-100 dark:border-slate-700 pt-4"></div>
                     </div>
 
                 </div>
             </div>
+
         </main>
     </div>
 
-    <!-- Modal Nova Aula -->
-    <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
-                <h3 class="font-black text-xl text-gray-900 dark:text-white">Dados da Aula</h3>
-                <button onclick="window.fecharModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+    <!-- Modais -->
+    <div id="modal-aula" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-gray-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-aula-titulo" class="text-xl font-black text-gray-900 dark:text-white">Nova Aula</h3>
+                <button onclick="window.fecharModalAula()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-slate-900 p-2 rounded-full transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
+            <input type="hidden" id="modal-aula-id">
             <div class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Data Letiva</label>
@@ -399,97 +344,82 @@
             </div>
             <div class="mt-8 flex flex-col gap-3">
                 <button id="btn-salvar-aula" onclick="window.salvarAula()" class="app-btn w-full">Salvar Registro</button>
-                <button id="btn-excluir-aula" onclick="window.excluirAula()" class="hidden w-full py-3 text-sm font-bold text-red-500 hover:text-red-700 transition-colors">Excluir esta aula</button>
+                <button id="btn-excluir-aula" onclick="window.excluirAula()" class="hidden w-full py-3 text-sm font-bold text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors">Excluir esta aula</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Novo/Editar Projeto (Link Drive) -->
-    <div id="modal-projeto" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
-                <h3 id="modal-projeto-title" class="font-black text-xl text-gray-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                    Adicionar Material
-                </h3>
-                <button onclick="window.fecharModalProjeto()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+    <!-- Modal Adicionar/Editar Link -->
+    <div id="modal-link" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-gray-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-link-titulo" class="text-xl font-black text-gray-900 dark:text-white">Adicionar Link</h3>
+                <button onclick="window.fecharModalLink()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-slate-900 p-2 rounded-full transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            
-            <div class="space-y-5">
+            <input type="hidden" id="modal-link-id">
+            <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Matéria / Software</label>
-                    <input type="text" id="proj-materia" class="app-input" placeholder="Ex: Scratch Jr, Construct 3, Lego Spike..." list="lista-sugestoes-materias">
-                    <datalist id="lista-sugestoes-materias"></datalist>
+                    <input type="text" id="modal-link-materia" class="app-input !py-3" placeholder="Ex: Scratch Jr, Construct 3..." list="datalist-materias-link">
+                    <datalist id="datalist-materias-link"></datalist>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Conteúdo / Tema</label>
-                    <input type="text" id="proj-conteudo" class="app-input" placeholder="Ex: Manual PDF, Slides da Aula...">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Nome do Conteúdo</label>
+                    <input type="text" id="modal-link-nome" class="app-input !py-3" placeholder="Ex: Jogo do Labirinto">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                        Link do Google Drive (ou outro)
-                    </label>
-                    <input type="url" id="proj-url" class="app-input" placeholder="https://drive.google.com/...">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Link do Arquivo</label>
+                    <input type="url" id="modal-link-url" class="app-input !py-3 text-blue-500 font-mono text-sm" placeholder="https://drive.google.com/...">
                 </div>
             </div>
-            
-            <div class="mt-8">
-                <button id="btn-enviar-proj" onclick="window.uploadProjeto()" class="app-btn w-full">Salvar Projeto</button>
+            <div class="mt-6 flex flex-col gap-3">
+                <button onclick="window.salvarLink()" class="app-btn w-full">Salvar Link</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Importação em Lote -->
-    <div id="modal-lote" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform border border-gray-100 dark:border-slate-700">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
-                <h3 class="font-black text-xl text-gray-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                    Importação Rápida
-                </h3>
-                <button onclick="window.fecharModalLote()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+    <!-- Modal Importar Vários Links -->
+    <div id="modal-importar" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl border border-gray-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">Importar Vários Links</h3>
+                <button onclick="window.fecharModalImportar()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-slate-900 p-2 rounded-full transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
-            <div class="space-y-5">
+            <p class="text-sm text-gray-500 dark:text-slate-400 mb-4">Cole abaixo os seus links (um por linha). Todos serão adicionados com a matéria escolhida.</p>
+
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Matéria / Software (Para todos)</label>
-                    <input type="text" id="lote-materia" class="app-input" placeholder="Ex: Scratch Jr, Geral..." list="lista-sugestoes-materias">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Matéria / Software para todos</label>
+                    <input type="text" id="modal-importar-materia" class="app-input !py-3" placeholder="Ex: Scratch Jr, Construct 3..." list="datalist-materias-link">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Cole os Links (1 por linha)</label>
-                    <textarea id="lote-links" rows="6" class="app-input py-3 resize-none" placeholder="https://link1.com&#10;https://link2.com&#10;https://link3.com"></textarea>
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Lista de Links</label>
+                    <textarea id="modal-importar-links" class="app-input font-mono text-xs p-3 h-40 resize-none leading-relaxed text-blue-500" placeholder="https://link1.com&#10;https://link2.com&#10;https://link3.com"></textarea>
                 </div>
             </div>
-            
-            <div class="mt-8">
-                <button id="btn-enviar-lote" onclick="window.uploadLote()" class="app-btn w-full">Importar Todos</button>
+            <div class="mt-6 flex gap-3">
+                <button onclick="window.fecharModalImportar()" class="app-btn w-full !bg-gray-200 hover:!bg-gray-300 text-gray-800 dark:!bg-slate-700 dark:hover:!bg-slate-600 dark:text-white !shadow-none border border-transparent dark:border-slate-600">Cancelar</button>
+                <button onclick="window.salvarImportacao()" class="app-btn w-full">Importar Tudo</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Confirmação -->
-    <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 dark:border-slate-700 text-center">
-            <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center text-red-600 dark:text-red-400 mx-auto mb-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            </div>
-            <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">Atenção</h3>
-            <p id="confirm-message" class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-6">Tem a certeza que deseja excluir?</p>
-            <div class="flex gap-3">
-                <button onclick="window.fecharConfirm()" class="flex-1 py-3.5 text-sm font-bold rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">Cancelar</button>
-                <button id="btn-confirm-action" class="flex-1 py-3.5 text-sm font-bold rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors shadow-lg shadow-red-600/30">Sim, Excluir</button>
-            </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+        <div id="toast-content" class="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold shadow-xl border border-gray-700 flex items-center gap-3 text-sm">
         </div>
     </div>
 
     <script type="module">
+        // Firebase Config and Initialization
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDUYpc-GItAeunBFFvaz6ByaFnJ7yxYji0",
@@ -504,432 +434,172 @@
         const auth = getAuth(app);
         const dbFirestore = getFirestore(app);
 
-        window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], projetos: [], presencas: {} };
+        // Estado Local
+        window.dbLocal = {
+            escolas: [],
+            materias: [],
+            turmas: [],
+            alunos: [],
+            aulas: [],
+            presencas: {},
+            projetos: [] // Array para guardar os links
+        };
         let currentUser = null;
+        let currentMonth = new Date().toISOString().substring(0, 7);
         let unsubscribeSnapshot = null;
-        let modoEdicao = { ativo: false, tabela: null, id: null };
-        let acaoConfirmar = null;
-        let turmaProjetoAtualId = null;
 
-        window.mostrarToast = function(mensagem, tipo = 'sucesso') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            let bgClass = tipo === 'erro' ? 'bg-red-600' : 'bg-gray-900 dark:bg-white';
-            let txtClass = tipo === 'erro' ? 'text-white' : 'text-white dark:text-gray-900';
-            
-            toast.className = `toast-enter ${bgClass} ${txtClass} shadow-xl rounded-full px-5 py-3 flex items-center gap-3 max-w-sm mx-auto font-bold text-sm border border-white/10`;
-            toast.innerHTML = `<span>${mensagem}</span>`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(-20px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000); 
-        };
-
-        window.abrirConfirm = function(mensagem, callback) {
-            document.getElementById('confirm-message').innerText = mensagem;
-            acaoConfirmar = callback;
-            document.getElementById('modal-confirm').classList.remove('hidden');
-        };
-
-        window.fecharConfirm = function() {
-            acaoConfirmar = null;
-            document.getElementById('modal-confirm').classList.add('hidden');
-        };
-
-        document.getElementById('btn-confirm-action').addEventListener('click', () => {
-            if (acaoConfirmar) acaoConfirmar();
-            window.fecharConfirm();
-        });
-
-        window.toggleAuthMode = function() {
-            document.getElementById('form-login').classList.toggle('hidden');
-            document.getElementById('form-cadastro').classList.toggle('hidden');
-        };
-
-        function setButtonLoading(btnId, isLoading, originalText) {
-            const btn = document.getElementById(btnId);
-            if (isLoading) {
-                btn.disabled = true;
-                btn.innerHTML = `<svg class="loader-spin w-6 h-6 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+        // Tema
+        window.initTheme = function() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon-light').classList.add('hidden');
+                document.getElementById('theme-icon-dark').classList.remove('hidden');
             } else {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
-        }
-
-        document.getElementById('btn-login').addEventListener('click', async () => {
-            const email = document.getElementById('login-email').value.trim();
-            const senha = document.getElementById('login-senha').value.trim();
-            if (!email || !senha) return window.mostrarToast('Preencha os dados.', 'erro');
-
-            setButtonLoading('btn-login', true, 'Entrar no Sistema');
-            try {
-                await signInWithEmailAndPassword(auth, email, senha);
-                document.getElementById('login-senha').value = '';
-            } catch (error) {
-                window.mostrarToast('Dados de acesso inválidos.', 'erro');
-            }
-            setButtonLoading('btn-login', false, 'Entrar no Sistema');
-        });
-
-        document.getElementById('btn-cadastro').addEventListener('click', async () => {
-            const nome = document.getElementById('cad-nome').value.trim();
-            const email = document.getElementById('cad-email').value.trim();
-            const senha = document.getElementById('cad-senha').value.trim();
-
-            if (!nome || !email || !senha) return window.mostrarToast('Preencha tudo.', 'erro');
-            if (senha.length < 6) return window.mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
-
-            setButtonLoading('btn-cadastro', true, 'Registrar e Entrar');
-            try {
-                const userCred = await createUserWithEmailAndPassword(auth, email, senha);
-                await updateProfile(userCred.user, { displayName: nome });
-                await setDoc(doc(dbFirestore, "diarios", userCred.user.uid), window.dbLocal);
-                window.mostrarToast('Bem-vindo à New Code!');
-            } catch (error) {
-                window.mostrarToast('Erro ao criar conta. E-mail pode estar em uso.', 'erro');
-            }
-            setButtonLoading('btn-cadastro', false, 'Registrar e Entrar');
-        });
-
-        window.recuperarSenha = async function() {
-            const email = document.getElementById('login-email').value.trim();
-            if (!email) return window.mostrarToast('Digite o seu e-mail no campo acima primeiro.', 'erro');
-            
-            try {
-                await sendPasswordResetEmail(auth, email);
-                window.mostrarToast('Verifique a sua caixa de entrada e SPAM!');
-            } catch (error) {
-                window.mostrarToast('E-mail não encontrado ou inválido.', 'erro');
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-icon-dark').classList.add('hidden');
+                document.getElementById('theme-icon-light').classList.remove('hidden');
             }
         };
 
-        document.getElementById('btn-logout').addEventListener('click', async () => {
-            await signOut(auth);
-        });
+        window.toggleTheme = function() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            document.getElementById('theme-icon-light').classList.toggle('hidden', isDark);
+            document.getElementById('theme-icon-dark').classList.toggle('hidden', !isDark);
+        };
 
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('tela-loading').classList.add('hidden');
+        // Toast
+        window.mostrarToast = function(msg, tipo = 'sucesso') {
+            const toast = document.getElementById('toast');
+            const content = document.getElementById('toast-content');
+            
+            content.innerHTML = tipo === 'erro' 
+                ? `<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${msg}`
+                : `<svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ${msg}`;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        };
+
+        // Firebase Auth e Sincronização
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                document.getElementById('auth-container').classList.add('hidden');
-                document.getElementById('app-container').classList.remove('hidden');
-                document.getElementById('app-container').classList.add('flex');
-                document.getElementById('user-display-name').textContent = user.displayName || 'Professor';
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                document.getElementById('user-name-display').textContent = user.email;
+                document.getElementById('input-mes-diario').value = currentMonth;
                 
-                const d = new Date();
-                document.getElementById('input-mes-diario').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-
                 iniciarSincronizacao(user.uid);
             } else {
                 currentUser = null;
-                if(unsubscribeSnapshot) unsubscribeSnapshot(); 
-                document.getElementById('app-container').classList.add('hidden');
-                document.getElementById('app-container').classList.remove('flex');
-                document.getElementById('auth-container').classList.remove('hidden');
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('app-screen').classList.add('hidden');
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
             }
         });
 
         function iniciarSincronizacao(uid) {
-            unsubscribeSnapshot = onSnapshot(doc(dbFirestore, "diarios", uid), (docSnap) => {
+            const docRef = doc(dbFirestore, "diarios", uid);
+            
+            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
-                    const d = docSnap.data();
-                    window.dbLocal = { 
-                        escolas: d.escolas||[], 
-                        materias: d.materias||[], 
-                        turmas: d.turmas||[], 
-                        alunos: d.alunos||[], 
-                        aulas: d.aulas||[], 
-                        projetos: d.projetos||[], 
-                        presencas: d.presencas||{} 
-                    };
+                    const dados = docSnap.data();
+                    window.dbLocal.escolas = dados.escolas || [];
+                    window.dbLocal.materias = dados.materias || [];
+                    window.dbLocal.turmas = dados.turmas || [];
+                    window.dbLocal.alunos = dados.alunos || [];
+                    window.dbLocal.aulas = dados.aulas || [];
+                    window.dbLocal.presencas = dados.presencas || {};
+                    window.dbLocal.projetos = dados.projetos || []; // Carrega projetos
+                    
+                    window.atualizarSelects();
+                    window.renderCadastros();
+                    window.renderPlanilha();
+                    window.renderProjetos();
+                    window.atualizarDatalistMateriasLink();
+                    
+                    document.getElementById('status-nuvem').classList.remove('hidden');
                 } else {
-                    window.dbLocal = { escolas: [], materias: [], turmas: [], alunos: [], aulas: [], projetos: [], presencas: {} };
-                    setDoc(doc(dbFirestore, "diarios", uid), window.dbLocal);
+                    window.salvarDados();
                 }
-                document.getElementById('status-nuvem').classList.remove('hidden');
-                
-                const sET = document.getElementById('escola-turma').value;
-                const sMT = document.getElementById('materia-turma').value;
-                const sEA = document.getElementById('escola-aluno').value;
-                const sED = document.getElementById('select-escola-diario').value;
-                const sEP = document.getElementById('select-escola-proj').value;
-
-                window.atualizarSelects();
-
-                if(sET) document.getElementById('escola-turma').value = sET;
-                if(sMT) document.getElementById('materia-turma').value = sMT;
-                if(sEA) {
-                    document.getElementById('escola-aluno').value = sEA;
-                    window.atualizarSelectTurmasAluno();
-                }
-                if(sED) {
-                    document.getElementById('select-escola-diario').value = sED;
-                    window.atualizarSelectTurmasDiario();
-                }
-                if(sEP) {
-                    document.getElementById('select-escola-proj').value = sEP;
-                    window.atualizarSelectTurmasProj();
-                }
-
-                window.renderCadastros();
-                window.renderPlanilha();
-                window.renderProjetos();
             }, (error) => {
-                console.error("Erro Firebase Snapshot:", error);
-                window.mostrarToast("Sem permissão para ler o Firebase.", 'erro');
+                console.error("Erro no onSnapshot:", error);
+                window.mostrarToast("Erro de sincronização. Reconectando...", "erro");
+                document.getElementById('status-nuvem').classList.add('hidden');
             });
         }
 
         window.salvarDados = async function() {
             if (!currentUser) return;
-            document.getElementById('status-nuvem').classList.add('hidden'); 
+            document.getElementById('status-nuvem').classList.add('hidden');
+            
             try {
-                await setDoc(doc(dbFirestore, "diarios", currentUser.uid), window.dbLocal);
-                document.getElementById('status-nuvem').classList.remove('hidden');
-            } catch(error) {
-                console.error("Erro Firebase Gravação:", error);
-                window.mostrarToast("Sem permissão para gravar no Firebase.", 'erro');
+                const docRef = doc(dbFirestore, "diarios", currentUser.uid);
+                await setDoc(docRef, window.dbLocal);
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                window.mostrarToast("A gravação falhou. Sem internet?", "erro");
             }
         };
 
-        window.changeTab = function(tab) {
-            document.getElementById('section-diario').classList.add('hidden');
-            document.getElementById('section-cadastros').classList.add('hidden');
-            document.getElementById('section-projetos').classList.add('hidden');
+        window.login = async function() {
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-senha').value.trim();
+            const btn = document.getElementById('btn-login');
+            const erroEl = document.getElementById('login-erro');
             
-            // Classes atualizadas para o novo formato centralizado
-            const baseClass = "py-2 px-1 text-[11px] sm:text-[13px] font-bold rounded-lg text-center transition-all duration-200 flex items-center justify-center leading-tight ";
-            const activeClass = baseClass + "bg-white dark:bg-slate-600 text-blue-600 dark:text-white shadow-sm";
-            const inactiveClass = baseClass + "text-gray-500 dark:text-gray-400 bg-transparent hover:text-gray-700 dark:hover:text-gray-300";
-
-            document.getElementById('tab-diario').className = (tab === 'diario') ? activeClass : inactiveClass;
-            document.getElementById('tab-cadastros').className = (tab === 'cadastros') ? activeClass : inactiveClass;
-            document.getElementById('tab-projetos').className = (tab === 'projetos') ? activeClass : inactiveClass;
-
-            document.getElementById('section-' + tab).classList.remove('hidden');
-
-            if(tab === 'cadastros') {
-                cancelarEdicao(); 
-                window.renderCadastros();
+            if (!email || !senha) {
+                erroEl.textContent = "Preencha todos os campos.";
+                erroEl.classList.remove('hidden');
+                return;
             }
+
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Autenticando...`;
+            erroEl.classList.add('hidden');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, senha);
+            } catch (error) {
+                erroEl.textContent = "Acesso negado. Verifique as credenciais.";
+                erroEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Entrar no Sistema";
+            }
+        };
+
+        window.logout = function() {
+            signOut(auth);
+        };
+
+        // Navegação de Abas
+        window.changeTab = function(tab) {
+            ['diario', 'projetos', 'cadastros'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('bg-white', 'dark:bg-slate-800', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                document.getElementById(`tab-${t}`).classList.add('text-gray-500', 'dark:text-slate-400');
+            });
+            
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('bg-white', 'dark:bg-slate-800', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-500', 'dark:text-slate-400');
+
+            if(tab === 'cadastros') window.renderCadastros();
             if(tab === 'diario') window.renderPlanilha();
             if(tab === 'projetos') window.renderProjetos();
         };
 
-        window.gerarId = function() { return Date.now(); };
-
-        function cancelarEdicao() {
-            modoEdicao = { ativo: false, tabela: null, id: null };
-            document.getElementById('btn-add-escola').innerText = "+";
-            document.getElementById('btn-add-materia').innerText = "+";
-            document.getElementById('btn-add-turma').innerText = "+";
-            document.getElementById('btn-add-aluno').innerText = "+";
-            
-            document.getElementById('nome-escola').value = '';
-            document.getElementById('nome-materia').value = '';
-            document.getElementById('nome-turma').value = '';
-            document.getElementById('nome-aluno').value = '';
-            document.getElementById('demo-aluno').checked = false;
-        }
-
-        window.iniciarEdicao = function(tabela, id) {
-            const item = window.dbLocal[tabela].find(i => i.id === id);
-            if (!item) return;
-
-            cancelarEdicao();
-            modoEdicao = { ativo: true, tabela: tabela, id: id };
-
-            if (tabela === 'escolas') {
-                document.getElementById('nome-escola').value = item.nome;
-                document.getElementById('nome-escola').focus();
-                document.getElementById('btn-add-escola').innerText = "✓";
-            } else if (tabela === 'materias') {
-                document.getElementById('nome-materia').value = item.nome;
-                document.getElementById('nome-materia').focus();
-                document.getElementById('btn-add-materia').innerText = "✓";
-            } else if (tabela === 'turmas') {
-                document.getElementById('escola-turma').value = item.escolaId || "";
-                document.getElementById('materia-turma').value = item.materiaId || "";
-                document.getElementById('nome-turma').value = item.nome;
-                document.getElementById('nome-turma').focus();
-                document.getElementById('btn-add-turma').innerText = "✓";
-            } else if (tabela === 'alunos') {
-                const turma = window.dbLocal.turmas.find(t => t.id === item.turmaId);
-                if (turma) {
-                    document.getElementById('escola-aluno').value = turma.escolaId || "";
-                    window.atualizarSelectTurmasAluno();
-                }
-                document.getElementById('turma-aluno').value = item.turmaId || "";
-                document.getElementById('nome-aluno').value = item.nome;
-                document.getElementById('demo-aluno').checked = !!item.isDemo;
-                document.getElementById('nome-aluno').focus();
-                document.getElementById('btn-add-aluno').innerText = "✓";
-            }
-            
-            window.mostrarToast('Modo de edição. Altere os dados e guarde.');
-        };
-
-        window.toggleDemo = function(id) {
-            const aluno = window.dbLocal.alunos.find(a => a.id === id);
-            if (aluno) {
-                aluno.isDemo = !aluno.isDemo;
-                window.salvarDados();
-            }
-        };
-
-        window.adicionar = function(tabela, inputId) {
-            const val = document.getElementById(inputId).value.trim();
-            if (!val) return window.mostrarToast('O campo não pode estar vazio.', 'erro');
-            
-            if (modoEdicao.ativo && modoEdicao.tabela === tabela) {
-                const item = window.dbLocal[tabela].find(i => i.id === modoEdicao.id);
-                if(item) item.nome = val;
-                window.mostrarToast('Registo atualizado.');
-            } else {
-                window.dbLocal[tabela].push({ id: window.gerarId(), nome: val });
-                window.mostrarToast('Registo adicionado.');
-            }
-            
-            cancelarEdicao();
-            window.salvarDados();
-        };
-
-        window.adicionarTurma = function() {
-            const nome = document.getElementById('nome-turma').value.trim();
-            const escId = document.getElementById('escola-turma').value;
-            const matId = document.getElementById('materia-turma').value; 
-            if (!nome || !escId || !matId) return window.mostrarToast('Selecione escola, curso e nome.', 'erro');
-            
-            if (modoEdicao.ativo && modoEdicao.tabela === 'turmas') {
-                const item = window.dbLocal.turmas.find(i => i.id === modoEdicao.id);
-                if(item) {
-                    item.nome = nome;
-                    item.escolaId = parseInt(escId);
-                    item.materiaId = parseInt(matId);
-                }
-                window.mostrarToast('Turma atualizada.');
-            } else {
-                window.dbLocal.turmas.push({ id: window.gerarId(), nome, escolaId: parseInt(escId), materiaId: parseInt(matId) });
-                window.mostrarToast('Turma cadastrada.');
-            }
-            
-            cancelarEdicao();
-            window.salvarDados();
-        };
-
-        window.adicionarAluno = function() {
-            const nome = document.getElementById('nome-aluno').value.trim();
-            const turId = document.getElementById('turma-aluno').value;
-            const isDemo = document.getElementById('demo-aluno').checked;
-            
-            if (!nome || !turId) return window.mostrarToast('Selecione a turma e digite o nome.', 'erro');
-            
-            if (modoEdicao.ativo && modoEdicao.tabela === 'alunos') {
-                const item = window.dbLocal.alunos.find(i => i.id === modoEdicao.id);
-                if(item) {
-                    item.nome = nome;
-                    item.turmaId = parseInt(turId);
-                    item.isDemo = isDemo;
-                }
-                window.mostrarToast('Aluno atualizado.');
-            } else {
-                window.dbLocal.alunos.push({ id: window.gerarId(), nome, turmaId: parseInt(turId), isDemo });
-                window.mostrarToast('Aluno matriculado.');
-            }
-
-            cancelarEdicao();
-            window.salvarDados();
-        };
-
-        window.remover = function(tabela, id) {
-            window.abrirConfirm("Tem a certeza que deseja apagar? Esta ação não pode ser desfeita.", () => {
-                window.dbLocal[tabela] = window.dbLocal[tabela].filter(i => i.id !== id);
-                if(modoEdicao.id === id) cancelarEdicao();
-                window.salvarDados();
-            });
-        };
-
-        window.renderCadastros = function() {
-            const renderLista = (tabela, elId, arr, infoExtra = null) => {
-                const ul = document.getElementById(elId);
-                ul.innerHTML = '';
-                if (arr.length === 0) return ul.innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Sem registos</li>`;
-
-                arr.forEach(item => {
-                    let extra = '';
-                    let btnDemo = '';
-                    
-                    if (infoExtra === 'turma') {
-                        const m = window.dbLocal.materias.find(x => x.id === item.materiaId);
-                        extra = `<span class="text-[11px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-700 px-2 py-0.5 rounded-md mt-1 inline-block">${m ? m.nome : 'Sem Curso'}</span>`;
-                    } else if (infoExtra === 'aluno') {
-                        const t = window.dbLocal.turmas.find(x => x.id === item.turmaId);
-                        extra = `<span class="text-[11px] font-black uppercase tracking-wider text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-slate-600 px-2 py-0.5 rounded-md mt-1 inline-block">${t ? t.nome : 'Turma Apagada'}</span>`;
-                        
-                        if (item.isDemo) {
-                            extra += ` <span class="text-[11px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-slate-700 border border-purple-200 dark:border-purple-600 px-2 py-0.5 rounded-md mt-1 inline-block ml-1">DEMO</span>`;
-                        }
-                        
-                        const demoColor = item.isDemo ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20' : 'text-gray-400 hover:text-purple-600 hover:bg-white dark:hover:bg-slate-800';
-                        btnDemo = `
-                            <button onclick="window.toggleDemo(${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center transition-all ${demoColor}" title="Alternar Demo">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            </button>
-                        `;
-                    }
-                    
-                    ul.innerHTML += `
-                        <li class="p-4 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-xl flex justify-between items-center mb-3">
-                            <div class="flex flex-col">
-                                <span class="text-sm font-black text-gray-900 dark:text-white">${item.nome}</span>
-                                <div>${extra}</div>
-                            </div>
-                            <div class="flex gap-1">
-                                ${btnDemo}
-                                <button onclick="window.iniciarEdicao('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-white dark:hover:bg-slate-800 transition-all" title="Editar">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>
-                                <button onclick="window.remover('${tabela}', ${item.id})" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white dark:hover:bg-slate-800 transition-all" title="Apagar">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </li>`;
-                });
-            };
-
-            const ordEsc = [...window.dbLocal.escolas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-            const ordMat = [...window.dbLocal.materias].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-            
-            renderLista('escolas', 'lista-escolas', ordEsc);
-            renderLista('materias', 'lista-materias', ordMat);
-
-            const escFiltro = document.getElementById('escola-turma').value;
-            if (escFiltro) {
-                let tArr = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escFiltro));
-                renderLista('turmas', 'lista-turmas', tArr.sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')), 'turma');
-            } else {
-                document.getElementById('lista-turmas').innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola acima para ver as turmas</li>`;
-            }
-
-            const escAlunoFiltro = document.getElementById('escola-aluno').value;
-            const turFiltro = document.getElementById('turma-aluno').value;
-            if (escAlunoFiltro && turFiltro) {
-                let aArr = window.dbLocal.alunos.filter(a => a.turmaId == parseInt(turFiltro));
-                renderLista('alunos', 'lista-alunos', aArr.sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR')), 'aluno');
-            } else {
-                document.getElementById('lista-alunos').innerHTML = `<li class="p-4 text-sm font-bold text-gray-400 text-center border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola e turma acima</li>`;
-            }
-        };
-
+        // UI Updates e Selects
         window.atualizarSelects = function() {
             const preencher = (selectId, dados, placeholder) => {
                 const select = document.getElementById(selectId);
+                if(!select) return;
                 const valorAtual = select.value;
                 select.innerHTML = `<option value="">${placeholder}</option>`;
                 
@@ -948,11 +618,11 @@
             preencher('materia-turma', window.dbLocal.materias, 'Selecionar Curso...');
             preencher('escola-aluno', window.dbLocal.escolas, 'Selecionar Escola...');
             preencher('select-escola-diario', window.dbLocal.escolas, 'Selecionar Escola...');
-            preencher('select-escola-proj', window.dbLocal.escolas, 'Selecionar Escola...');
+            preencher('escola-projeto', window.dbLocal.escolas, 'Selecionar Escola...');
             
             window.atualizarSelectTurmasAluno();
             window.atualizarSelectTurmasDiario();
-            window.atualizarSelectTurmasProj();
+            window.atualizarSelectTurmasProjeto();
         };
 
         window.atualizarSelectTurmasAluno = function() {
@@ -961,18 +631,11 @@
             const valorAtual = select.value;
             
             select.innerHTML = `<option value="">Selecionar Turma...</option>`;
-            
             if (escolaId) {
                 const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
                 const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-                
-                sorted.forEach(t => {
-                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
-                });
-                
-                if (sorted.find(d => d.id == valorAtual)) {
-                    select.value = valorAtual;
-                }
+                sorted.forEach(t => select.innerHTML += `<option value="${t.id}">${t.nome}</option>`);
+                if (sorted.find(d => d.id == valorAtual)) select.value = valorAtual;
             }
             window.renderCadastros();
         };
@@ -983,480 +646,635 @@
             const valorAtual = select.value;
             
             select.innerHTML = `<option value="">Selecionar Turma...</option>`;
-            
             if (escolaId) {
                 const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
                 const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-                
-                sorted.forEach(t => {
-                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
-                });
-                
-                if (sorted.find(d => d.id == valorAtual)) {
-                    select.value = valorAtual;
-                }
+                sorted.forEach(t => select.innerHTML += `<option value="${t.id}">${t.nome}</option>`);
+                if (sorted.find(d => d.id == valorAtual)) select.value = valorAtual;
             }
             window.renderPlanilha();
         };
 
-        window.atualizarSelectTurmasProj = function() {
-            const escolaId = document.getElementById('select-escola-proj').value;
-            const select = document.getElementById('select-turma-proj');
+        window.atualizarSelectTurmasProjeto = function() {
+            const escolaId = document.getElementById('escola-projeto').value;
+            const select = document.getElementById('turma-projeto');
             const valorAtual = select.value;
             
             select.innerHTML = `<option value="">Selecionar Turma...</option>`;
-            
             if (escolaId) {
                 const turmas = window.dbLocal.turmas.filter(t => t.escolaId == parseInt(escolaId));
                 const sorted = [...turmas].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-                
-                sorted.forEach(t => {
-                    select.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
-                });
-                
-                if (sorted.find(d => d.id == valorAtual)) {
-                    select.value = valorAtual;
-                }
+                sorted.forEach(t => select.innerHTML += `<option value="${t.id}">${t.nome}</option>`);
+                if (sorted.find(d => d.id == valorAtual)) select.value = valorAtual;
             }
             window.renderProjetos();
+        };
+
+        // --- Gestão de Dados ---
+        function gerarId() { return Date.now(); }
+
+        window.addEscola = function() {
+            const nome = document.getElementById('nome-escola').value.trim();
+            if(!nome) return;
+            window.dbLocal.escolas.push({ id: gerarId(), nome });
+            document.getElementById('nome-escola').value = '';
+            window.salvarDados();
+            window.mostrarToast('Unidade adicionada.');
+        };
+
+        window.delEscola = function(id) {
+            if(!confirm('Excluir esta escola?')) return;
+            window.dbLocal.escolas = window.dbLocal.escolas.filter(e => e.id !== id);
+            window.dbLocal.turmas = window.dbLocal.turmas.filter(t => t.escolaId !== id);
+            window.salvarDados();
+            window.mostrarToast('Unidade excluída.');
+        };
+
+        window.addMateria = function() {
+            const nome = document.getElementById('nome-materia').value.trim().toUpperCase();
+            if(!nome) return;
+            window.dbLocal.materias.push({ id: gerarId(), nome });
+            document.getElementById('nome-materia').value = '';
+            window.salvarDados();
+            window.mostrarToast('Matéria adicionada.');
+        };
+
+        window.delMateria = function(id) {
+            if(!confirm('Excluir este curso?')) return;
+            window.dbLocal.materias = window.dbLocal.materias.filter(m => m.id !== id);
+            window.salvarDados();
+            window.mostrarToast('Curso excluído.');
+        };
+
+        window.addTurma = function() {
+            const escolaId = document.getElementById('escola-turma').value;
+            const materiaId = document.getElementById('materia-turma').value;
+            const nome = document.getElementById('nome-turma').value.trim().toUpperCase();
+            
+            if(!escolaId || !materiaId || !nome) return window.mostrarToast('Preencha os campos da turma', 'erro');
+            
+            window.dbLocal.turmas.push({ id: gerarId(), escolaId: parseInt(escolaId), materiaId: parseInt(materiaId), nome });
+            document.getElementById('nome-turma').value = '';
+            window.salvarDados();
+            window.mostrarToast('Turma adicionada.');
+        };
+
+        window.delTurma = function(id) {
+            if(!confirm('Excluir esta turma? Alunos nela ficarão sem turma.')) return;
+            window.dbLocal.turmas = window.dbLocal.turmas.filter(t => t.id !== id);
+            window.salvarDados();
+            window.mostrarToast('Turma excluída.');
+        };
+
+        window.addAluno = function() {
+            const turmaId = document.getElementById('turma-aluno').value;
+            const nome = document.getElementById('nome-aluno').value.trim();
+            
+            if(!turmaId || !nome) return window.mostrarToast('Selecione turma e digite o nome', 'erro');
+            
+            window.dbLocal.alunos.push({ id: gerarId(), turmaId: parseInt(turmaId), nome });
+            document.getElementById('nome-aluno').value = '';
+            window.salvarDados();
+            window.mostrarToast('Aluno matriculado.');
+        };
+
+        window.delAluno = function(id) {
+            if(!confirm('Excluir este aluno?')) return;
+            window.dbLocal.alunos = window.dbLocal.alunos.filter(a => a.id !== id);
+            window.salvarDados();
+            window.mostrarToast('Aluno excluído.');
+        };
+
+        window.renderCadastros = function() {
+            const getNome = (lista, id) => {
+                const item = lista.find(i => i.id === id);
+                return item ? item.nome : 'Desconhecido';
+            };
+
+            const renderLista = (containerId, dados, formatter) => {
+                const container = document.getElementById(containerId);
+                if(!container) return;
+                container.innerHTML = '';
+                if(dados.length === 0) {
+                    container.innerHTML = `<div class="p-4 border border-dashed border-gray-200 dark:border-slate-700 rounded-xl text-center text-xs font-bold text-gray-400 dark:text-slate-500">Sem registros</div>`;
+                    return;
+                }
+                const sorted = [...dados].sort((a,b) => (a.nome || '').localeCompare(b.nome || '', 'pt-BR'));
+                sorted.forEach(item => container.innerHTML += formatter(item));
+            };
+
+            renderLista('lista-escolas', window.dbLocal.escolas, item => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
+                    <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
+                    <button onclick="window.delEscola(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>
+            `);
+
+            renderLista('lista-materias', window.dbLocal.materias, item => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
+                    <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
+                    <button onclick="window.delMateria(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>
+            `);
+
+            const turmaEscolaId = document.getElementById('escola-turma').value;
+            const turmasFiltradas = turmaEscolaId ? window.dbLocal.turmas.filter(t => t.escolaId == turmaEscolaId) : window.dbLocal.turmas;
+            renderLista('lista-turmas', turmasFiltradas, item => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
+                    <div class="truncate pr-2">
+                        <div class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate">${item.nome}</div>
+                        <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">${getNome(window.dbLocal.escolas, item.escolaId)} • ${getNome(window.dbLocal.materias, item.materiaId)}</div>
+                    </div>
+                    <button onclick="window.delTurma(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>
+            `);
+
+            const alunoTurmaId = document.getElementById('turma-aluno').value;
+            const alunosFiltrados = alunoTurmaId ? window.dbLocal.alunos.filter(a => a.turmaId == alunoTurmaId) : window.dbLocal.alunos;
+            renderLista('lista-alunos', alunosFiltrados, item => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
+                    <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
+                    <button onclick="window.delAluno(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>
+            `);
+        };
+
+        // --- Diário de Aulas ---
+        window.mudarMesDiario = function() {
+            currentMonth = document.getElementById('input-mes-diario').value;
+            window.renderPlanilha();
         };
 
         window.formatarData = function(dataString) {
             const [ano, mes, dia] = dataString.split('-');
-            const dataObj = new Date(ano, mes - 1, dia);
-            const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            return `<div class="font-black text-xs sm:text-base">${dia}/${mes}</div><div class="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5 sm:mt-1 text-gray-400">${dias[dataObj.getDay()]}</div>`;
+            return `${dia}/${mes}/${ano}`;
         };
 
-        let turmaAtualId = null;
-
-        window.renderPlanilha = function() {
-            const escolaSelect = document.getElementById('select-escola-diario').value;
-            const turmaSelect = document.getElementById('select-turma-diario').value;
-            const mesSelect = document.getElementById('input-mes-diario').value; 
+        window.abrirModalNovaAula = function() {
+            const turmaId = document.getElementById('select-turma-diario').value;
+            if(!turmaId) return window.mostrarToast('Selecione uma turma primeiro', 'erro');
             
-            if (!escolaSelect || !turmaSelect) {
-                document.getElementById('tabela-diario').innerHTML = `<tr><td class="p-10 text-center text-gray-500 font-bold">Selecione uma escola e uma turma acima.</td></tr>`;
-                return;
+            document.getElementById('modal-aula-titulo').textContent = 'Nova Aula';
+            document.getElementById('modal-aula-id').value = '';
+            
+            const hoje = new Date();
+            const hojeStr = hoje.toISOString().split('T')[0];
+            const mesHoje = hojeStr.substring(0, 7);
+            
+            if(currentMonth === mesHoje) {
+                document.getElementById('modal-data').value = hojeStr;
+            } else {
+                document.getElementById('modal-data').value = `${currentMonth}-01`;
             }
-
-            turmaAtualId = parseInt(turmaSelect);
-            const turma = window.dbLocal.turmas.find(t => t.id === turmaAtualId);
-            const escola = window.dbLocal.escolas.find(e => e.id === turma.escolaId);
-            const materia = window.dbLocal.materias.find(m => m.id === turma.materiaId) || {nome: 'Geral'};
             
-            const alunosTurma = window.dbLocal.alunos.filter(a => a.turmaId === turmaAtualId).sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-            const aulas = window.dbLocal.aulas.filter(a => a.turmaId === turmaAtualId && (!mesSelect || a.data.startsWith(mesSelect))).sort((a, b) => a.data.localeCompare(b.data));
-
-            const nomeMes = mesSelect ? new Date(mesSelect + '-01T00:00:00').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'}) : 'Todas as datas';
-
-            let html = `
-                <thead>
-                    <tr class="bg-gray-50 dark:bg-slate-800/80 border-b border-gray-200 dark:border-slate-700 sticky-col-header">
-                        <th colspan="${aulas.length + 3}" class="p-3 sm:p-5 text-left">
-                            <div class="font-black text-xl sm:text-2xl text-gray-900 dark:text-white capitalize mb-2">${nomeMes}</div>
-                            <div class="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${escola ? escola.nome : 'Sem Escola'}</span>
-                                <span class="bg-blue-100 text-blue-700 dark:bg-slate-700 dark:text-blue-400 px-2 py-1 rounded-md">${materia.nome}</span>
-                                <span class="bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700">${turma.nome}</span>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 text-gray-500 dark:text-gray-400">
-                        <th class="sticky-col p-2 sm:p-4 text-left text-[10px] sm:text-[11px] font-black tracking-widest uppercase border-r border-gray-200 dark:border-slate-700 w-48 sm:w-64">Aluno</th>
-            `;
-
-            aulas.forEach(aula => {
-                html += `<th class="p-1 sm:p-2 w-12 sm:w-16 text-center border-r border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" title="${aula.conteudo || 'Editar Aula'}" onclick="window.editarAula(${aula.id})">${window.formatarData(aula.data)}</th>`;
-            });
-
-            html += `
-                        <th class="sticky-col-right-2 p-1 sm:p-3 w-12 sm:w-16 text-center text-[9px] sm:text-[10px] font-black uppercase tracking-widest border-r border-gray-200 dark:border-slate-700 text-green-600 dark:text-green-500 bg-gray-50 dark:bg-slate-900">Pres</th>
-                        <th class="sticky-col-right p-1 sm:p-3 w-12 sm:w-16 text-center text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-500 bg-gray-50 dark:bg-slate-900">Falta</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
-            `;
-
-            if (alunosTurma.length === 0) html += `<tr><td colspan="${aulas.length + 3}" class="p-8 text-center text-gray-400 font-bold">Nenhum aluno matriculado nesta turma.</td></tr>`;
-
-            alunosTurma.forEach((aluno) => {
-                let tP = 0, tF = 0;
-                
-                html += `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <td class="sticky-col p-2 sm:p-4 border-r border-gray-200 dark:border-slate-700">
-                                <div class="flex flex-col gap-1">
-                                    <span class="font-black text-gray-800 dark:text-white text-xs sm:text-sm whitespace-normal leading-tight">${aluno.nome}</span>
-                                    ${aluno.isDemo ? `<span class="px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-black uppercase tracking-wider text-purple-700 dark:text-purple-400 bg-purple-100 dark:bg-slate-800 border border-purple-200 dark:border-purple-700 w-max">Demo</span>` : ''}
-                                </div>
-                            </td>`;
-
-                aulas.forEach(aula => {
-                    const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`] || '';
-                    if (status === 'P') tP++;
-                    if (status === 'F') tF++;
-                    
-                    let bgCell = status === 'P' ? 'bg-green-200 dark:bg-green-700' : (status === 'F' ? 'bg-red-200 dark:bg-red-700' : '');
-                    let txtSel = status === 'P' || status === 'F' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-500';
-
-                    html += `<td class="p-0 border-r border-gray-200 dark:border-slate-700 align-middle transition-colors ${bgCell}">
-                                <select class="select-status ${txtSel} w-full h-full bg-transparent" onchange="window.registrarPresenca(${aula.id}, ${aluno.id}, this.value)">
-                                    <option value="" ${!status?'selected':''}>-</option>
-                                    <option value="P" ${status==='P'?'selected':''}>P</option>
-                                    <option value="F" ${status==='F'?'selected':''}>F</option>
-                                </select>
-                             </td>`;
-                });
-
-                html += `<td class="sticky-col-right-2 p-1 sm:p-0 border-r border-gray-200 dark:border-slate-700 text-center font-black text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/40 text-sm sm:text-base">${tP}</td>
-                         <td class="sticky-col-right p-1 sm:p-0 text-center font-black text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/40 text-sm sm:text-base">${tF}</td></tr>`;
-            });
-
-            html += `</tbody>`;
-            document.getElementById('tabela-diario').innerHTML = html;
-        };
-
-        window.registrarPresenca = function(aulaId, alunoId, status) {
-            window.dbLocal.presencas[`${aulaId}_${alunoId}`] = status;
-            window.salvarDados(); 
-        };
-
-        window.adicionarAula = function() {
-            if (!turmaAtualId) return window.mostrarToast('Selecione uma turma.', 'erro');
-            document.getElementById('modal-data').value = '';
             document.getElementById('modal-conteudo').value = '';
-            document.getElementById('modal-aula').dataset.aulaId = '';
             document.getElementById('btn-excluir-aula').classList.add('hidden');
+            
             document.getElementById('modal-aula').classList.remove('hidden');
         };
 
-        window.editarAula = function(id) {
-            const aula = window.dbLocal.aulas.find(a => a.id === id);
+        window.abrirModalEdicaoAula = function(aulaId) {
+            const aula = window.dbLocal.aulas.find(a => a.id === aulaId);
             if(!aula) return;
+
+            document.getElementById('modal-aula-titulo').textContent = 'Editar Aula';
+            document.getElementById('modal-aula-id').value = aula.id;
             document.getElementById('modal-data').value = aula.data;
             document.getElementById('modal-conteudo').value = aula.conteudo || '';
-            document.getElementById('modal-aula').dataset.aulaId = aula.id;
             document.getElementById('btn-excluir-aula').classList.remove('hidden');
+            
             document.getElementById('modal-aula').classList.remove('hidden');
         };
 
-        window.fecharModal = function() { document.getElementById('modal-aula').classList.add('hidden'); };
+        window.fecharModalAula = function() {
+            document.getElementById('modal-aula').classList.add('hidden');
+        };
 
         window.salvarAula = function() {
+            const turmaId = document.getElementById('select-turma-diario').value;
+            const id = document.getElementById('modal-aula-id').value;
             const data = document.getElementById('modal-data').value;
-            const conteudo = document.getElementById('modal-conteudo').value;
-            const aulaId = document.getElementById('modal-aula').dataset.aulaId;
-            if(!data) return window.mostrarToast('Data é obrigatória.', 'erro');
+            const conteudo = document.getElementById('modal-conteudo').value.trim();
 
-            if(aulaId) {
-                const aula = window.dbLocal.aulas.find(a => a.id === parseInt(aulaId));
-                aula.data = data; aula.conteudo = conteudo;
+            if(!data) return window.mostrarToast('A data é obrigatória', 'erro');
+
+            if (id) {
+                const aula = window.dbLocal.aulas.find(a => a.id == id);
+                if(aula) {
+                    aula.data = data;
+                    aula.conteudo = conteudo;
+                }
+                window.mostrarToast('Aula atualizada.');
             } else {
-                window.dbLocal.aulas.push({ id: window.gerarId(), turmaId: turmaAtualId, data, conteudo });
+                window.dbLocal.aulas.push({
+                    id: gerarId(),
+                    turmaId: parseInt(turmaId),
+                    data: data,
+                    conteudo: conteudo
+                });
+                window.mostrarToast('Aula registrada.');
             }
+
+            currentMonth = data.substring(0, 7);
+            document.getElementById('input-mes-diario').value = currentMonth;
+
             window.salvarDados();
-            window.fecharModal();
+            window.fecharModalAula();
+            window.renderPlanilha();
         };
 
         window.excluirAula = function() {
-            const aulaId = document.getElementById('modal-aula').dataset.aulaId;
-            if(!aulaId) return;
-
-            window.abrirConfirm("Tem a certeza que deseja apagar esta aula? Todos os registos de presença deste dia serão perdidos.", () => {
-                window.dbLocal.aulas = window.dbLocal.aulas.filter(a => a.id !== parseInt(aulaId));
-
-                for (const key in window.dbLocal.presencas) {
-                    if (key.startsWith(aulaId + '_')) {
-                        delete window.dbLocal.presencas[key];
-                    }
+            if(!confirm('Tem certeza? Todas as presenças desta aula serão apagadas.')) return;
+            const id = document.getElementById('modal-aula-id').value;
+            
+            window.dbLocal.aulas = window.dbLocal.aulas.filter(a => a.id != id);
+            
+            const chaves = Object.keys(window.dbLocal.presencas);
+            chaves.forEach(chave => {
+                if(chave.startsWith(`${id}_`)) {
+                    delete window.dbLocal.presencas[chave];
                 }
-
-                window.salvarDados();
-                window.fecharModal();
-                window.mostrarToast('Aula removida com sucesso.');
             });
+
+            window.salvarDados();
+            window.fecharModalAula();
+            window.renderPlanilha();
+            window.mostrarToast('Aula excluída.');
         };
 
-        window.renderProjetos = function() {
-            const escolaSelect = document.getElementById('select-escola-proj').value;
-            const turmaSelect = document.getElementById('select-turma-proj').value;
-            const ul = document.getElementById('lista-projetos');
+        window.togglePresenca = function(aulaId, alunoId) {
+            const key = `${aulaId}_${alunoId}`;
+            const atual = window.dbLocal.presencas[key];
             
-            ul.innerHTML = '';
-            ul.className = 'grid grid-cols-1 lg:grid-cols-2 gap-6 items-start pb-8';
+            if (atual === 'P') {
+                window.dbLocal.presencas[key] = 'F';
+            } else if (atual === 'F') {
+                delete window.dbLocal.presencas[key];
+            } else {
+                window.dbLocal.presencas[key] = 'P';
+            }
+            
+            window.salvarDados();
+            window.renderPlanilha();
+        };
 
-            if (!escolaSelect || !turmaSelect) {
-                ul.className = 'block';
-                ul.innerHTML = `<div class="p-10 text-center text-gray-500 font-bold border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola e uma turma acima para ver os materiais.</div>`;
+        // RENDERIZAÇÃO DA PLANILHA CORRIGIDA (SEM SCROLL)
+        window.renderPlanilha = function() {
+            const container = document.getElementById('planilha-container');
+            const escolaId = document.getElementById('select-escola-diario').value;
+            const turmaId = document.getElementById('select-turma-diario').value;
+
+            if (!escolaId || !turmaId) {
+                container.innerHTML = `<div class="text-center text-gray-500 dark:text-slate-400 py-20 font-medium">Selecione uma escola e uma turma acima.</div>`;
                 return;
             }
 
-            turmaProjetoAtualId = parseInt(turmaSelect);
-            const projetosDaTurma = (window.dbLocal.projetos || []).filter(p => p.turmaId === turmaProjetoAtualId);
+            const turma = window.dbLocal.turmas.find(t => t.id == turmaId);
+            const escola = window.dbLocal.escolas.find(e => e.id == escolaId);
+            const materia = window.dbLocal.materias.find(m => m.id == turma.materiaId);
+            const alunos = window.dbLocal.alunos.filter(a => a.turmaId == turmaId).sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+            
+            const aulasTurma = window.dbLocal.aulas.filter(a => a.turmaId == turmaId);
+            const aulasMes = aulasTurma.filter(a => a.data.startsWith(currentMonth)).sort((a,b) => a.data.localeCompare(b.data));
 
-            if (projetosDaTurma.length === 0) {
-                ul.className = 'block';
-                ul.innerHTML = `<div class="p-10 text-center text-gray-500 font-bold border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Nenhum material inserido nesta turma. Clique em 'Adicionar Link' ou 'Importar Vários'.</div>`;
+            const [ano, mesNum] = currentMonth.split('-');
+            const nomeMes = new Date(ano, parseInt(mesNum)-1).toLocaleString('pt-BR', { month: 'long' });
+
+            let html = `
+                <div class="mb-6 px-1">
+                    <h2 class="text-2xl font-black text-gray-900 dark:text-white capitalize mb-1">${nomeMes} De ${ano}</h2>
+                    <div class="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-wider text-gray-500 dark:text-slate-400">
+                        <span class="bg-gray-100 dark:bg-slate-900 px-2 py-1 rounded border border-gray-200 dark:border-slate-700">${escola?.nome || ''}</span>
+                        <span class="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 px-2 py-1 rounded border border-blue-200 dark:border-blue-500/30">${materia?.nome || ''}</span>
+                        <span class="bg-gray-100 dark:bg-slate-900 px-2 py-1 rounded border border-gray-200 dark:border-slate-700">${turma?.nome || ''}</span>
+                    </div>
+                </div>
+            `;
+
+            if (alunos.length === 0) {
+                html += `<div class="p-8 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl text-center text-gray-500 dark:text-slate-400 font-bold">Nenhum aluno matriculado nesta turma.</div>`;
+                container.innerHTML = html;
                 return;
             }
 
-            const projetosAgrupados = projetosDaTurma.reduce((grupos, proj) => {
-                const materiaNome = proj.materiaSoftware || 'Geral';
-                if (!grupos[materiaNome]) {
-                    grupos[materiaNome] = [];
-                }
-                grupos[materiaNome].push(proj);
-                return grupos;
-            }, {});
+            // Removido overflow-x-auto e min-w. Adicionado table-fixed e w-full para evitar qualquer quebra.
+            html += `
+                <div class="w-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <table class="w-full text-left table-fixed">
+                        <thead class="bg-gray-50 dark:bg-slate-900/50 border-b border-gray-200 dark:border-slate-700">
+                            <tr>
+                                <th class="py-3 px-2 font-black text-gray-700 dark:text-gray-300 w-[35%] sm:w-1/3 text-xs sm:text-sm truncate">Aluno</th>
+            `;
 
-            const materiasOrdenadas = Object.keys(projetosAgrupados).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+            aulasMes.forEach(aula => {
+                const dStr = aula.data + "T12:00:00";
+                const dObj = new Date(dStr);
+                const dia = String(dObj.getDate()).padStart(2, '0');
+                const mes = String(dObj.getMonth() + 1).padStart(2, '0');
+                const sem = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dObj.getDay()];
+                
+                html += `<th class="py-2 px-0 text-center border-l border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors" onclick="window.abrirModalEdicaoAula(${aula.id})" title="${aula.conteudo || 'Sem conteúdo'}">
+                    <div class="font-bold text-gray-700 dark:text-gray-300 text-[9px] sm:text-xs leading-none mb-0.5">${dia}/${mes}</div>
+                    <div class="text-[8px] sm:text-[10px] text-gray-500 dark:text-gray-400 uppercase">${sem}</div>
+                </th>`;
+            });
 
-            materiasOrdenadas.forEach(materiaNome => {
-                const projetos = projetosAgrupados[materiaNome].sort((a, b) => a.conteudo.localeCompare(b.conteudo, 'pt-BR'));
+            html += `
+                                <th class="py-2 px-0 text-center font-black text-green-600 dark:text-green-500 border-l border-gray-200 dark:border-slate-700 text-[8px] sm:text-xs">PRES</th>
+                                <th class="py-2 px-0 text-center font-black text-red-600 dark:text-red-500 border-l border-gray-200 dark:border-slate-700 text-[8px] sm:text-xs">FALTA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+            `;
 
-                let htmlGrupo = `
-                    <div class="bg-gray-50 dark:bg-slate-900/40 p-5 rounded-3xl border border-gray-200 dark:border-slate-700 w-full h-full flex flex-col shadow-sm">
-                        <div class="flex items-center justify-between gap-2 mb-5 border-b border-gray-200 dark:border-slate-700 pb-3 shrink-0">
-                            <span class="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-sm truncate max-w-[75%]">${materiaNome}</span>
-                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap bg-white dark:bg-slate-800 px-2 py-1.5 rounded-md border border-gray-100 dark:border-slate-600 shadow-sm">${projetos.length} link(s)</span>
-                        </div>
-                        <ul class="flex flex-col gap-3 flex-1">
-                `;
+            alunos.forEach(aluno => {
+                let faltas = 0;
+                let presencas = 0;
 
-                projetos.forEach(proj => {
-                    const dataUpload = new Date(proj.dataUpload).toLocaleDateString('pt-BR');
+                // Coluna do aluno permite truncate para não alargar a tabela
+                let rowHtml = `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td class="py-2 px-2 font-bold text-gray-900 dark:text-white text-xs sm:text-sm truncate" title="${aluno.nome}">${aluno.nome}</td>`;
+
+                aulasMes.forEach(aula => {
+                    const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`];
+                    let bgClass = '';
+                    let textClass = '';
                     
-                    htmlGrupo += `
-                        <li class="bg-white dark:bg-slate-800 p-3.5 border border-gray-200 dark:border-slate-700 rounded-2xl flex flex-col gap-3 group hover:border-blue-400 dark:hover:border-blue-500 transition-all shadow-sm hover:shadow-md">
-                            <div class="flex items-start gap-3">
-                                <div class="w-9 h-9 bg-gray-100 dark:bg-slate-700 rounded-xl flex items-center justify-center text-gray-500 dark:text-gray-400 shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                                </div>
-                                <div class="flex-1 min-w-0 pt-0.5">
-                                    <h4 class="font-black text-sm text-gray-900 dark:text-white leading-tight truncate" title="${proj.conteudo}">${proj.conteudo}</h4>
-                                    <p class="text-[9px] text-gray-400 mt-1 uppercase tracking-widest font-bold">Adicionado a ${dataUpload}</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 mt-1">
-                                <a href="${proj.url}" target="_blank" class="flex-1 py-2.5 text-center text-[11px] font-black uppercase tracking-wider rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">Acessar Link</a>
-                                <button onclick="window.editarProjeto(${proj.id})" class="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Editar Nome/Link">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>
-                                <button onclick="window.excluirProjeto(${proj.id})" class="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-slate-700 text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition-colors" title="Apagar Link">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </li>
+                    if (status === 'P') {
+                        bgClass = 'bg-green-100/50 dark:bg-green-500/10 hover:bg-green-200 dark:hover:bg-green-500/20';
+                        textClass = 'text-green-600 dark:text-green-400';
+                        presencas++;
+                    } else if (status === 'F') {
+                        bgClass = 'bg-red-100/50 dark:bg-red-500/10 hover:bg-red-200 dark:hover:bg-red-500/20';
+                        textClass = 'text-red-600 dark:text-red-400';
+                        faltas++;
+                    } else {
+                        bgClass = 'hover:bg-gray-100 dark:hover:bg-slate-700/50';
+                        textClass = 'text-transparent';
+                    }
+
+                    rowHtml += `
+                        <td class="p-0 border-l border-gray-200 dark:border-slate-700 ${bgClass} cursor-pointer transition-colors text-center align-middle" onclick="window.togglePresenca(${aula.id}, ${aluno.id})">
+                            <span class="font-black text-sm sm:text-lg ${textClass} select-none block w-full py-2">${status || '-'}</span>
+                        </td>
                     `;
                 });
 
-                htmlGrupo += `</ul></div>`;
-                ul.innerHTML += htmlGrupo;
+                rowHtml += `
+                        <td class="py-2 px-0 text-center font-black text-green-600 dark:text-green-500 border-l border-gray-200 dark:border-slate-700 bg-green-50/50 dark:bg-green-900/10 text-xs sm:text-sm">${presencas}</td>
+                        <td class="py-2 px-0 text-center font-black text-red-600 dark:text-red-500 border-l border-gray-200 dark:border-slate-700 bg-red-50/50 dark:bg-red-900/10 text-xs sm:text-sm">${faltas}</td>
+                    </tr>
+                `;
+                html += rowHtml;
             });
+
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
         };
 
-        window.abrirModalProjeto = function() {
-            if (!turmaProjetoAtualId) return window.mostrarToast('Selecione uma turma primeiro.', 'erro');
-            
-            document.getElementById('modal-projeto').dataset.projId = '';
-            document.getElementById('proj-materia').value = '';
-            document.getElementById('proj-conteudo').value = '';
-            document.getElementById('proj-url').value = '';
-            
-            document.getElementById('modal-projeto-title').innerHTML = `
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                Adicionar Material
-            `;
-            document.getElementById('btn-enviar-proj').innerText = 'Salvar Projeto';
-
-            const datalist = document.getElementById('lista-sugestoes-materias');
+        // --- Projetos (Links) ---
+        window.atualizarDatalistMateriasLink = function() {
+            const datalist = document.getElementById('datalist-materias-link');
+            if(!datalist) return;
             datalist.innerHTML = '';
-            const materiasUsadas = [...new Set((window.dbLocal.projetos || []).map(p => p.materiaSoftware).filter(Boolean))];
-            materiasUsadas.sort().forEach(mat => {
-                datalist.innerHTML += `<option value="${mat}">`;
+            
+            const materiasUnicas = [...new Set((window.dbLocal.projetos || []).map(p => p.materia).filter(m => m))].sort();
+            
+            materiasUnicas.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m;
+                datalist.appendChild(option);
             });
-
-            document.getElementById('modal-projeto').classList.remove('hidden');
         };
 
-        window.editarProjeto = function(id) {
-            const proj = window.dbLocal.projetos.find(p => p.id === id);
-            if (!proj) return;
-
-            document.getElementById('modal-projeto').dataset.projId = id;
-            document.getElementById('proj-materia').value = proj.materiaSoftware || '';
-            document.getElementById('proj-conteudo').value = proj.conteudo || '';
-            document.getElementById('proj-url').value = proj.url || '';
+        window.abrirModalLink = function(projetoId = null) {
+            const turmaId = document.getElementById('turma-projeto').value;
+            if(!turmaId) return window.mostrarToast('Selecione uma turma primeiro', 'erro');
             
-            document.getElementById('modal-projeto-title').innerHTML = `
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                Editar Material
-            `;
-            document.getElementById('btn-enviar-proj').innerText = 'Atualizar Projeto';
+            window.atualizarDatalistMateriasLink();
 
-            const datalist = document.getElementById('lista-sugestoes-materias');
-            datalist.innerHTML = '';
-            const materiasUsadas = [...new Set((window.dbLocal.projetos || []).map(p => p.materiaSoftware).filter(Boolean))];
-            materiasUsadas.sort().forEach(mat => {
-                datalist.innerHTML += `<option value="${mat}">`;
-            });
-
-            document.getElementById('modal-projeto').classList.remove('hidden');
-        };
-
-        window.fecharModalProjeto = function() {
-            document.getElementById('modal-projeto').classList.add('hidden');
-        };
-
-        window.uploadProjeto = function() {
-            const materiaSoftware = document.getElementById('proj-materia').value.trim() || 'Geral';
-            const conteudo = document.getElementById('proj-conteudo').value.trim();
-            const url = document.getElementById('proj-url').value.trim();
-            const projId = document.getElementById('modal-projeto').dataset.projId;
-            
-            if (!conteudo) return window.mostrarToast('Digite o conteúdo/tema do material.', 'erro');
-            if (!url) return window.mostrarToast('Cole o link.', 'erro');
-            
-            if (!window.dbLocal.projetos) window.dbLocal.projetos = [];
-            
-            if (projId) {
-                const proj = window.dbLocal.projetos.find(p => p.id === parseInt(projId));
-                if (proj) {
-                    proj.materiaSoftware = materiaSoftware;
-                    proj.conteudo = conteudo;
-                    proj.url = url;
+            if (projetoId) {
+                const projeto = window.dbLocal.projetos.find(p => p.id === projetoId);
+                if(projeto) {
+                    document.getElementById('modal-link-titulo').textContent = 'Editar Link';
+                    document.getElementById('modal-link-id').value = projeto.id;
+                    document.getElementById('modal-link-materia').value = projeto.materia || '';
+                    document.getElementById('modal-link-nome').value = projeto.nome;
+                    document.getElementById('modal-link-url').value = projeto.url;
                 }
-                window.mostrarToast('Material atualizado!');
             } else {
+                document.getElementById('modal-link-titulo').textContent = 'Adicionar Link';
+                document.getElementById('modal-link-id').value = '';
+                document.getElementById('modal-link-materia').value = '';
+                document.getElementById('modal-link-nome').value = '';
+                document.getElementById('modal-link-url').value = '';
+            }
+            
+            document.getElementById('modal-link').classList.remove('hidden');
+        };
+
+        window.fecharModalLink = function() {
+            document.getElementById('modal-link').classList.add('hidden');
+        };
+
+        window.salvarLink = function() {
+            const turmaId = document.getElementById('turma-projeto').value;
+            const id = document.getElementById('modal-link-id').value;
+            const materia = document.getElementById('modal-link-materia').value.trim().toUpperCase();
+            const nome = document.getElementById('modal-link-nome').value.trim();
+            const url = document.getElementById('modal-link-url').value.trim();
+
+            if(!nome || !url) return window.mostrarToast('Nome e Link são obrigatórios', 'erro');
+            
+            if(!window.dbLocal.projetos) window.dbLocal.projetos = [];
+
+            if (id) {
+                const projeto = window.dbLocal.projetos.find(p => p.id == id);
+                if(projeto) {
+                    projeto.materia = materia;
+                    projeto.nome = nome;
+                    projeto.url = url;
+                }
+                window.mostrarToast('Link atualizado.');
+            } else {
+                const hoje = new Date().toISOString().split('T')[0];
                 window.dbLocal.projetos.push({
-                    id: window.gerarId(),
-                    turmaId: turmaProjetoAtualId,
-                    materiaSoftware: materiaSoftware,
-                    conteudo: conteudo,
+                    id: gerarId(),
+                    turmaId: parseInt(turmaId),
+                    materia: materia,
+                    nome: nome,
                     url: url,
-                    dataUpload: Date.now()
+                    dataCriacao: hoje
                 });
-                window.mostrarToast('Link adicionado com sucesso!');
+                window.mostrarToast('Link adicionado.');
             }
 
             window.salvarDados();
+            window.fecharModalLink();
             window.renderProjetos();
-            window.fecharModalProjeto();
+            window.atualizarDatalistMateriasLink();
         };
 
         window.excluirProjeto = function(id) {
-            window.abrirConfirm("Tem a certeza que deseja excluir este link?", async () => {
-                window.dbLocal.projetos = window.dbLocal.projetos.filter(p => p.id !== id);
-                await window.salvarDados();
-                window.renderProjetos();
-                window.mostrarToast('Material removido.');
-            });
-        };
-
-        window.abrirModalLote = function() {
-            if (!turmaProjetoAtualId) return window.mostrarToast('Selecione uma turma primeiro.', 'erro');
-            
-            document.getElementById('lote-materia').value = '';
-            document.getElementById('lote-links').value = '';
-            
-            const datalist = document.getElementById('lista-sugestoes-materias');
-            datalist.innerHTML = '';
-            const materiasUsadas = [...new Set((window.dbLocal.projetos || []).map(p => p.materiaSoftware).filter(Boolean))];
-            materiasUsadas.sort().forEach(mat => {
-                datalist.innerHTML += `<option value="${mat}">`;
-            });
-
-            document.getElementById('modal-lote').classList.remove('hidden');
-        };
-
-        window.fecharModalLote = function() {
-            document.getElementById('modal-lote').classList.add('hidden');
-        };
-
-        window.uploadLote = function() {
-            const materiaSoftware = document.getElementById('lote-materia').value.trim() || 'Geral';
-            const linksRaw = document.getElementById('lote-links').value.trim();
-            
-            if (!linksRaw) return window.mostrarToast('Cole pelo menos um link.', 'erro');
-            
-            const links = linksRaw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            if (links.length === 0) return window.mostrarToast('Nenhum link válido encontrado.', 'erro');
-
-            if (!window.dbLocal.projetos) window.dbLocal.projetos = [];
-            
-            let dataAtual = Date.now();
-
-            links.forEach((url, index) => {
-                window.dbLocal.projetos.push({
-                    id: window.gerarId() + Math.floor(Math.random() * 10000) + index,
-                    turmaId: turmaProjetoAtualId,
-                    materiaSoftware: materiaSoftware,
-                    conteudo: `Material Importado ${index + 1}`,
-                    url: url,
-                    dataUpload: dataAtual
-                });
-            });
-
-            window.mostrarToast(`${links.length} links importados com sucesso!`);
+            if(!confirm('Tem certeza que deseja remover este link?')) return;
+            window.dbLocal.projetos = window.dbLocal.projetos.filter(p => p.id !== id);
             window.salvarDados();
             window.renderProjetos();
-            window.fecharModalLote();
+            window.mostrarToast('Link removido.');
+            window.atualizarDatalistMateriasLink();
         };
 
-        window.initTheme = function() {
-            if (localStorage.getItem('newcode_theme') === 'light') {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('icon-sun').classList.remove('hidden');
-            } else {
-                document.documentElement.classList.add('dark');
-                document.getElementById('icon-moon').classList.remove('hidden');
+        window.abrirModalImportar = function() {
+            const turmaId = document.getElementById('turma-projeto').value;
+            if(!turmaId) return window.mostrarToast('Selecione uma turma primeiro', 'erro');
+            
+            window.atualizarDatalistMateriasLink();
+            document.getElementById('modal-importar-materia').value = '';
+            document.getElementById('modal-importar-links').value = '';
+            document.getElementById('modal-importar').classList.remove('hidden');
+        };
+
+        window.fecharModalImportar = function() {
+            document.getElementById('modal-importar').classList.add('hidden');
+        };
+
+        window.salvarImportacao = function() {
+            const turmaId = document.getElementById('turma-projeto').value;
+            const materia = document.getElementById('modal-importar-materia').value.trim().toUpperCase();
+            const textoLinks = document.getElementById('modal-importar-links').value.trim();
+
+            if(!textoLinks) return window.mostrarToast('Cole pelo menos um link', 'erro');
+
+            const links = textoLinks.split('\n').map(l => l.trim()).filter(l => l !== '');
+            if(links.length === 0) return window.mostrarToast('Nenhum link válido encontrado', 'erro');
+
+            if(!window.dbLocal.projetos) window.dbLocal.projetos = [];
+            const hoje = new Date().toISOString().split('T')[0];
+
+            let count = 0;
+            links.forEach((url, index) => {
+                window.dbLocal.projetos.push({
+                    id: gerarId() + index,
+                    turmaId: parseInt(turmaId),
+                    materia: materia,
+                    nome: `Material Importado ${index + 1}`,
+                    url: url,
+                    dataCriacao: hoje
+                });
+                count++;
+            });
+
+            window.salvarDados();
+            window.fecharModalImportar();
+            window.renderProjetos();
+            window.atualizarDatalistMateriasLink();
+            window.mostrarToast(`${count} links importados com sucesso!`);
+        };
+
+        window.renderProjetos = function() {
+            const container = document.getElementById('lista-projetos');
+            const escolaId = document.getElementById('escola-projeto').value;
+            const turmaId = document.getElementById('turma-projeto').value;
+
+            if (!escolaId || !turmaId) {
+                container.innerHTML = `<div class="text-center text-gray-500 dark:text-slate-400 py-10 font-medium border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl">Selecione uma escola e uma turma acima para ver os materiais.</div>`;
+                return;
             }
-        };
 
-        window.toggleTheme = function() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('newcode_theme', 'light');
-                document.getElementById('icon-sun').classList.remove('hidden');
-                document.getElementById('icon-moon').classList.add('hidden');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('newcode_theme', 'dark');
-                document.getElementById('icon-moon').classList.remove('hidden');
-                document.getElementById('icon-sun').classList.add('hidden');
+            const projetosTurma = (window.dbLocal.projetos || []).filter(p => p.turmaId == turmaId);
+
+            if (projetosTurma.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl bg-gray-50 dark:bg-slate-900/30">
+                        <svg class="w-12 h-12 text-gray-400 dark:text-slate-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        <p class="text-gray-500 dark:text-slate-400 font-bold mb-1">Nenhum material adicionado</p>
+                        <p class="text-xs text-gray-400 dark:text-slate-500">Clique em "Adicionar Link" ou "Importar Vários" acima.</p>
+                    </div>`;
+                return;
             }
+
+            const grupos = {};
+            projetosTurma.forEach(p => {
+                const cat = p.materia || 'GERAL';
+                if(!grupos[cat]) grupos[cat] = [];
+                grupos[cat].push(p);
+            });
+
+            const categoriasOrdenadas = Object.keys(grupos).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+            let html = '';
+
+            categoriasOrdenadas.forEach(categoria => {
+                const projetosOrdenados = grupos[categoria].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+                html += `
+                    <div class="mb-10 last:mb-0">
+                        <div class="flex items-center gap-3 mb-4 pb-2 border-b border-gray-200 dark:border-slate-700">
+                            <h4 class="text-sm font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">${categoria}</h4>
+                            <span class="text-xs font-bold text-gray-400 dark:text-slate-500">${projetosOrdenados.length} link(s)</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                `;
+
+                projetosOrdenados.forEach(projeto => {
+                    const dataFormatada = projeto.dataCriacao ? window.formatarData(projeto.dataCriacao) : 'Desconhecida';
+                    
+                    html += `
+                        <div class="bg-gray-50 dark:bg-slate-900/60 p-4 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col justify-between group">
+                            <div class="flex gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200 dark:border-slate-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h5 class="font-black text-gray-900 dark:text-white truncate" title="${projeto.nome}">${projeto.nome}</h5>
+                                    <p class="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide mt-0.5">Adicionado a ${dataFormatada}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <a href="${projeto.url}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-800 dark:text-blue-400 text-xs font-black py-2.5 rounded-lg text-center transition-colors shadow-sm">
+                                    Acessar Link
+                                </a>
+                                <button onclick="window.abrirModalLink(${projeto.id})" class="p-2.5 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 rounded-lg transition-colors" title="Editar">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                </button>
+                                <button onclick="window.excluirProjeto(${projeto.id})" class="p-2.5 bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 border border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-500/30 rounded-lg transition-colors" title="Excluir">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
         };
 
+        // --- Inicialização ---
         window.initTheme();
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeId = document.activeElement.id;
                 
-                if (activeId === 'lote-links') return;
-
                 const map = {
                     'login-email': 'btn-login',
                     'login-senha': 'btn-login',
-                    'cad-nome': 'btn-cadastro',
-                    'cad-email': 'btn-cadastro',
-                    'cad-senha': 'btn-cadastro',
                     'nome-escola': 'btn-add-escola',
                     'nome-materia': 'btn-add-materia',
                     'nome-turma': 'btn-add-turma',
                     'nome-aluno': 'btn-add-aluno',
                     'modal-data': 'btn-salvar-aula',
-                    'modal-conteudo': 'btn-salvar-aula',
-                    'proj-materia': 'btn-enviar-proj',
-                    'proj-conteudo': 'btn-enviar-proj',
-                    'proj-url': 'btn-enviar-proj',
-                    'lote-materia': 'btn-enviar-lote'
+                    'modal-conteudo': 'btn-salvar-aula'
                 };
                 
                 if (map[activeId]) {
                     e.preventDefault();
                     const btn = document.getElementById(map[activeId]);
-                    if (btn && !btn.disabled) btn.click();
+                    if (btn) btn.click();
                 }
             }
         });

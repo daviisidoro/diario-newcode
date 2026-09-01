@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="./icone.png">
     <title>Diário Escolar - New Code</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -245,9 +246,7 @@
         #view-cadastros [id^="lista-"] > div:not(.data-empty):hover { transform: translateX(3px); background: rgba(231,236,251,.94) !important; box-shadow: 0 7px 16px rgba(43,58,105,.08); }
         .dark #view-cadastros [id^="lista-"] > div:not(.data-empty):hover { background: rgba(36,49,82,.7) !important; }
         #view-cadastros [id^="lista-"] > div:not(.data-empty) button { border-radius: .65rem; }
-        select.app-input { cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, #64748b 50%), linear-gradient(135deg, #64748b 50%, transparent 50%); background-position: calc(100% - 19px) calc(50% - 2px), calc(100% - 14px) calc(50% - 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2.7rem; }
-        select.app-input:focus { background-image: linear-gradient(45deg, transparent 50%, var(--blue) 50%), linear-gradient(135deg, var(--blue) 50%, transparent 50%); }
-        .dark select.app-input { background-image: linear-gradient(45deg, transparent 50%, #a8b6d5 50%), linear-gradient(135deg, #a8b6d5 50%, transparent 50%); }
+        select.app-input { cursor: pointer; padding-right: 2.7rem; }
         input.app-input::placeholder, textarea.app-input::placeholder { opacity: 1; color: #99a9c3; }
         .app-btn:focus-visible, .app-input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid rgba(49,200,213,.42); outline-offset: 3px; }
         [id^="modal-"] { background: rgba(10,18,39,.62) !important; }

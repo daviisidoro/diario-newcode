@@ -147,11 +147,11 @@
         header h1 { letter-spacing: .09em !important; font-size: 1rem !important; }
         header h1 span { background: #31c8d5 !important; animation: softPulse 2.8s ease-in-out infinite; }
         main { position: relative; }
-        .bg-white.dark\\:bg-slate-800 {
+        .bg-white.dark\:bg-slate-800 {
             background: var(--card) !important; border-color: var(--line) !important;
             box-shadow: 0 13px 35px rgba(34,47,80,.07) !important;
         }
-        .dark .bg-white.dark\\:bg-slate-800 { box-shadow: 0 16px 38px rgba(0,0,0,.18) !important; }
+        .dark .bg-white.dark\:bg-slate-800 { box-shadow: 0 16px 38px rgba(0,0,0,.18) !important; }
         .rounded-2xl { border-radius: 1.25rem !important; }
 
         /* Campos e ações */
@@ -280,6 +280,210 @@
             #planilha-container td:not(:first-child) span { padding-top: .62rem !important; padding-bottom: .62rem !important; font-size: .86rem !important; }
         }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+
+        /* Refinamento visual New Code — preto, branco e azul */
+        :root {
+            --ink: #0a1020;
+            --muted: #5f6f89;
+            --paper: #f4f7fb;
+            --line: rgba(15, 23, 42, .11);
+            --violet: #0b5bd3;
+            --blue: #0878ff;
+            --cyan: #4aa3ff;
+            --card: rgba(255, 255, 255, .94);
+        }
+        body {
+            background:
+                radial-gradient(circle at 10% -10%, rgba(8, 120, 255, .13), transparent 30rem),
+                radial-gradient(circle at 100% 6%, rgba(11, 91, 211, .09), transparent 28rem),
+                var(--paper);
+        }
+        .dark body {
+            --ink: #ffffff;
+            --muted: #a7b4c9;
+            --paper: #05070c;
+            --line: rgba(148, 178, 226, .16);
+            --card: rgba(12, 18, 30, .94);
+            background:
+                radial-gradient(circle at 10% -10%, rgba(8, 120, 255, .20), transparent 31rem),
+                radial-gradient(circle at 100% 6%, rgba(39, 105, 210, .12), transparent 29rem),
+                var(--paper);
+        }
+        body::before {
+            opacity: .20;
+            background-image: linear-gradient(rgba(8, 120, 255, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(8, 120, 255, .08) 1px, transparent 1px);
+        }
+        header { background: rgba(255, 255, 255, .91) !important; border-bottom-color: rgba(15, 23, 42, .09) !important; }
+        .dark header { background: rgba(5, 7, 12, .91) !important; }
+        header h1 span { background: #1685ff !important; }
+        .app-btn {
+            background: linear-gradient(135deg, #0b5bd3, #0878ff);
+            box-shadow: 0 12px 24px rgba(8, 93, 211, .24);
+        }
+        .app-btn:hover { background: linear-gradient(135deg, #084aad, #006be8); box-shadow: 0 16px 28px rgba(8, 93, 211, .30); }
+        #tab-diario.bg-white, #tab-projetos.bg-white, #tab-cadastros.bg-white {
+            background: linear-gradient(135deg, #0a0f1b, #0b5bd3) !important;
+            box-shadow: 0 7px 18px rgba(8, 75, 171, .25);
+        }
+        .dark #tab-diario.bg-white, .dark #tab-projetos.bg-white, .dark #tab-cadastros.bg-white {
+            background: linear-gradient(135deg, #ffffff, #dcecff) !important;
+            color: #07101f !important;
+        }
+        #view-cadastros .form-card,
+        #view-cadastros .form-card[data-accent="cyan"],
+        #view-cadastros .form-card[data-accent="orange"],
+        #view-cadastros .form-card[data-accent="pink"] {
+            --accent-a: #0b5bd3;
+            --accent-b: #55a9ff;
+            --accent-soft: rgba(8, 120, 255, .12);
+        }
+        #view-cadastros .form-card { min-height: 25rem; height: auto !important; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty) { padding: .78rem .85rem !important; }
+        .item-actions { display: flex; align-items: center; gap: .28rem; flex-shrink: 0; }
+        .item-action {
+            display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem;
+            border: 1px solid rgba(91, 113, 151, .13); border-radius: .65rem; color: #70809a;
+            background: rgba(255, 255, 255, .72); transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+        .dark .item-action { background: rgba(15, 23, 42, .72); border-color: rgba(148, 178, 226, .15); color: #a7b4c9; }
+        .item-action:hover { color: #0878ff; border-color: rgba(8, 120, 255, .30); background: rgba(8, 120, 255, .08); transform: translateY(-1px); }
+        .item-action.danger:hover { color: #ef4444; border-color: rgba(239, 68, 68, .25); background: rgba(239, 68, 68, .08); }
+        #login-screen::before { background: radial-gradient(circle, rgba(8, 120, 255, .22), transparent 68%); }
+        #login-screen::after { background: radial-gradient(circle, rgba(10, 15, 27, .16), transparent 68%); }
+        #toast-content { background: linear-gradient(135deg, #070b13, #0b3a78) !important; }
+
+        /* Motion e profundidade — acabamento premium */
+        @keyframes ambientDrift {
+            0%, 100% { transform: translate3d(-3%, -2%, 0) scale(1); opacity: .56; }
+            50% { transform: translate3d(7%, 5%, 0) scale(1.12); opacity: .84; }
+        }
+        @keyframes viewEntrance {
+            from { opacity: 0; transform: translateY(14px); filter: blur(7px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(18px) scale(.975); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes modalPop {
+            0% { opacity: 0; transform: translateY(18px) scale(.94); }
+            70% { opacity: 1; transform: translateY(-2px) scale(1.008); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            width: 34rem;
+            height: 34rem;
+            left: 32%;
+            top: 22%;
+            z-index: -1;
+            border-radius: 999px;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(8, 120, 255, .10), rgba(8, 120, 255, 0) 68%);
+            filter: blur(10px);
+            animation: ambientDrift 13s ease-in-out infinite;
+        }
+        .dark body::after { background: radial-gradient(circle, rgba(8, 120, 255, .17), rgba(8, 120, 255, 0) 68%); }
+        header { position: sticky; overflow: visible; }
+        header::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            width: min(88%, 60rem);
+            height: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(8, 120, 255, .64), transparent);
+            opacity: .68;
+        }
+        header img { transition: transform .35s cubic-bezier(.2,.8,.2,1), filter .35s ease; animation: logoFloat 4.8s ease-in-out infinite; }
+        header img:hover { transform: scale(1.12) rotate(-5deg); filter: drop-shadow(0 8px 13px rgba(8, 120, 255, .32)); }
+        header .grid.grid-cols-3 { box-shadow: inset 0 1px 2px rgba(15, 23, 42, .07), 0 6px 16px rgba(15, 23, 42, .04); }
+        #tab-diario, #tab-projetos, #tab-cadastros {
+            position: relative;
+            overflow: hidden;
+            transition: color .28s ease, background .28s ease, transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease !important;
+        }
+        #tab-diario::after, #tab-projetos::after, #tab-cadastros::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 28%, rgba(255,255,255,.22) 48%, transparent 68%);
+            transform: translateX(-125%);
+            transition: transform .62s ease;
+        }
+        #tab-diario:hover::after, #tab-projetos:hover::after, #tab-cadastros:hover::after { transform: translateX(125%); }
+        #tab-diario:hover, #tab-projetos:hover, #tab-cadastros:hover { transform: translateY(-1px); }
+        #view-diario.fade-in, #view-projetos.fade-in, #view-cadastros.fade-in { animation: viewEntrance .48s cubic-bezier(.2,.8,.2,1) both; }
+        #view-diario > div, #view-projetos > div, #view-cadastros .form-card { animation: cardEntrance .52s cubic-bezier(.2,.8,.2,1) both; }
+        #view-diario > div:nth-child(2), #view-projetos > div:nth-child(2), #view-cadastros .form-card:nth-child(2) { animation-delay: .06s; }
+        #view-cadastros .form-card:nth-child(3) { animation-delay: .12s; }
+        #view-cadastros .form-card:nth-child(4) { animation-delay: .18s; }
+        main .bg-white.dark\:bg-slate-800 {
+            transition: transform .32s cubic-bezier(.2,.8,.2,1), box-shadow .32s ease, border-color .32s ease;
+        }
+        #view-diario > div:first-child:hover, #view-projetos > div:first-child:hover {
+            transform: translateY(-3px);
+            border-color: rgba(8, 120, 255, .24) !important;
+            box-shadow: 0 18px 42px rgba(17, 67, 137, .11) !important;
+        }
+        .dark #view-diario > div:first-child:hover, .dark #view-projetos > div:first-child:hover { box-shadow: 0 20px 45px rgba(0, 0, 0, .32), 0 0 0 1px rgba(8, 120, 255, .10) !important; }
+        .app-input { transition: border-color .23s ease, box-shadow .23s ease, background .23s ease, transform .23s ease; }
+        .app-input:hover { transform: translateY(-1px); box-shadow: 0 7px 18px rgba(17, 65, 132, .06); }
+        .app-input:focus { transform: translateY(-1px); box-shadow: 0 0 0 4px rgba(8, 120, 255, .12), 0 10px 24px rgba(8, 85, 185, .10); }
+        .app-btn svg { transition: transform .28s cubic-bezier(.2,.8,.2,1); }
+        .app-btn:hover svg { transform: translateY(-1px) scale(1.1); }
+        #planilha-container { position: relative; }
+        #planilha-container::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 2px;
+            z-index: 2;
+            background: linear-gradient(90deg, transparent, #0878ff 38%, #7fc0ff 62%, transparent);
+            opacity: .78;
+        }
+        #planilha-container tbody tr:hover { transform: translateX(2px); }
+        #planilha-container tbody tr:hover .student-name { color: #0878ff !important; }
+        #planilha-container td[onclick] { transition: background-color .2s ease, box-shadow .2s ease; }
+        #planilha-container td[onclick]:hover { box-shadow: inset 0 0 0 2px rgba(8, 120, 255, .23); }
+        #lista-projetos .group { position: relative; overflow: hidden; }
+        #lista-projetos .group::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(110deg, transparent 22%, rgba(8,120,255,.07) 49%, transparent 76%);
+            transform: translateX(-125%);
+            transition: transform .75s ease;
+        }
+        #lista-projetos .group:hover::after { transform: translateX(125%); }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty) { animation: cardEntrance .35s cubic-bezier(.2,.8,.2,1) both; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty):nth-child(2) { animation-delay: .035s; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty):nth-child(3) { animation-delay: .07s; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty):nth-child(4) { animation-delay: .105s; }
+        #view-cadastros [id^="lista-"] > div:not(.data-empty):hover { border-color: rgba(8, 120, 255, .18) !important; }
+        .item-action svg { transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+        .item-action:hover svg { transform: scale(1.13) rotate(-3deg); }
+        [id^="modal-"]:not(.hidden) { animation: fadeIn .22s ease-out both; }
+        [id^="modal-"]:not(.hidden) > div { animation: modalPop .38s cubic-bezier(.2,.8,.2,1) both; }
+        #login-screen > div { transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .4s ease; }
+        #login-screen > div:hover { transform: translateY(-4px); box-shadow: 0 34px 80px rgba(13, 49, 108, .20) !important; border-color: rgba(8, 120, 255, .24) !important; }
+        #login-screen img { animation: logoFloat 4.2s ease-in-out infinite; transition: transform .35s ease, filter .35s ease; }
+        #login-screen img:hover { transform: scale(1.09) rotate(-4deg); filter: drop-shadow(0 12px 16px rgba(8, 120, 255, .30)); }
+        #toast:not(.opacity-0) #toast-content { animation: modalPop .34s cubic-bezier(.2,.8,.2,1) both; }
+        @media (max-width: 639px) {
+            #view-cadastros > .grid { gap: 1rem !important; }
+            #view-cadastros .form-card { padding: 1.1rem !important; min-height: 23rem; }
+            .item-action { width: 2.25rem; height: 2.25rem; }
+            body::after { width: 24rem; height: 24rem; left: 2%; top: 30%; }
+            #view-diario > div:first-child:hover, #view-projetos > div:first-child:hover, #login-screen > div:hover { transform: none; }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-500/30">
@@ -583,6 +787,31 @@
             <div class="mt-6 flex gap-3">
                 <button onclick="window.fecharModalImportar()" class="app-btn w-full !bg-gray-200 hover:!bg-gray-300 text-gray-800 dark:!bg-slate-700 dark:hover:!bg-slate-600 dark:text-white !shadow-none border border-transparent dark:border-slate-600">Cancelar</button>
                 <button onclick="window.salvarImportacao()" class="app-btn w-full">Importar Tudo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Aluno/Turma -->
+    <div id="modal-editar-cadastro" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in" role="dialog" aria-modal="true" aria-labelledby="modal-editar-cadastro-titulo">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-gray-200 dark:border-slate-700">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <p class="text-xs font-black uppercase tracking-[.16em] text-blue-600 dark:text-blue-400 mb-1">Gestão de dados</p>
+                    <h3 id="modal-editar-cadastro-titulo" class="text-xl font-black text-gray-900 dark:text-white">Editar cadastro</h3>
+                </div>
+                <button type="button" onclick="window.fecharModalEdicaoCadastro()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-slate-900 p-2 rounded-full transition-colors" aria-label="Fechar edição">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <input type="hidden" id="modal-editar-cadastro-tipo">
+            <input type="hidden" id="modal-editar-cadastro-id">
+            <div>
+                <label id="modal-editar-cadastro-label" for="modal-editar-cadastro-nome" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Novo nome</label>
+                <input type="text" id="modal-editar-cadastro-nome" class="app-input" autocomplete="off">
+            </div>
+            <div class="mt-7 flex gap-3">
+                <button type="button" onclick="window.fecharModalEdicaoCadastro()" class="w-full py-3 px-4 text-sm font-black text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 dark:bg-slate-900 dark:hover:bg-slate-700 rounded-xl transition-colors">Cancelar</button>
+                <button type="button" id="btn-salvar-edicao-cadastro" onclick="window.salvarEdicaoCadastro()" class="app-btn w-full !py-3">Salvar alteração</button>
             </div>
         </div>
     </div>
@@ -926,6 +1155,50 @@
             window.mostrarToast('Aluno excluído.');
         };
 
+        window.abrirModalEdicaoCadastro = function(tipo, id) {
+            const configuracao = tipo === 'turma'
+                ? { lista: window.dbLocal.turmas, titulo: 'Editar nome da turma', label: 'Nome da turma' }
+                : { lista: window.dbLocal.alunos, titulo: 'Editar nome do aluno', label: 'Nome do aluno' };
+            const item = configuracao.lista.find(registro => registro.id === id);
+            if (!item) return window.mostrarToast('Cadastro não encontrado.', 'erro');
+
+            document.getElementById('modal-editar-cadastro-tipo').value = tipo;
+            document.getElementById('modal-editar-cadastro-id').value = id;
+            document.getElementById('modal-editar-cadastro-titulo').textContent = configuracao.titulo;
+            document.getElementById('modal-editar-cadastro-label').textContent = configuracao.label;
+            document.getElementById('modal-editar-cadastro-nome').value = item.nome;
+            document.getElementById('modal-editar-cadastro').classList.remove('hidden');
+
+            requestAnimationFrame(() => {
+                const input = document.getElementById('modal-editar-cadastro-nome');
+                input.focus();
+                input.select();
+            });
+        };
+
+        window.fecharModalEdicaoCadastro = function() {
+            document.getElementById('modal-editar-cadastro').classList.add('hidden');
+        };
+
+        window.salvarEdicaoCadastro = function() {
+            const tipo = document.getElementById('modal-editar-cadastro-tipo').value;
+            const id = parseInt(document.getElementById('modal-editar-cadastro-id').value);
+            let nome = document.getElementById('modal-editar-cadastro-nome').value.trim();
+            if (!nome) return window.mostrarToast('Digite um nome válido.', 'erro');
+
+            const lista = tipo === 'turma' ? window.dbLocal.turmas : window.dbLocal.alunos;
+            const item = lista.find(registro => registro.id === id);
+            if (!item) return window.mostrarToast('Cadastro não encontrado.', 'erro');
+
+            if (tipo === 'turma') nome = nome.toUpperCase();
+            item.nome = nome;
+            window.fecharModalEdicaoCadastro();
+            window.atualizarSelects();
+            window.renderCadastros();
+            window.salvarDados();
+            window.mostrarToast(tipo === 'turma' ? 'Nome da turma atualizado.' : 'Nome do aluno atualizado.');
+        };
+
         window.renderCadastros = function() {
             const getNome = (lista, id) => {
                 const item = lista.find(i => i.id === id);
@@ -975,7 +1248,14 @@
                         <div class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate">${item.nome}</div>
                         <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate">${getNome(window.dbLocal.escolas, item.escolaId)} • ${getNome(window.dbLocal.materias, item.materiaId)}</div>
                     </div>
-                    <button onclick="window.delTurma(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    <div class="item-actions">
+                        <button onclick="window.abrirModalEdicaoCadastro('turma', ${item.id})" class="item-action" title="Editar nome da turma" aria-label="Editar nome da turma">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                        <button onclick="window.delTurma(${item.id})" class="item-action danger" title="Excluir turma" aria-label="Excluir turma">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
                 </div>
                 `);
             }
@@ -988,7 +1268,14 @@
                 renderLista('lista-alunos', alunosFiltrados, item => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
                     <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
-                    <button onclick="window.delAluno(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 opacity-0 group-hover:opacity-100 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    <div class="item-actions">
+                        <button onclick="window.abrirModalEdicaoCadastro('aluno', ${item.id})" class="item-action" title="Editar nome do aluno" aria-label="Editar nome do aluno">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                        <button onclick="window.delAluno(${item.id})" class="item-action danger" title="Excluir aluno" aria-label="Excluir aluno">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
                 </div>
                 `);
             }
@@ -1463,6 +1750,7 @@
                     'nome-materia': 'btn-add-materia',
                     'nome-turma': 'btn-add-turma',
                     'nome-aluno': 'btn-add-aluno',
+                    'modal-editar-cadastro-nome': 'btn-salvar-edicao-cadastro',
                     'modal-data': 'btn-salvar-aula',
                     'modal-conteudo': 'btn-salvar-aula'
                 };

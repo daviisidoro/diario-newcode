@@ -54,7 +54,11 @@
             border-color: #334155;
             color: #ffffff;
         }
-        .dark .app-input::placeholder { color: #64748b; }
+        .dark .app-input::placeholder { color: #DAB1DA; }
+
+        /* Alunos em aula demonstrativa */
+        .aluno-demo-nome { color: #A020F0 !important; }
+        .dark .aluno-demo-nome { color: #8fd3ff !important; }
 
         .app-btn {
             padding: 1rem 1.5rem;
@@ -694,6 +698,10 @@
                                 <input type="text" id="nome-aluno" class="app-input !py-3" placeholder="Nome completo do aluno">
                                 <button id="btn-add-aluno" onclick="window.addAluno()" class="app-btn !py-3 !px-4 aspect-square">+</button>
                             </div>
+                            <label class="flex items-center gap-2 cursor-pointer select-none text-xs font-bold text-gray-600 dark:text-gray-300">
+                                <input type="checkbox" id="aula-demo-aluno" class="w-4 h-4 accent-blue-400">
+                                Aula demo <span class="text-blue-300 dark:text-sky-300">(nome em azul-bebê)</span>
+                            </label>
                         </div>
                         <div id="lista-alunos" class="flex-1 overflow-y-auto space-y-2 pr-2 border-t border-gray-100 dark:border-slate-700 pt-4"></div>
                     </div>
@@ -809,6 +817,10 @@
                 <label id="modal-editar-cadastro-label" for="modal-editar-cadastro-nome" class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Novo nome</label>
                 <input type="text" id="modal-editar-cadastro-nome" class="app-input" autocomplete="off">
             </div>
+            <label id="modal-editar-cadastro-demo-container" class="hidden mt-4 flex items-center gap-2 cursor-pointer select-none text-sm font-bold text-gray-700 dark:text-gray-200">
+                <input type="checkbox" id="modal-editar-cadastro-demo" class="w-4 h-4 accent-blue-400">
+                Aula demo <span class="text-blue-300 dark:text-sky-300">(nome em azul-bebê)</span>
+            </label>
             <div class="mt-7 flex gap-3">
                 <button type="button" onclick="window.fecharModalEdicaoCadastro()" class="w-full py-3 px-4 text-sm font-black text-gray-700 dark:text-gray-200 bg-gray-100 hover:bg-gray-200 dark:bg-slate-900 dark:hover:bg-slate-700 rounded-xl transition-colors">Cancelar</button>
                 <button type="button" id="btn-salvar-edicao-cadastro" onclick="window.salvarEdicaoCadastro()" class="app-btn w-full !py-3">Salvar alteração</button>
@@ -1139,11 +1151,13 @@
         window.addAluno = function() {
             const turmaId = document.getElementById('turma-aluno').value;
             const nome = document.getElementById('nome-aluno').value.trim();
+            const aulaDemo = document.getElementById('aula-demo-aluno').checked;
             
             if(!turmaId || !nome) return window.mostrarToast('Selecione turma e digite o nome', 'erro');
             
-            window.dbLocal.alunos.push({ id: gerarId(), turmaId: parseInt(turmaId), nome });
+            window.dbLocal.alunos.push({ id: gerarId(), turmaId: parseInt(turmaId), nome, aulaDemo });
             document.getElementById('nome-aluno').value = '';
+            document.getElementById('aula-demo-aluno').checked = false;
             window.salvarDados();
             window.mostrarToast('Aluno matriculado.');
         };
@@ -1167,6 +1181,8 @@
             document.getElementById('modal-editar-cadastro-titulo').textContent = configuracao.titulo;
             document.getElementById('modal-editar-cadastro-label').textContent = configuracao.label;
             document.getElementById('modal-editar-cadastro-nome').value = item.nome;
+            document.getElementById('modal-editar-cadastro-demo-container').classList.toggle('hidden', tipo !== 'aluno');
+            document.getElementById('modal-editar-cadastro-demo').checked = tipo === 'aluno' && Boolean(item.aulaDemo);
             document.getElementById('modal-editar-cadastro').classList.remove('hidden');
 
             requestAnimationFrame(() => {
@@ -1192,6 +1208,7 @@
 
             if (tipo === 'turma') nome = nome.toUpperCase();
             item.nome = nome;
+            if (tipo === 'aluno') item.aulaDemo = document.getElementById('modal-editar-cadastro-demo').checked;
             window.fecharModalEdicaoCadastro();
             window.atualizarSelects();
             window.renderCadastros();
@@ -1267,7 +1284,7 @@
                 const alunosFiltrados = window.dbLocal.alunos.filter(a => a.turmaId == alunoTurmaId);
                 renderLista('lista-alunos', alunosFiltrados, item => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-100 dark:border-slate-700/50 group">
-                    <span class="font-bold text-sm text-gray-700 dark:text-gray-200 truncate pr-2">${item.nome}</span>
+                    <span class="font-bold text-sm ${item.aulaDemo ? 'aluno-demo-nome' : 'text-gray-700 dark:text-gray-200'} truncate pr-2">${item.nome}${item.aulaDemo ? ' <small class="text-[10px] font-semibold whitespace-nowrap">(aluno demo)</small>' : ''}</span>
                     <div class="item-actions">
                         <button onclick="window.abrirModalEdicaoCadastro('aluno', ${item.id})" class="item-action" title="Editar nome do aluno" aria-label="Editar nome do aluno">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -1476,7 +1493,7 @@
 
                 // No mobile o nome pode ocupar mais de uma linha; datas e totais seguem visíveis.
                 let rowHtml = `<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <td class="student-name py-2 px-2 font-bold text-gray-900 dark:text-white text-xs sm:text-sm" title="${aluno.nome}">${aluno.nome}</td>`;
+                    <td class="student-name py-2 px-2 font-bold ${aluno.aulaDemo ? 'aluno-demo-nome' : 'text-gray-900 dark:text-white'} text-xs sm:text-sm" title="${aluno.nome}">${aluno.nome}${aluno.aulaDemo ? ' <small class="text-[9px] font-semibold whitespace-nowrap">(aluno demo)</small>' : ''}</td>`;
 
                 aulasMes.forEach(aula => {
                     const status = window.dbLocal.presencas[`${aula.id}_${aluno.id}`];
